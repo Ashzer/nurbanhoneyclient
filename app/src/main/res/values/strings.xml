@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">NurbanHoney</string>
+    <string name="kakao_app_key">8afc185b39976c8da64f53954aff69ff</string>
+
+    <string name="test_string">test</string>
+    <string name="rank">랭킹</string>
+    <string name="nurban">너반꿀</string>
+    <string name="free">자유</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+</resources>
