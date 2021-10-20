@@ -16,8 +16,7 @@ class LoginViewModel
 @Inject constructor(
     private val isTokenValid: IsTokenValid,
     private val loginRequest : LoginRequest,
-    private val prefs : SharedPreferences,
-    private val navigator : Navigator
+    private val prefs : SharedPreferences
 ) : BaseViewModel() {
     val nurbanToken : MutableLiveData<NurbanToken> = MutableLiveData()
     private var hasToken : Boolean = false
@@ -42,8 +41,8 @@ class LoginViewModel
 
     private fun handleToken(token : NurbanToken){
         nurbanToken.value = token
-        Log.d("UseCase_login_check__" , nurbanToken.value!!.token)
-        Log.d("UseCase_login_check__" , nurbanToken.value!!.error)
+        Log.d("UseCase_login_check__" , nurbanToken.value?.token ?: "")
+        Log.d("UseCase_login_check__" , nurbanToken.value?.error ?: "")
         if(!nurbanToken.equals(null)){
             var editor = prefs.edit()
             editor.putString("NurbanToken", nurbanToken.value?.token.toString())

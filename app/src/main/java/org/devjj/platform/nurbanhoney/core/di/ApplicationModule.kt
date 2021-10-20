@@ -3,6 +3,7 @@ package org.devjj.platform.nurbanhoney.core.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import dagger.Module
@@ -12,9 +13,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.devjj.platform.nurbanhoney.AndroidApplication
 import org.devjj.platform.nurbanhoney.BuildConfig
+import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.features.ui.login.LoginManager
+import org.devjj.platform.nurbanhoney.features.ui.textedit.BoardRepository
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -26,9 +28,9 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit() : Retrofit {
+    fun provideRetrofit(@ApplicationContext context: Context) : Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://3.37.155.214:8080/")
+            .baseUrl(context.getString(R.string.server_address))
             .client(createClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -59,5 +61,9 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideLoginManager(dataSource : LoginManager.Network) : LoginManager = dataSource
+
+    @Provides
+    @Singleton
+    fun provideBoardRepository(dataSource : BoardRepository.Network) : BoardRepository = dataSource
 
 }

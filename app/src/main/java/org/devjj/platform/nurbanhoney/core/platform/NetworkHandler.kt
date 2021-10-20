@@ -48,11 +48,14 @@ class NetworkHandler
     ): Either<Failure, R> {
         return try {
             val response = call.execute()
+            Log.d("error_check__", "before")
             when (response.isSuccessful) {
                 true -> Right(transform((response.body() ?: default)))
                 false -> Left(ServerError)
             }
         } catch (exception: Throwable) {
+            Log.d("error_check__", "after ${exception.stackTrace}")
+
             Left(ServerError)
         }
     }

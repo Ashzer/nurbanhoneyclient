@@ -21,8 +21,8 @@
 
         <activity
             android:name=".core.navigation.SplashActivity"
-            android:theme="@style/SplashTheme" >
-            android:theme=
+            android:theme="@style/SplashTheme"
+            android:windowSoftInputMode="stateAlwaysHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -35,7 +35,8 @@
         </activity>
 
         <activity android:name=".features.ui.textedit.TextEditorActivity"
-            android:label="TextEditor">
+            android:label="TextEditor"
+            android:windowSoftInputMode="adjustResize" >
         </activity>
 
         <activity

@@ -1,11 +1,13 @@
 package org.devjj.platform.nurbanhoney.core.navigation
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +40,7 @@ class SplashActivity
             runBlocking { navigator.showMain(this@SplashActivity) }
             finish()
         },SPLASH_DISPLAY_TIME)
+
 
         CoroutineScope(Dispatchers.IO).launch {
             //Log.d("version_check__", versionCheckService.appVersion("nurbanhoney").execute().body().toString())
