@@ -15,6 +15,7 @@
  */
 package org.devjj.platform.nurbanhoney.core.platform
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -32,5 +33,7 @@ abstract class BaseViewModel : ViewModel() {
 
     protected fun handleFailure(failure: Failure) {
         _failure.value = failure
+
+        Log.d("token_check__", _failure.value.toString())
     }
 }

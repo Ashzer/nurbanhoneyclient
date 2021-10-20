@@ -12,14 +12,14 @@ import javax.inject.Inject
 abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        addFragment(savedInstanceState)
+
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
     }
 
-    private fun addFragment(savedInstanceState: Bundle?) =
+    fun addFragment(savedInstanceState: Bundle?) =
         savedInstanceState ?: supportFragmentManager.inTransaction {
             add(
                 R.id.FragmentContainer,fragment()

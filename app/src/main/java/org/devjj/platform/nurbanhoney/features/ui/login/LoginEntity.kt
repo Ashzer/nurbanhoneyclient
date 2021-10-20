@@ -5,7 +5,7 @@ import org.devjj.platform.nurbanhoney.core.extension.*
 
 data class LoginEntity(@SerializedName("login_result") var loginResult : LoginResult  ) {
     data class LoginResult(
-        @SerializedName("token") var token : String,
+        @SerializedName("token") var token : String?,
         @SerializedName("error") var error : String?
     )
     companion object {
@@ -13,6 +13,6 @@ data class LoginEntity(@SerializedName("login_result") var loginResult : LoginRe
             LoginResult("","")
         )
     }
-    fun toNurbanToken() = NurbanToken(loginResult.token , loginResult.error ?: "")
+    fun toNurbanToken() = NurbanToken(loginResult.token?:"" , loginResult.error ?: "")
 }
 
