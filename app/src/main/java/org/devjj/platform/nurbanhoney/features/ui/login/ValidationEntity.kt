@@ -1,11 +1,8 @@
-package org.devjj.platform.nurbanhoney.features.network
+package org.devjj.platform.nurbanhoney.features.ui.login
 
 import com.google.gson.annotations.SerializedName
-import org.devjj.platform.nurbanhoney.features.ui.login.IsTokenValid
-import org.devjj.platform.nurbanhoney.features.ui.login.LoginEntity
-import org.devjj.platform.nurbanhoney.features.ui.login.TokenValidation
 
-data class ValidationEntity(
+data class ValidationEntity (
     @SerializedName("token_exaim_result")
     val result : Result
 ){
@@ -22,5 +19,5 @@ data class ValidationEntity(
         )
     }
 
-    fun toIsTokenValid() = TokenValidation(result.isValid)
+    fun toIsTokenValid() = TokenStatus(result.isValid)
 }

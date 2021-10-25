@@ -1,6 +1,7 @@
 package org.devjj.platform.nurbanhoney.features.network
 
 import org.devjj.platform.nurbanhoney.features.ui.login.LoginEntity
+import org.devjj.platform.nurbanhoney.features.ui.login.ValidationEntity
 import retrofit2.Call
 import retrofit2.http.*
 

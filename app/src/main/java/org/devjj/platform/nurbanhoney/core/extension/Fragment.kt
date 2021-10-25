@@ -11,3 +11,5 @@ inline fun FragmentManager.inTransaction(func : FragmentTransaction.() -> Fragme
     beginTransaction().func().commit()
 
 val BaseFragment.appContext: Context get() = activity?.applicationContext!!
+
+fun BaseFragment.close() = fragmentManager?.popBackStack()

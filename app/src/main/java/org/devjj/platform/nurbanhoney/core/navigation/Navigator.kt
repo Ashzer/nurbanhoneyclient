@@ -2,6 +2,8 @@ package org.devjj.platform.nurbanhoney.core.navigation
 
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentContainerView
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.features.ui.home.MainActivity
@@ -27,8 +29,13 @@ class Navigator
     fun showHome(context: Context) =
         context.startActivity(MainActivity.callingIntent(context))
 
-    fun showTextEditor(activity: FragmentActivity){
-        val intent = TextEditorActivity.callingIntent(activity)
-        activity.startActivity(intent)
+    fun showTextEditor(activity: FragmentActivity) =
+        activity.startActivity(TextEditorActivity.callingIntent(activity))
+
+    fun transFragment(supportFragmentManager : FragmentManager, frag : BaseFragment, containerView: FragmentContainerView){
+        supportFragmentManager.beginTransaction()
+            .replace(containerView.id, frag)
+            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            .commit()
     }
 }

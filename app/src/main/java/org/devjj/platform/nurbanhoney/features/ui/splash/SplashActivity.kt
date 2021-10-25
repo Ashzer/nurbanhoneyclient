@@ -1,23 +1,21 @@
-package org.devjj.platform.nurbanhoney.core.navigation
+package org.devjj.platform.nurbanhoney.features.ui.splash
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.inputmethod.InputMethodManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.devjj.platform.nurbanhoney.features.network.VersionCheckService
-import org.devjj.platform.nurbanhoney.features.network.UpdateManager
 import java.lang.Exception
 import javax.inject.Inject
 import com.kakao.sdk.common.util.Utility
 import kotlinx.coroutines.runBlocking
+import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 
 @AndroidEntryPoint
 class SplashActivity

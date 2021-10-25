@@ -5,12 +5,11 @@ import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.functional.Either.Left
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
 import org.devjj.platform.nurbanhoney.features.network.LoginService
-import org.devjj.platform.nurbanhoney.features.network.ValidationEntity
 import javax.inject.Inject
 
 interface LoginManager {
     fun getNurbanToken(type : String ,kakaoKey : String) : Either<Failure, NurbanToken>
-    fun isTokenValid(token : String) : Either<Failure,TokenValidation>
+    fun isTokenValid(token : String) : Either<Failure,TokenStatus>
 
     class Network
     @Inject constructor(
@@ -30,7 +29,7 @@ interface LoginManager {
             }
         }
 
-        override fun isTokenValid(token: String): Either<Failure, TokenValidation> {
+        override fun isTokenValid(token: String): Either<Failure, TokenStatus> {
             return when( networkHandler.isNetworkAvailable()){
                 true ->
                     networkHandler.request(

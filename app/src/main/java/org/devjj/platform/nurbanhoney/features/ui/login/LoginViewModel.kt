@@ -1,29 +1,25 @@
 package org.devjj.platform.nurbanhoney.features.ui.login
 
 import android.content.SharedPreferences
-import android.media.session.MediaSession
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import org.devjj.platform.nurbanhoney.core.exception.Failure
-import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel
 @Inject constructor(
-    private val isTokenValid: IsTokenValid,
-    private val loginRequest : LoginRequest,
+    private val isTokenValidUseCase: IsTokenValidUseCase,
+    private val loginRequestUseCase : LoginRequestUseCase,
     private val prefs : SharedPreferences
 ) : BaseViewModel() {
     val nurbanToken : MutableLiveData<NurbanToken> = MutableLiveData()
-    private var hasToken : Boolean = false
-    val isValid : MutableLiveData<TokenValidation> = MutableLiveData()
+    val isValid : MutableLiveData<TokenStatus> = MutableLiveData()
 
     fun getNurbanToken(type : String, kakaoKey : String) =
-        loginRequest(LoginRequest.Params(type, kakaoKey), viewModelScope){
+        loginRequestUseCase(LoginRequestUseCase.Params(type, kakaoKey), viewModelScope){
             it.fold(
                 ::handleFailure,
                 ::handleToken
@@ -31,7 +27,7 @@ class LoginViewModel
         }
 
     fun isTokenValid(token : String) =
-        isTokenValid(IsTokenValid.Params(token), viewModelScope){
+        isTokenValidUseCase(IsTokenValidUseCase.Params(token), viewModelScope){
             it.fold(
                 ::handleFailure,
                 ::handleToken
@@ -47,11 +43,10 @@ class LoginViewModel
             var editor = prefs.edit()
             editor.putString("NurbanToken", nurbanToken.value?.token.toString())
             editor.apply()
-            hasToken = true
         }
     }
 
-    private fun handleToken(token : TokenValidation){
+    private fun handleToken(token : TokenStatus){
         isValid.value = token
     }
 
