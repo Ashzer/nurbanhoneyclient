@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -18,7 +20,7 @@
         <meta-data
             android:name="com.kakao.sdk.Appkey"
             android:value="@string/kakao_app_key" />
-
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"/>
         <activity
             android:name=".features.ui.splash.SplashActivity"
             android:theme="@style/SplashTheme"

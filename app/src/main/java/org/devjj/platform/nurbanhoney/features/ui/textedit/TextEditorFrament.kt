@@ -1,12 +1,18 @@
 package org.devjj.platform.nurbanhoney.features.ui.textedit
 
+import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
+import com.theartofdev.edmodo.cropper.CropImage
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.richeditor.RichEditor
 import kotlinx.coroutines.CoroutineScope
@@ -30,8 +36,22 @@ class TextEditorFragment : BaseFragment() {
 
     @Inject
     lateinit var boardRepository: BoardRepository
+
     @Inject
     lateinit var prefs: SharedPreferences
+
+    private val cropActivityResultContracts = object : ActivityResultContract<Any?, Uri?>() {
+        override fun createIntent(context: Context, input: Any?): Intent {
+            return CropImage.activity()
+                .getIntent(context)
+        }
+
+        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
+            return CropImage.getActivityResult(intent)?.uri
+        }
+    }
+
+    private lateinit var cropActivityResultLauncher: ActivityResultLauncher<Any?>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +62,6 @@ class TextEditorFragment : BaseFragment() {
         _binding = FramentTextEditorBinding.inflate(inflater, container, false)
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,31 +75,38 @@ class TextEditorFragment : BaseFragment() {
         mEditor = binding.editor
         mEditor.setEditorFontSize(15)
         mEditor.setEditorFontColor(Color.BLACK)
-        //mEditor.setEditorBackgroundColor(Color.BLUE);
-        //mEditor.setBackgroundColor(Color.BLUE);
-        //mEditor.setBackground("https://raw.githubusercontent.com/wasabeef/art/master/chip.jpg");
         mEditor.setPlaceholder("내용을 입력해주세요.")
-        //mEditor.setInputEnabled(false);
-
-        undoListener(binding.actionUndo, mEditor)
-        redoListener(binding.actionRedo, mEditor)
-        boldListener(binding.actionBold, mEditor)
-        italicListener(binding.actionItalic, mEditor)
-        underlineListener(binding.actionUnderline, mEditor)
-        alignLeftListener(binding.actionAlignLeft, mEditor)
-        alignCenterListener(binding.actionAlignCenter, mEditor)
-        alignRightListener(binding.actionAlignRight, mEditor)
+        mEditor.undoListener(binding.actionUndo)
+        mEditor.redoListener(binding.actionRedo)
+        mEditor.boldListener(binding.actionBold)
+        mEditor.italicListener(binding.actionItalic)
+        mEditor.underlineListener(binding.actionUnderline)
+        mEditor.alignLeftListener(binding.actionAlignLeft)
+        mEditor.alignCenterListener(binding.actionAlignCenter)
+        mEditor.alignRightListener(binding.actionAlignRight)
 
         binding.actionHeading1.setOnClickListener { mEditor.setHeading(1) }
         binding.actionHeading3.setOnClickListener { mEditor.setHeading(3) }
         binding.actionHeading5.setOnClickListener { mEditor.setHeading(5) }
-        binding.actionInsertImage.setOnClickListener {
 
-            mEditor.insertImage(
-                "https://raw.githubusercontent.com/wasabeef/art/master/chip.jpg",
-                "dachshund", 320
-            )
+        functionVisibility(binding.editor, binding.horizontalScrollView)
+
+        cropActivityResultLauncher = registerForActivityResult(cropActivityResultContracts) {
+            it?.let { uri ->
+                uri
+            }.apply {
+                mEditor.insertImage(
+                    this.toString(),
+                    "", 320
+                )
+            }
         }
+        mEditor.insertImageListener(
+            binding.actionInsertImage,
+            requireActivity(),
+            cropActivityResultLauncher
+        )
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -96,13 +122,13 @@ class TextEditorFragment : BaseFragment() {
                 Log.d(
                     "editor_check__",
                     "${
-                        prefs.getString("NurbanToken", "").toString()
-                    }  ,  ${binding.titleEdtv.text} , ${mEditor.html} , ${uuid.toString()}"
+                        prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString()
+                    }  ,  ${binding.titleEdtv.text} , ${mEditor.html} , $uuid"
                 )
-                prefs.getString("NurbanToken", "")
+                prefs.getString(R.string.prefs_nurban_token_key.toString(), "")
                 CoroutineScope(Dispatchers.IO).async {
                     val temp = boardRepository.uploadWriting(
-                        prefs.getString("NurbanToken", "").toString(),
+                        prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
                         binding.titleEdtv.text.toString(),
                         mEditor.html.toString(),
                         uuid.toString()
@@ -115,4 +141,6 @@ class TextEditorFragment : BaseFragment() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+
 }

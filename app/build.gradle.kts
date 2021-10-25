@@ -62,10 +62,8 @@ dependencies {
     implementation(Libraries.playCore)
     implementation(Libraries.kakaoUser)
     implementation(Libraries.richEditor)
-
-    //TODO: change this
-    implementation ("androidx.fragment:fragment-ktx:1.2.5")
-
+    implementation (Libraries.fragment_ktx)
+    api(Libraries.image_cropper)
     // Unit/Android tests dependencies
     testImplementation(TestLibraries.junit4)
     testImplementation(TestLibraries.mockk)

@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
 import javax.inject.Inject
 
@@ -41,7 +42,7 @@ class LoginViewModel
         Log.d("UseCase_login_check__" , nurbanToken.value?.error ?: "")
         if(!nurbanToken.equals(null)){
             var editor = prefs.edit()
-            editor.putString("NurbanToken", nurbanToken.value?.token.toString())
+            editor.putString(R.string.prefs_nurban_token_key.toString(), nurbanToken.value?.token.toString())
             editor.apply()
         }
     }
