@@ -59,6 +59,8 @@ object Libraries {
         const val playCore = "1.10.2"
         const val kakaoUser = "2.8.1"
         const val richEditor = "2.0.0"
+        const val fragment_ktx = "1.2.5"
+        const val image_cropper = "2.8.0"
     }
 
     const val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Kotlin.standardLibrary}"
@@ -88,6 +90,8 @@ object Libraries {
     const val playCore = "com.google.android.play:core:${Versions.playCore}"
     const val kakaoUser = "com.kakao.sdk:v2-user:${Versions.kakaoUser}"
     const val richEditor = "jp.wasabeef:richeditor-android:${Versions.richEditor}"
+    const val fragment_ktx = "androidx.fragment:fragment-ktx:${Versions.fragment_ktx}"
+    const val image_cropper = "com.theartofdev.edmodo:android-image-cropper:${Versions.image_cropper}"
 }
 
 object TestLibraries {

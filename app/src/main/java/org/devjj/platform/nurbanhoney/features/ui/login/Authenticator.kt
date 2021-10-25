@@ -3,6 +3,7 @@ package org.devjj.platform.nurbanhoney.features.ui.login
 import android.content.SharedPreferences
 import android.util.Log
 import kotlinx.coroutines.*
+import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.features.network.LoginService
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -14,8 +15,8 @@ class Authenticator
     val prefs: SharedPreferences
 ){
     suspend fun userLoggedIn() :Boolean = CoroutineScope(Dispatchers.IO).async {
-        Log.d("token_check__","${prefs.getString("NurbanToken", "").toString()} by sharedPreference")
-        return@async loginService.validationCheck(prefs.getString("NurbanToken", "").orEmpty()).execute().body()?.result?.isValid?:false
+        Log.d("token_check__","${prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString()} by sharedPreference")
+        return@async loginService.validationCheck(prefs.getString(R.string.prefs_nurban_token_key.toString(), "").orEmpty()).execute().body()?.result?.isValid?:false
     }.await()
 /*
     suspend fun userLoggedIn() :Boolean = CoroutineScope(Dispatchers.IO).async {
