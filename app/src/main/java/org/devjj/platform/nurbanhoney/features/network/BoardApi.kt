@@ -18,7 +18,8 @@ internal interface BoardApi{
     fun uploadRequest(
         @Header("token") token : String,
         @Field("title") title : String,
-        @Field("content") content : String
+        @Field("content") content : String,
+        @Field("uuid") uuid : String
     ) : Call<UploadResultEntity>
 
     /*

@@ -1,5 +1,6 @@
 package org.devjj.platform.nurbanhoney.features.network
 
+import org.devjj.platform.nurbanhoney.features.ui.splash.AppVersionEntity
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -13,13 +13,11 @@ class Authenticator
     val loginService: LoginService,
     val prefs: SharedPreferences
 ){
-
-
     suspend fun userLoggedIn() :Boolean = CoroutineScope(Dispatchers.IO).async {
         Log.d("token_check__","${prefs.getString("NurbanToken", "").toString()} by sharedPreference")
         return@async loginService.validationCheck(prefs.getString("NurbanToken", "").orEmpty()).execute().body()?.result?.isValid?:false
     }.await()
-    /*
+/*
     suspend fun userLoggedIn() :Boolean = CoroutineScope(Dispatchers.IO).async {
         return@async true
     }.await()

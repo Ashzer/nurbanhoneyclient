@@ -1,8 +1,6 @@
 package org.devjj.platform.nurbanhoney.features.ui.textedit
 
 import com.google.gson.annotations.SerializedName
-import org.devjj.platform.nurbanhoney.features.network.ValidationEntity
-import org.devjj.platform.nurbanhoney.features.ui.login.TokenValidation
 
 data class UploadResultEntity(
     @SerializedName("nurbanboard_create_result")

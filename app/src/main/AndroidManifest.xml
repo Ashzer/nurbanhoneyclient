@@ -20,7 +20,7 @@
             android:value="@string/kakao_app_key" />
 
         <activity
-            android:name=".core.navigation.SplashActivity"
+            android:name=".features.ui.splash.SplashActivity"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateAlwaysHidden" >
             <intent-filter>

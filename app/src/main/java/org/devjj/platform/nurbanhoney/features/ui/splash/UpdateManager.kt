@@ -1,4 +1,4 @@
-package org.devjj.platform.nurbanhoney.features.network
+package org.devjj.platform.nurbanhoney.features.ui.splash
 
 import android.app.Activity
 import android.app.Activity.RESULT_OK

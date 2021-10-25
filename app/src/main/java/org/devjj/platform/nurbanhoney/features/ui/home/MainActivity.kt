@@ -3,73 +3,67 @@ package org.devjj.platform.nurbanhoney.features.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.AttributeSet
-import android.util.Log
-import android.view.View
-import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import org.devjj.platform.nurbanhoney.core.platform.BaseActivity
-import org.devjj.platform.nurbanhoney.R
-import org.devjj.platform.nurbanhoney.core.extension.inTransaction
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
-import org.devjj.platform.nurbanhoney.databinding.ActivityMainBinding
+import org.devjj.platform.nurbanhoney.core.platform.BaseTabLayoutActivity
+import org.devjj.platform.nurbanhoney.databinding.ActivityTabLayoutBinding
 import javax.inject.Inject
 
-class MainActivity : BaseActivity() {
+
+@AndroidEntryPoint
+class MainActivity : BaseTabLayoutActivity() {
     override fun fragment() = HomeFragment()
 
     @Inject
     lateinit var navigator: Navigator
 
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding: ActivityTabLayoutBinding
 
-    companion object{
+    companion object {
         fun callingIntent(context: Context) =
             Intent(context, MainActivity::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityTabLayoutBinding.inflate(layoutInflater)
 
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
-        addFragment(savedInstanceState)
         setContentView(view)
+        addFragment(savedInstanceState)
+        tapSelectedListener(binding.Tabs)
 
-        binding.Tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                when(tab!!.position){
-                    0 -> transFragment(HomeFragment())
-                    1-> transFragment(NurbanHoneyFragment())
-                    2-> transFragment(FreeBoardFragment())
-                    else -> transFragment(HomeFragment())
-                }
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                when(tab!!.position){
-                    0 -> transFragment(HomeFragment())
-                    1-> transFragment(NurbanHoneyFragment())
-                    2-> transFragment(FreeBoardFragment())
-                    else -> transFragment(HomeFragment())
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-        })
     }
 
-    fun transFragment(frag : BaseFragment){
-        supportFragmentManager.beginTransaction()
-            .replace(binding.FragmentContainer.id, frag)
-            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            .commit()
-    }
+    private fun tapSelectedListener(tabLayout: TabLayout) =
+        tabLayout.addOnTabSelectedListener(
+            object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    selectTab(tab!!.position)
+                }
 
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                    selectTab(tab!!.position)
+                }
 
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                }
 
+                fun selectTab(position: Int) =
+                    when (position) {
+                        0 -> navigate(HomeFragment())
+                        1 -> navigate(NurbanHoneyFragment())
+                        2 -> navigate(FreeBoardFragment())
+                        else -> navigate(HomeFragment())
+                    }
+
+                fun navigate(fragment: BaseFragment) =
+                    navigator.transFragment(
+                        supportFragmentManager,
+                        fragment,
+                        binding.TabLayoutFragmentContainer
+                    )
+            })
 }
