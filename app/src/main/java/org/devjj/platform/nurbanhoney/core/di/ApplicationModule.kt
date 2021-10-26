@@ -3,7 +3,6 @@ package org.devjj.platform.nurbanhoney.core.di
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import dagger.Module
@@ -16,7 +15,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.devjj.platform.nurbanhoney.BuildConfig
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.features.ui.login.LoginManager
-import org.devjj.platform.nurbanhoney.features.ui.textedit.BoardRepository
+import org.devjj.platform.nurbanhoney.features.ui.textedit.TextEditorRepository
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -64,6 +63,6 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideBoardRepository(dataSource : BoardRepository.Network) : BoardRepository = dataSource
+    fun provideBoardRepository(dataSource : TextEditorRepository.Network) : TextEditorRepository = dataSource
 
 }

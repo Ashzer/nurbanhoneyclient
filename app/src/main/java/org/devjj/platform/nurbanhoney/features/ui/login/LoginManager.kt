@@ -17,11 +17,11 @@ interface LoginManager {
         private val loginService: LoginService
     ) : LoginManager {
 
-        override fun getNurbanToken(type: String, key : String): Either<Failure, NurbanToken> {
+        override fun getNurbanToken(type: String, kakaoKey : String): Either<Failure, NurbanToken> {
             return when( networkHandler.isNetworkAvailable()){
                 true ->
                     networkHandler.request(
-                        loginService.loginRequest(type, key),
+                        loginService.loginRequest(type, kakaoKey),
                         { it.toNurbanToken() },
                         LoginEntity.empty
                     )

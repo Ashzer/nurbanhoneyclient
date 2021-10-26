@@ -1,13 +1,10 @@
 package org.devjj.platform.nurbanhoney.features.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
-import jp.wasabeef.richeditor.RichEditor
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
@@ -30,8 +27,7 @@ class NurbanHoneyFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentNurbanboardBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

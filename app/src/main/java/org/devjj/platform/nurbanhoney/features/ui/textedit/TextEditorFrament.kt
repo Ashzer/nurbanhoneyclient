@@ -12,16 +12,27 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.fragment.app.viewModels
 import com.theartofdev.edmodo.cropper.CropImage
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.richeditor.RichEditor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import org.devjj.platform.nurbanhoney.R
-import org.devjj.platform.nurbanhoney.core.extension.*
+import org.devjj.platform.nurbanhoney.core.extension.functionVisibility
+import org.devjj.platform.nurbanhoney.core.extension.insertImageListener
+import org.devjj.platform.nurbanhoney.core.extension.observe
+import org.devjj.platform.nurbanhoney.core.extension.setTextEditorListeners
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FramentTextEditorBinding
+import org.devjj.platform.nurbanhoney.features.network.BoardService
+import java.io.File
+import java.net.URL
 import java.util.*
 import javax.inject.Inject
 
@@ -31,11 +42,16 @@ class TextEditorFragment : BaseFragment() {
 
     private var _binding: FramentTextEditorBinding? = null
     private val binding get() = _binding!!
+    private lateinit var nurbanToken : String
     private lateinit var uuid: UUID
     private lateinit var mEditor: RichEditor
 
+    private val textEditorViewModel by viewModels<TextEditorViewModel>()
     @Inject
-    lateinit var boardRepository: BoardRepository
+    lateinit var boardService :BoardService
+
+    @Inject
+    lateinit var textEditorRepository: TextEditorRepository
 
     @Inject
     lateinit var prefs: SharedPreferences
@@ -53,6 +69,13 @@ class TextEditorFragment : BaseFragment() {
 
     private lateinit var cropActivityResultLauncher: ActivityResultLauncher<Any?>
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        with(textEditorViewModel){
+            observe(imageURLs, ::renderImage)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -66,6 +89,7 @@ class TextEditorFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        nurbanToken = prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString()
         uuid = UUID.randomUUID()
 
         binding.titleEdtv.requestFocus()
@@ -76,14 +100,7 @@ class TextEditorFragment : BaseFragment() {
         mEditor.setEditorFontSize(15)
         mEditor.setEditorFontColor(Color.BLACK)
         mEditor.setPlaceholder("내용을 입력해주세요.")
-        mEditor.undoListener(binding.actionUndo)
-        mEditor.redoListener(binding.actionRedo)
-        mEditor.boldListener(binding.actionBold)
-        mEditor.italicListener(binding.actionItalic)
-        mEditor.underlineListener(binding.actionUnderline)
-        mEditor.alignLeftListener(binding.actionAlignLeft)
-        mEditor.alignCenterListener(binding.actionAlignCenter)
-        mEditor.alignRightListener(binding.actionAlignRight)
+        mEditor.setTextEditorListeners(binding)
 
         binding.actionHeading1.setOnClickListener { mEditor.setHeading(1) }
         binding.actionHeading3.setOnClickListener { mEditor.setHeading(3) }
@@ -93,12 +110,22 @@ class TextEditorFragment : BaseFragment() {
 
         cropActivityResultLauncher = registerForActivityResult(cropActivityResultContracts) {
             it?.let { uri ->
-                uri
-            }.apply {
-                mEditor.insertImage(
-                    this.toString(),
-                    "", 320
-                )
+                Log.d("uri_check__", uri.toString())
+                val file = File(uri.path)
+                
+                val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+                val imageFilePart = MultipartBody.Part.createFormData("image" , file.name , requestFile)
+                val uuidPart = MultipartBody.Part.createFormData("uuid" , uuid.toString())
+
+                textEditorViewModel.uploadImage(nurbanToken , uuidPart , imageFilePart)
+                /*
+                CoroutineScope(Dispatchers.IO).async {
+                    Log.d("imageUpload_check__" , "before execute")
+                    val temp = boardService.uploadImage(nurbanToken , uuidPart , imageFilePart).execute().body()
+                    Log.d("imageUpload_check__" , temp!!.result.toString())
+
+                }*/
+
             }
         }
         mEditor.insertImageListener(
@@ -106,7 +133,6 @@ class TextEditorFragment : BaseFragment() {
             requireActivity(),
             cropActivityResultLauncher
         )
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -126,15 +152,23 @@ class TextEditorFragment : BaseFragment() {
                     }  ,  ${binding.titleEdtv.text} , ${mEditor.html} , $uuid"
                 )
                 prefs.getString(R.string.prefs_nurban_token_key.toString(), "")
+
+                textEditorViewModel.uploadArticle(
+                    prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
+                    binding.titleEdtv.text.toString(),
+                    mEditor.html.toString(),
+                    uuid.toString()
+                )
+                /*
                 CoroutineScope(Dispatchers.IO).async {
-                    val temp = boardRepository.uploadWriting(
+                    val temp = textEditorRepository.uploadArticle(
                         prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
                         binding.titleEdtv.text.toString(),
                         mEditor.html.toString(),
                         uuid.toString()
                     )
                     Log.d("editor_check__", temp.toString())
-                }
+                }*/
                 requireActivity().finish()
             }
             else -> return super.onOptionsItemSelected(item)
@@ -142,5 +176,10 @@ class TextEditorFragment : BaseFragment() {
         return super.onOptionsItemSelected(item)
     }
 
-
+    private fun renderImage(imageURLs : List<URL>?){
+        mEditor.insertImage(
+            imageURLs?.last().toString(),
+            "image", 320
+        )
+    }
 }

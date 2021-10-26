@@ -12,15 +12,15 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel
 @Inject constructor(
-    private val isTokenValidUseCase: IsTokenValidUseCase,
-    private val loginRequestUseCase : LoginRequestUseCase,
+    private val isTokenValid: IsTokenValidUseCase,
+    private val loginRequest : LoginRequestUseCase,
     private val prefs : SharedPreferences
 ) : BaseViewModel() {
     val nurbanToken : MutableLiveData<NurbanToken> = MutableLiveData()
     val isValid : MutableLiveData<TokenStatus> = MutableLiveData()
 
     fun getNurbanToken(type : String, kakaoKey : String) =
-        loginRequestUseCase(LoginRequestUseCase.Params(type, kakaoKey), viewModelScope){
+        loginRequest(LoginRequestUseCase.Params(type, kakaoKey), viewModelScope){
             it.fold(
                 ::handleFailure,
                 ::handleToken
@@ -28,7 +28,7 @@ class LoginViewModel
         }
 
     fun isTokenValid(token : String) =
-        isTokenValidUseCase(IsTokenValidUseCase.Params(token), viewModelScope){
+        isTokenValid(IsTokenValidUseCase.Params(token), viewModelScope){
             it.fold(
                 ::handleFailure,
                 ::handleToken
