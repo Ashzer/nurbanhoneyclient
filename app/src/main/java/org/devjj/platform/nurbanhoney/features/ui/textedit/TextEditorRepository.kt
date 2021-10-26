@@ -5,6 +5,8 @@ import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
 import org.devjj.platform.nurbanhoney.features.network.BoardService
+import org.devjj.platform.nurbanhoney.features.ui.home.ArticlesRequestEntity
+import org.devjj.platform.nurbanhoney.features.ui.home.NurbanHoneyArticle
 import javax.inject.Inject
 
 interface TextEditorRepository {
@@ -20,6 +22,12 @@ interface TextEditorRepository {
         uuid: MultipartBody.Part,
         image: MultipartBody.Part
     ): Either<Failure, ImageUploadResult>
+
+    fun getArticles(
+        token: String,
+        offset : Int,
+        limit : Int
+    ) : Either<Failure , List<NurbanHoneyArticle>>
 
     class Network
     @Inject constructor(
@@ -56,6 +64,21 @@ interface TextEditorRepository {
                 false -> Either.Left(Failure.NetworkConnection)
             }
 
+        }
+
+        override fun getArticles(
+            token: String,
+            offset: Int,
+            limit: Int
+        ): Either<Failure, List<NurbanHoneyArticle>> {
+            return when(networkHandler.isNetworkAvailable()){
+                true-> networkHandler.request(
+                    boardService.getArticles(token, offset, limit),
+                    { it.map{ ArticlesRequestEntity -> ArticlesRequestEntity.toNurbanHoneyArticle()} },
+                    emptyList()
+                )
+                false -> Either.Left(Failure.NetworkConnection)
+            }
         }
     }
 }

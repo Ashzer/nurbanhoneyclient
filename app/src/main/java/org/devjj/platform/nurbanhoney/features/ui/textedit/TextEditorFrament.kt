@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -16,12 +17,8 @@ import androidx.fragment.app.viewModels
 import com.theartofdev.edmodo.cropper.CropImage
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.richeditor.RichEditor
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.functionVisibility
@@ -42,13 +39,14 @@ class TextEditorFragment : BaseFragment() {
 
     private var _binding: FramentTextEditorBinding? = null
     private val binding get() = _binding!!
-    private lateinit var nurbanToken : String
+    private lateinit var nurbanToken: String
     private lateinit var uuid: UUID
     private lateinit var mEditor: RichEditor
 
     private val textEditorViewModel by viewModels<TextEditorViewModel>()
+
     @Inject
-    lateinit var boardService :BoardService
+    lateinit var boardService: BoardService
 
     @Inject
     lateinit var textEditorRepository: TextEditorRepository
@@ -71,7 +69,7 @@ class TextEditorFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        with(textEditorViewModel){
+        with(textEditorViewModel) {
             observe(imageURLs, ::renderImage)
         }
     }
@@ -112,12 +110,16 @@ class TextEditorFragment : BaseFragment() {
             it?.let { uri ->
                 Log.d("uri_check__", uri.toString())
                 val file = File(uri.path)
-                
-                val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
-                val imageFilePart = MultipartBody.Part.createFormData("image" , file.name , requestFile)
-                val uuidPart = MultipartBody.Part.createFormData("uuid" , uuid.toString())
 
-                textEditorViewModel.uploadImage(nurbanToken , uuidPart , imageFilePart)
+                val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+                val imageFilePart =
+                    MultipartBody.Part.createFormData("image", file.name, requestFile)
+                val uuidPart = MultipartBody.Part.createFormData("uuid", uuid.toString())
+                val options = BitmapFactory.Options()
+                options.inSampleSize = 4
+                var src = BitmapFactory.decodeFile(uri.toString(),options)
+
+                textEditorViewModel.uploadImage(nurbanToken, uuidPart, imageFilePart)
                 /*
                 CoroutineScope(Dispatchers.IO).async {
                     Log.d("imageUpload_check__" , "before execute")
@@ -159,6 +161,7 @@ class TextEditorFragment : BaseFragment() {
                     mEditor.html.toString(),
                     uuid.toString()
                 )
+
                 /*
                 CoroutineScope(Dispatchers.IO).async {
                     val temp = textEditorRepository.uploadArticle(
@@ -176,7 +179,7 @@ class TextEditorFragment : BaseFragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun renderImage(imageURLs : List<URL>?){
+    private fun renderImage(imageURLs: List<URL>?) {
         mEditor.insertImage(
             imageURLs?.last().toString(),
             "image", 320
