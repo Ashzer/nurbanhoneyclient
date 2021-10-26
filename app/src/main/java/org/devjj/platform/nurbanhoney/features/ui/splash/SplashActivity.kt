@@ -49,7 +49,7 @@ class SplashActivity
             }
 
                 try {
-                    Log.d("version_check__", version?.result?.version)
+                    Log.d("version_check__", version?.result?.version ?: "")
                     when(version?.result?.isUpdate){
                         // 어플이 업로드 되기 전에 테스트 불가능?
                         true -> updateManager.update(activity = this@SplashActivity)

@@ -3,39 +3,50 @@ package org.devjj.platform.nurbanhoney.core.extension
 import android.Manifest
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
+import androidx.viewbinding.ViewBinding
 import jp.wasabeef.richeditor.RichEditor
-import org.devjj.platform.nurbanhoney.core.permission.STORAGE_PERMISSION_REQUEST_CODE
+import kotlinx.android.synthetic.main.frament_text_editor.view.*
 import org.devjj.platform.nurbanhoney.core.permission.askReadStoragePermission
 import org.devjj.platform.nurbanhoney.core.permission.isNotPermissionsAllowed
 
-fun RichEditor.undoListener(view: View) =
-    view.setOnClickListener { this.undo() }
+fun RichEditor.setTextEditorListeners(binding: ViewBinding) {
+    this.undoListener(binding)
+    this.redoListener(binding)
+    this.boldListener(binding)
+    this.italicListener(binding)
+    this.underlineListener(binding)
+    this.alignLeftListener(binding)
+    this.alignCenterListener(binding)
+    this.alignRightListener(binding)
+}
 
-fun RichEditor.redoListener(view: View) =
-    view.setOnClickListener { this.redo() }
+fun RichEditor.undoListener(binding: ViewBinding) =
+    binding.root.action_undo.setOnClickListener { this.undo() }
 
-fun RichEditor.boldListener(view: View) =
-    view.setOnClickListener { this.setBold() }
+fun RichEditor.redoListener(binding:ViewBinding) =
+    binding.root.action_redo.setOnClickListener { this.redo() }
 
-fun RichEditor.italicListener(view: View) =
-    view.setOnClickListener { this.setItalic() }
+fun RichEditor.boldListener(binding:ViewBinding) =
+    binding.root.action_bold.setOnClickListener { this.setBold() }
 
-fun RichEditor.underlineListener(view: View) =
-    view.setOnClickListener { this.setUnderline() }
+fun RichEditor.italicListener(binding:ViewBinding) =
+    binding.root.action_italic.setOnClickListener { this.setItalic() }
 
-fun RichEditor.alignLeftListener(view: View) =
-    view.setOnClickListener { this.setAlignLeft() }
+fun RichEditor.underlineListener(binding:ViewBinding) =
+    binding.root.action_underline.setOnClickListener { this.setUnderline() }
 
-fun RichEditor.alignCenterListener(view: View) =
-    view.setOnClickListener { this.setAlignCenter() }
+fun RichEditor.alignLeftListener(binding:ViewBinding) =
+    binding.root.action_align_left.setOnClickListener { this.setAlignLeft() }
 
-fun RichEditor.alignRightListener(view: View) =
-    view.setOnClickListener { this.setAlignRight() }
+fun RichEditor.alignCenterListener(binding:ViewBinding) =
+    binding.root.action_align_center.setOnClickListener { this.setAlignCenter() }
+
+fun RichEditor.alignRightListener(binding:ViewBinding) =
+    binding.root.action_align_right.setOnClickListener { this.setAlignRight() }
 
 fun RichEditor.insertImageListener(
     view: View,
@@ -44,12 +55,7 @@ fun RichEditor.insertImageListener(
 ) =
     view.setOnClickListener {
         val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken,0)
-
-        Log.d(
-            "permission_check__",
-            isNotPermissionsAllowed(context, Manifest.permission.READ_EXTERNAL_STORAGE).toString()
-        )
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
 
         if (isNotPermissionsAllowed(
                 context,
@@ -60,10 +66,10 @@ fun RichEditor.insertImageListener(
         cropActivityResultLauncher.launch(null)
     }
 
-fun functionVisibility(displayView : View, functionView :View) =
+fun functionVisibility(displayView: View, functionView: View) =
     displayView.setOnFocusChangeListener { _, hasFocus ->
-        when(hasFocus){
-            true->functionView.visible()
-            false->functionView.invisible()
+        when (hasFocus) {
+            true -> functionView.visible()
+            false -> functionView.invisible()
         }
     }

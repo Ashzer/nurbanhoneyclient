@@ -19,6 +19,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import okhttp3.internal.notify
+import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 
 /**
@@ -34,6 +36,17 @@ abstract class BaseViewModel : ViewModel() {
     protected fun handleFailure(failure: Failure) {
         _failure.value = failure
 
-        Log.d("token_check__", _failure.value.toString())
+        Log.d("token_check__", failure.toString())
+        when (failure) {
+            is Failure.NetworkConnection -> {
+                Log.d("viewmodel_failure",R.string.failure_network_connection.toString())
+            }
+            is Failure.ServerError -> {
+                Log.d("viewmodel_failure", R.string.failure_server_error.toString())
+            }
+            else -> {
+                Log.d("viewmodel_failure", R.string.failure_server_error.toString())
+            }
+        }
     }
 }

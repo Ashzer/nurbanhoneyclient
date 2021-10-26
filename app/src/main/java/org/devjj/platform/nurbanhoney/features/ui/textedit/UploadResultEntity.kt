@@ -4,19 +4,20 @@ import com.google.gson.annotations.SerializedName
 
 data class UploadResultEntity(
     @SerializedName("nurbanboard_create_result")
-    val result : Result?
-){
+    val result: Result?
+) {
     data class Result(
         @SerializedName("result")
-        val isUploadSucceed : String?,
+        val isUploadSucceed: String?,
         @SerializedName("error")
-        val error : String?
+        val error: String?
     )
 
-    fun toUploadResult() = UploadResult(result?.isUploadSucceed , result?.error )
+    fun toUploadResult() = UploadResult(result?.isUploadSucceed, result?.error)
+
     companion object {
         val empty = UploadResultEntity(
-            Result(null,null)
+            Result(null, null)
         )
     }
 }
