@@ -1,6 +1,8 @@
 package org.devjj.platform.nurbanhoney.features.network
 
 import okhttp3.MultipartBody
+import org.devjj.platform.nurbanhoney.features.ui.home.ArticlesRequestEntity
+import retrofit2.Call
 import retrofit2.Retrofit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,4 +20,10 @@ class BoardService
         uuid: MultipartBody.Part,
         image: MultipartBody.Part
     ) = boardApi.uploadImage(token, uuid, image)
+
+    override fun getArticles(
+        token: String,
+        offset: Int,
+        limit: Int
+    ) = boardApi.getArticles(token, offset, limit)
 }
