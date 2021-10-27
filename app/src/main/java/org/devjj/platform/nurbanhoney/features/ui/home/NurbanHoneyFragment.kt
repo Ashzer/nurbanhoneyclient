@@ -2,18 +2,13 @@ package org.devjj.platform.nurbanhoney.features.ui.home
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import org.devjj.platform.nurbanhoney.R
-import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentNurbanboardBinding
@@ -34,8 +29,10 @@ class NurbanHoneyFragment : BaseFragment() {
 
     @Inject
     lateinit var boardService: BoardService
+
     @Inject
     lateinit var prefs: SharedPreferences
+
     @Inject
     lateinit var textEditorRepository: TextEditorRepository
 
@@ -70,12 +67,18 @@ class NurbanHoneyFragment : BaseFragment() {
         binding.rvNurbanBoard.adapter = adapter
         binding.rvNurbanBoard.layoutManager = LinearLayoutManager(requireContext())
 
-        CoroutineScope(Dispatchers.IO).async {
-            Log.d("getArts_check__", "before")
-            textEditorRepository.getArticles( prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
-                offset = 0,
-                limit = 10).apply {
-            }
-        }
+        viewModel.getArticles(
+            prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
+            offset = 0,
+            limit = 10
+        )
+
+//        CoroutineScope(Dispatchers.IO).async {
+//            Log.d("getArts_check__", "before")
+//            textEditorRepository.getArticles( prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
+//                offset = 0,
+//                limit = 10).apply {
+//            }
+//        }
     }
 }
