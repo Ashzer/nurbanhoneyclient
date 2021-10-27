@@ -3,7 +3,6 @@ package org.devjj.platform.nurbanhoney.features.ui.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_article.view.*
 import org.devjj.platform.nurbanhoney.R
@@ -17,7 +16,7 @@ class NurbanArticleAdapter(
     override fun getItemCount() = articles.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NurbanArticleViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_article, parent , false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_article, parent, false)
         return NurbanArticleViewHolder(view)
     }
 
@@ -28,10 +27,6 @@ class NurbanArticleAdapter(
             tvReplies.text = "[ ${articles[position].replies} ]"
             ivBadge.loadFromUrl(articles[position].badge)
             tvUserName.text = articles[position].author
-
         }
     }
-
-
-
 }
