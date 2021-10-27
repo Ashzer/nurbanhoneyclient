@@ -75,10 +75,7 @@ class NurbanHoneyFragment : BaseFragment() {
             textEditorRepository.getArticles( prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
                 offset = 0,
                 limit = 10).apply {
-
             }
-
-
         }
     }
 }
