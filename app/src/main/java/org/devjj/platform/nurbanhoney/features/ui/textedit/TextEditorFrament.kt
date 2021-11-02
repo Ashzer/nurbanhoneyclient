@@ -11,12 +11,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.fragment.app.viewModels
 import com.theartofdev.edmodo.cropper.CropImage
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.richeditor.RichEditor
+import kotlinx.android.synthetic.main.frament_text_editor.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -115,9 +117,9 @@ class TextEditorFragment : BaseFragment() {
                 val imageFilePart =
                     MultipartBody.Part.createFormData("image", file.name, requestFile)
                 val uuidPart = MultipartBody.Part.createFormData("uuid", uuid.toString())
-                val options = BitmapFactory.Options()
-                options.inSampleSize = 4
-                var src = BitmapFactory.decodeFile(uri.toString(),options)
+                //val options = BitmapFactory.Options()
+                //options.inSampleSize = 4
+               // var src = BitmapFactory.decodeFile(uri.toString(),options)
 
                 textEditorViewModel.uploadImage(nurbanToken, uuidPart, imageFilePart)
                 /*
@@ -147,20 +149,30 @@ class TextEditorFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.writing_done -> {
+/*
+                if(title_edtv.text.isBlank().or(title_edtv.text.isEmpty())){
+                    Toast.makeText(this,)
+                }*/
+
                 Log.d(
                     "editor_check__",
                     "${
                         prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString()
-                    }  ,  ${binding.titleEdtv.text} , ${mEditor.html} , $uuid"
+                    }  ,  ${binding.titleEdtv.text} , ${mEditor.html} , $uuid ," +
+                            " ${textEditorViewModel.searchThumbnail(mEditor.html.toString())}"
                 )
-                prefs.getString(R.string.prefs_nurban_token_key.toString(), "")
-
-                textEditorViewModel.uploadArticle(
+                val thumbnailUrl = textEditorViewModel.searchThumbnail(mEditor.html.toString())
+                val temp = textEditorViewModel.uploadArticle(
                     prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
                     binding.titleEdtv.text.toString(),
-                    mEditor.html.toString(),
-                    uuid.toString()
+                    uuid.toString(),
+                    0L,
+                    thumbnailUrl,
+                    mEditor.html.toString()
                 )
+
+                Log.d("check___" , temp.toString())
+
 
                 /*
                 CoroutineScope(Dispatchers.IO).async {

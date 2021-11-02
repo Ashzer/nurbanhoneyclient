@@ -2,13 +2,18 @@ package org.devjj.platform.nurbanhoney.features.ui.home
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import org.devjj.platform.nurbanhoney.R
+import org.devjj.platform.nurbanhoney.core.exception.Failure
+import org.devjj.platform.nurbanhoney.core.extension.failure
+import org.devjj.platform.nurbanhoney.core.extension.observe
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentNurbanboardBinding
@@ -28,13 +33,41 @@ class NurbanHoneyFragment : BaseFragment() {
     private val viewModel by viewModels<NurbanHoneyViewModel>()
 
     @Inject
-    lateinit var boardService: BoardService
-
+    lateinit var articleAdapter: NurbanArticleAdapter
     @Inject
     lateinit var prefs: SharedPreferences
-
     @Inject
     lateinit var textEditorRepository: TextEditorRepository
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        with(viewModel) {
+            observe(articles, ::renderArticles)
+            failure(failure, ::failureHandler)
+        }
+    }
+
+    private fun renderArticles(articles: List<NurbanHoneyArticle>?) {
+        articleAdapter.collection = articles.orEmpty()
+    }
+
+    private fun failureHandler(failure: Failure?){
+        Log.d("failure_check__", failure?.toString() ?: "failure null")
+        when (failure) {
+            is Failure.NetworkConnection -> {
+                Log.d("Fragment_failure",R.string.failure_network_connection.toString())
+            }
+            is Failure.ServerError -> {
+                Log.d("Fragment_failure", R.string.failure_server_error.toString())
+            }
+            is Failure.TokenError ->{
+                Failure.TokenError(this.requireContext())
+            }
+            else -> {
+                Log.d("Fragment_failure", R.string.failure_else_error.toString())
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,33 +85,14 @@ class NurbanHoneyFragment : BaseFragment() {
             navigator.showTextEditor(requireActivity())
         }
 
-        val articles = mutableListOf(
-            NurbanHoneyArticle(
-                "https://nurbanboard.s3.ap-northeast-2.amazonaws.com/default.png",
-                "testElement",
-                3,
-                "https://nurbanhoneyprofile.s3.ap-northeast-2.amazonaws.com/default.png",
-                "nickname",
-                ""
-            )
-        )
-
-        val adapter = NurbanArticleAdapter(articles)
-        binding.rvNurbanBoard.adapter = adapter
         binding.rvNurbanBoard.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvNurbanBoard.adapter = articleAdapter
 
         viewModel.getArticles(
             prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
+            flag = 0,
             offset = 0,
             limit = 10
         )
-
-//        CoroutineScope(Dispatchers.IO).async {
-//            Log.d("getArts_check__", "before")
-//            textEditorRepository.getArticles( prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
-//                offset = 0,
-//                limit = 10).apply {
-//            }
-//        }
     }
 }

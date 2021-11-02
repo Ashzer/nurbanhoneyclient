@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
+import com.kakao.sdk.network.origin
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.exception.Failure.ServerError
@@ -51,11 +52,20 @@ class NetworkHandler
             Log.d("error_check__", "before")
             when (response.isSuccessful) {
                 true -> Right(transform((response.body() ?: default)))
-                false -> Left(ServerError)
+                false -> {
+                    Log.d("error_kind_check__","${response.code()}")
+                    Left(Failure.TokenError)
+                }
             }
         } catch (exception: Throwable) {
-            Log.d("error_check__", "after ${exception.stackTrace}")
-
+            exception.stackTrace.forEach {
+                Log.d("error_msg_check__", "${it}")
+            }
+            Log.d("error_msg_check__", "${exception.localizedMessage}")
+            Log.d("error_msg_check__", "${exception.suppressed}")
+            Log.d("error_msg_check__", "${exception.cause}")
+            Log.d("error_msg_check__", "${exception.message}")
+            Log.d("error_msg_check__", "${exception.origin}")
             Left(ServerError)
         }
     }

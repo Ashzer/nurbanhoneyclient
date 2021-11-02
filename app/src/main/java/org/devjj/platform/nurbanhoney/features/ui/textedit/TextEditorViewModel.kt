@@ -1,14 +1,11 @@
 package org.devjj.platform.nurbanhoney.features.ui.textedit
 
-import android.widget.Toast
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import okhttp3.MultipartBody
-import org.devjj.platform.nurbanhoney.R
-import org.devjj.platform.nurbanhoney.core.exception.Failure
-import org.devjj.platform.nurbanhoney.core.extension.close
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
 import java.net.URL
 import javax.inject.Inject
@@ -17,7 +14,7 @@ import javax.inject.Inject
 class TextEditorViewModel
 @Inject constructor(
     private val uploadImage: UploadImageUseCase,
-    private val uploadArticle : UploadArticleUseCase
+    private val uploadArticle: UploadArticleUseCase
 ) : BaseViewModel() {
     private val _imageURLs: MutableLiveData<List<URL>> = MutableLiveData()
     val imageURLs: LiveData<List<URL>> = _imageURLs
@@ -30,16 +27,37 @@ class TextEditorViewModel
             )
         }
 
-    fun uploadArticle(token: String, title: String, content: String, uuid: String) =
-        uploadArticle(UploadArticleUseCase.Params(token,title,content,uuid), viewModelScope){
+    fun uploadArticle(
+        token: String,
+        title: String,
+        uuid: String,
+        lossCut: Long,
+        thumbnail: String,
+        content: String
+    ) =
+        uploadArticle(
+            UploadArticleUseCase.Params(token, title, uuid, lossCut, thumbnail, content),
+            viewModelScope
+        ) {
             it.fold(
                 ::handleFailure,
                 ::handleUploading
             )
         }
 
-    private fun handleUploading(uploadResult: UploadResult){
+    fun searchThumbnail(content: String) : String{
+
+        for(index in 0 until (imageURLs.value?.size ?: 0)){
+            var url = imageURLs.value?.get(index).toString()
+            if(content.contains(url))
+                return url
+        }
+
+        return ""
+    }
+    private fun handleUploading(uploadResult: UploadResult) {
         //Toast.makeText(this , "글 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+        Log.d("check__", uploadResult.toString())
     }
 
     private fun handleImageURL(imageUploadResult: ImageUploadResult) {

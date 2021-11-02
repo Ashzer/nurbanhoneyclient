@@ -8,7 +8,21 @@ class UploadArticleUseCase
     private val repository: TextEditorRepository
 ) : UseCase<UploadResult, UploadArticleUseCase.Params>() {
     override suspend fun run(params: Params) =
-        repository.uploadArticle(params.token, params.title, params.content, params.uuid)
+        repository.uploadArticle(
+            params.token,
+            params.title,
+            params.uuid,
+            params.lossCut,
+            params.thumbnail,
+            params.content
+        )
 
-    data class Params(val token: String, val title: String, val content: String, val uuid: String)
-}
+    data class Params(
+        val token: String,
+        val title: String,
+        val uuid: String,
+        val lossCut: Long,
+        val thumbnail: String,
+        val content: String,
+    )
+} //token,title, uuid , lossCut , thumbnail  ,content

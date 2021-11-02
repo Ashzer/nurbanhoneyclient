@@ -22,6 +22,8 @@ import androidx.lifecycle.ViewModel
 import okhttp3.internal.notify
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.exception.Failure
+import org.devjj.platform.nurbanhoney.core.navigation.Navigator
+import javax.inject.Inject
 
 /**
  * Base ViewModel class with default Failure handling.
@@ -30,12 +32,15 @@ import org.devjj.platform.nurbanhoney.core.exception.Failure
  */
 abstract class BaseViewModel : ViewModel() {
 
+    @Inject
+    lateinit var navigator: Navigator
+
     private val _failure: MutableLiveData<Failure> = MutableLiveData()
     val failure: LiveData<Failure> = _failure
 
     protected fun handleFailure(failure: Failure) {
-        _failure.value = failure
-
+        _failure.postValue(failure)
+/*
         Log.d("token_check__", failure.toString())
         when (failure) {
             is Failure.NetworkConnection -> {
@@ -47,6 +52,6 @@ abstract class BaseViewModel : ViewModel() {
             else -> {
                 Log.d("viewmodel_failure", R.string.failure_server_error.toString())
             }
-        }
+        }*/
     }
 }

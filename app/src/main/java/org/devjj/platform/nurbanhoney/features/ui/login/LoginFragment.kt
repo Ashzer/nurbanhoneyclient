@@ -26,8 +26,6 @@ class LoginFragment : BaseFragment() {
     override fun layoutId() = R.layout.fragment_login
 
     @Inject
-    internal lateinit var loginService : LoginService
-    @Inject
     lateinit var navigator: Navigator
 
     private val loginViewModel by viewModels<LoginViewModel>()
@@ -62,6 +60,7 @@ class LoginFragment : BaseFragment() {
         _binding = null
     }
 
+
     private fun tokenHandler(nurbanToken: NurbanToken?){
         notify(R.string.test_string)
         if(nurbanToken != null ) {
@@ -73,7 +72,6 @@ class LoginFragment : BaseFragment() {
         if(isValid != null) {
             navigator.showHome(requireContext())
         }
-        requireActivity().finish()
     }
 
     private fun handleFailure(failure: Failure?){
@@ -85,7 +83,7 @@ class LoginFragment : BaseFragment() {
                 notify(R.string.failure_server_error); close()
             }
             else -> {
-                notify(R.string.failure_server_error); close()
+                notify(R.string.failure_else_error); close()
             }
         }
     }
