@@ -5,7 +5,6 @@ import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
 import org.devjj.platform.nurbanhoney.features.network.BoardService
-import org.devjj.platform.nurbanhoney.features.ui.home.ArticlesRequestEntity
 import org.devjj.platform.nurbanhoney.features.ui.home.NurbanHoneyArticle
 import javax.inject.Inject
 
@@ -13,8 +12,10 @@ interface TextEditorRepository {
     fun uploadArticle(
         token: String,
         title: String,
-        content: String,
-        uuid: String
+        uuid: String,
+        lossCut: Long,
+        thumbnail: String,
+        content: String
     ): Either<Failure, UploadResult>
 
     fun uploadImage(
@@ -25,9 +26,10 @@ interface TextEditorRepository {
 
     fun getArticles(
         token: String,
-        offset : Int,
-        limit : Int
-    ) : Either<Failure , List<NurbanHoneyArticle>>
+        flag: Int,
+        offset: Int,
+        limit: Int
+    ): Either<Failure, List<NurbanHoneyArticle>>
 
     class Network
     @Inject constructor(
@@ -37,12 +39,14 @@ interface TextEditorRepository {
         override fun uploadArticle(
             token: String,
             title: String,
+            uuid: String,
+            lossCut: Long,
+            thumbnail: String,
             content: String,
-            uuid: String
         ): Either<Failure, UploadResult> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    boardService.uploadRequest(token, title, content, uuid),
+                    boardService.uploadRequest(token, title, uuid, lossCut, thumbnail, content),
                     { it.toUploadResult() },
                     UploadResultEntity.empty
                 )
@@ -68,13 +72,14 @@ interface TextEditorRepository {
 
         override fun getArticles(
             token: String,
+            flag: Int,
             offset: Int,
             limit: Int
         ): Either<Failure, List<NurbanHoneyArticle>> {
-            return when(networkHandler.isNetworkAvailable()){
-                true-> networkHandler.request(
-                    boardService.getArticles(token, offset, limit),
-                    { it.map{ ArticlesRequestEntity -> ArticlesRequestEntity.toNurbanHoneyArticle()} },
+            return when (networkHandler.isNetworkAvailable()) {
+                true -> networkHandler.request(
+                    boardService.getArticles(token, flag, offset, limit),
+                    { it.map { ArticlesRequestEntity -> ArticlesRequestEntity.toNurbanHoneyArticle() } },
                     emptyList()
                 )
                 false -> Either.Left(Failure.NetworkConnection)

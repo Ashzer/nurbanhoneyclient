@@ -15,6 +15,9 @@
  */
 package org.devjj.platform.nurbanhoney.core.exception
 
+import android.content.Context
+import org.devjj.platform.nurbanhoney.features.ui.login.LoginActivity
+
 /**
  * Base Class for handling errors/failures/exceptions.
  * Every feature specific failure should extend [FeatureFailure] class.
@@ -22,6 +25,11 @@ package org.devjj.platform.nurbanhoney.core.exception
 sealed class Failure {
     object NetworkConnection : Failure()
     object ServerError : Failure()
+    object TokenError : Failure(){
+        operator fun invoke(context: Context){
+            context.startActivity(LoginActivity.callingIntent(context))
+        }
+    }
 
     /** * Extend this class for feature specific failures.*/
     abstract class FeatureFailure : Failure()

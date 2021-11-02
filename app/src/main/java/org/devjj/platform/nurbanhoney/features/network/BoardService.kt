@@ -12,8 +12,8 @@ class BoardService
 @Inject constructor(retrofit: Retrofit) : BoardApi {
     private val boardApi by lazy { retrofit.create(BoardApi::class.java) }
 
-    override fun uploadRequest(token: String, title: String, content: String, uuid: String) =
-        boardApi.uploadRequest(token, title, content, uuid)
+    override fun uploadRequest(token: String,title: String, uuid: String, lossCut : Long , thumbnail : String ,content: String ) =
+        boardApi.uploadRequest(token,title, uuid , lossCut , thumbnail  ,content )
 
     override fun uploadImage(
         token: String,
@@ -23,7 +23,8 @@ class BoardService
 
     override fun getArticles(
         token: String,
+        flag : Int,
         offset: Int,
         limit: Int
-    ) = boardApi.getArticles(token, offset, limit)
+    ) = boardApi.getArticles(token, flag, offset, limit)
 }

@@ -20,8 +20,10 @@ internal interface BoardApi {
     fun uploadRequest(
         @Header("token") token: String,
         @Field("title") title: String,
-        @Field("content") content: String,
-        @Field("uuid") uuid: String
+        @Field("uuid") uuid: String,
+        @Field("lossPrice") lossCut : Long,
+        @Field("thumbnail") thumbnail : String,
+        @Field("content") content: String
     ): Call<UploadResultEntity>
 
 
@@ -36,6 +38,7 @@ internal interface BoardApi {
     @GET(GET_ARTICLE_LIST)
     fun getArticles(
         @Header("token") token: String,
+        @Query("flag") flag : Int = 0,
         @Query("offset") offset: Int,
         @Query("limit") limit: Int
     ): Call<List<ArticlesRequestEntity>>
