@@ -22,5 +22,10 @@ class TextEditorActivity : BaseEmptyActivity() {
         setContentView(R.layout.activity_empty)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        finish()
+    }
+
     override fun fragment(): BaseFragment = TextEditorFragment()
 }

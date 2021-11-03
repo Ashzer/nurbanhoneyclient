@@ -22,16 +22,10 @@ fun View.invisible() {
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int): View =
     LayoutInflater.from(context).inflate(layoutRes, this, false)
 
-fun ImageView.loadFromUrl(url: String) =
+fun ImageView.loadFromUrl(url: String, resourceId : Int) =
     Glide.with(this.context.applicationContext)
         .load(url)
         .transition(DrawableTransitionOptions.withCrossFade())
-        .placeholder(R.drawable.ic_action_no_badge)
-        .into(this)
-
-fun ImageView.loadFromUrlThumbnail(url: String) =
-    Glide.with(this.context.applicationContext)
-        .load(url)
-        .transition(DrawableTransitionOptions.withCrossFade())
-        .placeholder(R.drawable.ic_action_no_thumbnail)
+        .placeholder(resourceId)
+        .error(resourceId)
         .into(this)

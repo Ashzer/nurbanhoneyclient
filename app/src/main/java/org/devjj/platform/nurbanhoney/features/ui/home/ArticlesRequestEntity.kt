@@ -21,7 +21,7 @@ data class ArticlesRequestEntity(
         thumbnail ?: "",
         title,
         commentCount,
-        user?.profile ?: "User not Found",
+        user?.profile ?: "",
         user?.nickname ?: "Empty Nickname",
         user?.insignia ?: "No insignia"
     )

@@ -17,7 +17,7 @@ class UploadImageEntity(
     fun toImageUploadResult() = ImageUploadResult(result?.url ?: URL("") , result?.error ?: "" )
     companion object {
         val empty = UploadImageEntity(
-            UploadImageEntity.Result(null, null)
+            Result(null, null)
         )
     }
 }

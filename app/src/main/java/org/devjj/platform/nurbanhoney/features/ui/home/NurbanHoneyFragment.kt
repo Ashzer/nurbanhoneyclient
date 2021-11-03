@@ -88,11 +88,18 @@ class NurbanHoneyFragment : BaseFragment() {
         binding.rvNurbanBoard.layoutManager = LinearLayoutManager(requireContext())
         binding.rvNurbanBoard.adapter = articleAdapter
 
-        viewModel.getArticles(
-            prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
-            flag = 0,
-            offset = 0,
-            limit = 10
+        viewModel.getArticles()
+
+        binding.rvNurbanBoard.addOnScrollListener(
+            object : RecyclerView.OnScrollListener(){
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if(!binding.rvNurbanBoard.canScrollVertically(1)){
+                        viewModel.getArticles()
+                    }
+                }
+            }
         )
+
     }
 }

@@ -14,25 +14,39 @@ import javax.inject.Inject
 class NurbanHoneyViewModel
 @Inject constructor(
     private val getArticles: GetArticlesUseCase,
-    private val prefs : SharedPreferences
+    private val prefs: SharedPreferences
 ) :
     BaseViewModel() {
-        private val _articles : MutableLiveData<List<NurbanHoneyArticle>> = MutableLiveData()
-        val articles : LiveData<List<NurbanHoneyArticle>> = _articles
-
-    fun getArticles(token : String ,flag : Int, offset : Int, limit : Int) =
-        getArticles(GetArticlesUseCase.Params(token,flag, offset, limit) , viewModelScope){
+    private val _articles: MutableLiveData<List<NurbanHoneyArticle>> = MutableLiveData()
+    val articles: LiveData<List<NurbanHoneyArticle>> = _articles
+    var offset = 0
+    private val limit = 10
+    private fun _getArticles(token: String, flag: Int, offset: Int, limit: Int) =
+        getArticles(GetArticlesUseCase.Params(token, flag, offset, limit), viewModelScope) {
             it.fold(
                 ::handleFailure,
                 ::handArticles
             )
         }
 
-    private fun handArticles(newArticles : List<NurbanHoneyArticle>){
+    fun getArticles() {
+        _getArticles(
+            prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
+            flag = 0,
+            offset,
+            limit
+        )
+        offset += limit
+    }
+
+    private fun handArticles(newArticles: List<NurbanHoneyArticle>) {
         var newArticleList = _articles.value?.toMutableList() ?: mutableListOf()
         newArticleList?.addAll(newArticles)
         _articles.postValue(newArticleList)
 
-        Log.d("prefs_check__",prefs.getString(R.string.prefs_nurban_token_key.toString() ,"").toString())
+        Log.d(
+            "prefs_check__",
+            prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString()
+        )
     }
 }
