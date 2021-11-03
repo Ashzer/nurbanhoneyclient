@@ -102,9 +102,9 @@ class TextEditorFragment : BaseFragment() {
         mEditor.setPlaceholder("내용을 입력해주세요.")
         mEditor.setTextEditorListeners(binding)
 
-        binding.actionHeading1.setOnClickListener { mEditor.setHeading(1) }
-        binding.actionHeading3.setOnClickListener { mEditor.setHeading(3) }
-        binding.actionHeading5.setOnClickListener { mEditor.setHeading(5) }
+        binding.actionHeading1.setOnClickListener { mEditor.setEditorFontSize(20) }
+        binding.actionHeading3.setOnClickListener { mEditor.setEditorFontSize(25) }
+        binding.actionHeading5.setOnClickListener { mEditor.setEditorFontSize(30) }
 
         functionVisibility(binding.editor, binding.horizontalScrollView)
 
@@ -122,14 +122,6 @@ class TextEditorFragment : BaseFragment() {
                // var src = BitmapFactory.decodeFile(uri.toString(),options)
 
                 textEditorViewModel.uploadImage(nurbanToken, uuidPart, imageFilePart)
-                /*
-                CoroutineScope(Dispatchers.IO).async {
-                    Log.d("imageUpload_check__" , "before execute")
-                    val temp = boardService.uploadImage(nurbanToken , uuidPart , imageFilePart).execute().body()
-                    Log.d("imageUpload_check__" , temp!!.result.toString())
-
-                }*/
-
             }
         }
         mEditor.insertImageListener(
@@ -149,10 +141,6 @@ class TextEditorFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.writing_done -> {
-/*
-                if(title_edtv.text.isBlank().or(title_edtv.text.isEmpty())){
-                    Toast.makeText(this,)
-                }*/
 
                 Log.d(
                     "editor_check__",
@@ -172,19 +160,6 @@ class TextEditorFragment : BaseFragment() {
                 )
 
                 Log.d("check___" , temp.toString())
-
-
-                /*
-                CoroutineScope(Dispatchers.IO).async {
-                    val temp = textEditorRepository.uploadArticle(
-                        prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
-                        binding.titleEdtv.text.toString(),
-                        mEditor.html.toString(),
-                        uuid.toString()
-                    )
-                    Log.d("editor_check__", temp.toString())
-                }*/
-                requireActivity().finish()
             }
             else -> return super.onOptionsItemSelected(item)
         }
