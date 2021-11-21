@@ -2,6 +2,7 @@ package org.devjj.platform.nurbanhoney.features.ui.textedit
 
 import okhttp3.MultipartBody
 import org.devjj.platform.nurbanhoney.core.exception.Failure
+import org.devjj.platform.nurbanhoney.core.exception.Failure.NetworkConnection
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
 import org.devjj.platform.nurbanhoney.features.network.BoardService
@@ -31,6 +32,7 @@ interface TextEditorRepository {
         limit: Int
     ): Either<Failure, List<NurbanHoneyArticle>>
 
+
     class Network
     @Inject constructor(
         private val networkHandler: NetworkHandler,
@@ -50,7 +52,7 @@ interface TextEditorRepository {
                     { it.toUploadResult() },
                     UploadResultEntity.empty
                 )
-                false -> Either.Left(Failure.NetworkConnection)
+                false -> Either.Left(NetworkConnection)
             }
         }
 
@@ -65,7 +67,7 @@ interface TextEditorRepository {
                     { it.toImageUploadResult() },
                     UploadImageEntity.empty
                 )
-                false -> Either.Left(Failure.NetworkConnection)
+                false -> Either.Left(NetworkConnection)
             }
 
         }
@@ -82,8 +84,10 @@ interface TextEditorRepository {
                     { it.map { ArticlesRequestEntity -> ArticlesRequestEntity.toNurbanHoneyArticle() } },
                     emptyList()
                 )
-                false -> Either.Left(Failure.NetworkConnection)
+                false -> Either.Left(NetworkConnection)
             }
         }
+
+
     }
 }

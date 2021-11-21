@@ -3,6 +3,7 @@ package org.devjj.platform.nurbanhoney.features.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
@@ -34,7 +35,6 @@ class MainActivity : BaseTabLayoutActivity() {
         setContentView(view)
         addFragment(savedInstanceState)
         tapSelectedListener(binding.Tabs)
-
     }
 
     private fun tapSelectedListener(tabLayout: TabLayout) =

@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
     //Compile time dependencies
     kapt(Libraries.lifecycleCompiler)
     kapt(Libraries.hiltCompiler)

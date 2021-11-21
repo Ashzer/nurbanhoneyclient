@@ -1,6 +1,7 @@
 package org.devjj.platform.nurbanhoney.features.ui.home
 
 import com.google.gson.annotations.SerializedName
+import org.devjj.platform.nurbanhoney.features.ui.login.ValidationEntity
 
 data class ArticlesRequestEntity(
     @SerializedName("id") val id: Int,
@@ -18,6 +19,7 @@ data class ArticlesRequestEntity(
     )
 
     fun toNurbanHoneyArticle() = NurbanHoneyArticle(
+        id,
         thumbnail ?: "",
         title,
         commentCount,

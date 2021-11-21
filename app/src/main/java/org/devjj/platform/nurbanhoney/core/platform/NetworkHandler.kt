@@ -8,11 +8,13 @@ import com.kakao.sdk.network.origin
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.exception.Failure.ServerError
+import org.devjj.platform.nurbanhoney.core.exception.Failure.TokenError
 import org.devjj.platform.nurbanhoney.core.extension.connectivityManager
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.functional.Either.Left
 import org.devjj.platform.nurbanhoney.core.functional.Either.Right
 import retrofit2.Call
+import retrofit2.Retrofit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -53,8 +55,13 @@ class NetworkHandler
             when (response.isSuccessful) {
                 true -> Right(transform((response.body() ?: default)))
                 false -> {
-                    Log.d("error_kind_check__","${response.code()}")
-                    Left(Failure.TokenError)
+                    Log.d("error_kind_check__", "${response.code()}")
+                    if (response.code() == 401) {
+                        Left(TokenError)
+                    }else {
+                        Left(ServerError)
+                    }
+
                 }
             }
         } catch (exception: Throwable) {

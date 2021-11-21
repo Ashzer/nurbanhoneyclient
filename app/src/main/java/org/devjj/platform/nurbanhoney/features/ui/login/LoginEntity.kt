@@ -1,19 +1,16 @@
 package org.devjj.platform.nurbanhoney.features.ui.login
 
 import com.google.gson.annotations.SerializedName
-import org.devjj.platform.nurbanhoney.core.extension.*
 
-data class LoginEntity(@SerializedName("login_result") var loginResult : LoginResult  ) {
-    data class LoginResult(
-        @SerializedName("token") var token : String?,
-        @SerializedName("userId") var userId : String?,
-        @SerializedName("error") var error : String?
-    )
+data class LoginEntity(
+    @SerializedName("token") var token: String?,
+    @SerializedName("userId") var userId: String?,
+    @SerializedName("error") var error: String?
+) {
+
     companion object {
-        val empty = LoginEntity(
-            LoginResult("","","")
-        )
+        val empty = LoginEntity("", "", "")
     }
-    fun toNurbanToken() = NurbanToken(loginResult.token?:"" , loginResult.userId ?:"" ,loginResult.error ?: "")
-}
 
+    fun toNurbanToken() = NurbanToken(token ?: "", userId ?: "", error ?: "")
+}

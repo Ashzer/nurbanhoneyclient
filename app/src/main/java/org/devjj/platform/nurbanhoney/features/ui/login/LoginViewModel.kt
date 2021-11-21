@@ -43,6 +43,7 @@ class LoginViewModel
         if(!nurbanToken.equals(null)){
             var editor = prefs.edit()
             editor.putString(R.string.prefs_nurban_token_key.toString(), nurbanToken.value?.token.toString())
+            editor.putString(R.string.prefs_user_id.toString(), nurbanToken.value?.userId.toString())
             editor.apply()
         }
     }

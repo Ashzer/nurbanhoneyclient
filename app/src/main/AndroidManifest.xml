@@ -41,6 +41,10 @@
             android:windowSoftInputMode="adjustResize" >
         </activity>
 
+        <activity android:name=".features.ui.article.ArticleActivity"
+            android:label="Article">
+        </activity>
+
         <activity
             android:name=".features.ui.login.LoginActivity"
             android:label="Login"

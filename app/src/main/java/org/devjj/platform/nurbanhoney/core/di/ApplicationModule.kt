@@ -14,6 +14,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.devjj.platform.nurbanhoney.BuildConfig
 import org.devjj.platform.nurbanhoney.R
+import org.devjj.platform.nurbanhoney.features.ui.article.ArticleRepository
 import org.devjj.platform.nurbanhoney.features.ui.login.LoginManager
 import org.devjj.platform.nurbanhoney.features.ui.textedit.TextEditorRepository
 import retrofit2.Retrofit
@@ -64,5 +65,9 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideBoardRepository(dataSource : TextEditorRepository.Network) : TextEditorRepository = dataSource
+
+    @Provides
+    @Singleton
+    fun providerArticleRepository(dataSource : ArticleRepository.Network) : ArticleRepository = dataSource
 
 }
