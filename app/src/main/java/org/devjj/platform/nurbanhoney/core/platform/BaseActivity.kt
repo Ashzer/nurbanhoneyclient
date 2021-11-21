@@ -14,11 +14,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private var backPressedTime = 0L
     override fun onBackPressed() {
-        if(System.currentTimeMillis() > backPressedTime + 2000){
-            backPressedTime = System.currentTimeMillis()
-            Toast.makeText(this, "The app will be terminated when pressed Back again",Toast.LENGTH_SHORT).show()
-        }else if(System.currentTimeMillis() <= backPressedTime + 2000){
-            finish()
-        }
+        super.onBackPressed()
     }
 }

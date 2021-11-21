@@ -1,6 +1,5 @@
 package org.devjj.platform.nurbanhoney.features.ui.home
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +9,9 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.extension.failure
@@ -17,8 +19,6 @@ import org.devjj.platform.nurbanhoney.core.extension.observe
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentNurbanboardBinding
-import org.devjj.platform.nurbanhoney.features.network.BoardService
-import org.devjj.platform.nurbanhoney.features.ui.textedit.TextEditorRepository
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -34,10 +34,6 @@ class NurbanHoneyFragment : BaseFragment() {
 
     @Inject
     lateinit var articleAdapter: NurbanArticleAdapter
-    @Inject
-    lateinit var prefs: SharedPreferences
-    @Inject
-    lateinit var textEditorRepository: TextEditorRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,23 +47,7 @@ class NurbanHoneyFragment : BaseFragment() {
         articleAdapter.collection = articles.orEmpty()
     }
 
-    private fun failureHandler(failure: Failure?){
-        Log.d("failure_check__", failure?.toString() ?: "failure null")
-        when (failure) {
-            is Failure.NetworkConnection -> {
-                Log.d("Fragment_failure",R.string.failure_network_connection.toString())
-            }
-            is Failure.ServerError -> {
-                Log.d("Fragment_failure", R.string.failure_server_error.toString())
-            }
-            is Failure.TokenError ->{
-                Failure.TokenError(this.requireContext())
-            }
-            else -> {
-                Log.d("Fragment_failure", R.string.failure_else_error.toString())
-            }
-        }
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,24 +62,39 @@ class NurbanHoneyFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.WriteNurban.setOnClickListener {
-            navigator.showTextEditor(requireActivity())
+            //navigator.showTextEditor(requireContext())
+            CoroutineScope(Dispatchers.IO).async {
+                navigator.showTextEditorWithLoginCheck(requireContext())
+            }
         }
+
+        articleAdapter.clickListener = {id ->
+            Log.d("id_check__",id.toString())
+
+            navigator.showArticle(requireActivity(),id)
+        }
+
+        val set : MutableSet<NurbanHoneyArticle> = mutableSetOf()
+        set.add(NurbanHoneyArticle(0,"","",0,"","",""))
 
         binding.rvNurbanBoard.layoutManager = LinearLayoutManager(requireContext())
         binding.rvNurbanBoard.adapter = articleAdapter
 
         viewModel.getArticles()
 
-        binding.rvNurbanBoard.addOnScrollListener(
-            object : RecyclerView.OnScrollListener(){
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    if(!binding.rvNurbanBoard.canScrollVertically(1)){
-                        viewModel.getArticles()
-                    }
+        binding.rvNurbanBoard.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+//                val position =
+//                    (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+//                val count = (recyclerView.adapter?.itemCount ?: 0)
+//
+//                if(count - 1 == position){
+                if (!binding.rvNurbanBoard.canScrollVertically(1)) {
+                    viewModel.getArticles()
                 }
             }
-        )
-
+        })
     }
 }

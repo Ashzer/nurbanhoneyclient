@@ -13,6 +13,7 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
     <string name="prefs_nurban_token_key">NurbanToken</string>
+    <string name="prefs_user_id">UserId</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
@@ -20,5 +21,14 @@
     <string name="failure_network_connection">No Network Connection.</string>
     <string name="failure_server_error">Server Error</string>
     <string name="failure_else_error">Else Error</string>
+
+    <string name="article_title_str">제목 : </string>
+    <string name="article_author_str">작성자 : </string>
+    <string name="article_inquiries_str">조회수 : </string>
+
+    <string name="comment_insert_str">수정</string>
+    <string name="comment_delete_str">삭제</string>
+    <string name="comment_update_str">완료</string>
+    <string name="comment_cancel_str">취소</string>
 
 </resources>

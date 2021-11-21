@@ -92,7 +92,7 @@ class TextEditorFragment : BaseFragment() {
         nurbanToken = prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString()
         uuid = UUID.randomUUID()
 
-        binding.titleEdtv.requestFocus()
+        binding.titleEt.requestFocus()
         val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
 
@@ -110,7 +110,7 @@ class TextEditorFragment : BaseFragment() {
 
         cropActivityResultLauncher = registerForActivityResult(cropActivityResultContracts) {
             it?.let { uri ->
-                Log.d("uri_check__", uri.toString())
+
                 val file = File(uri.path)
 
                 val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
@@ -120,7 +120,7 @@ class TextEditorFragment : BaseFragment() {
                 //val options = BitmapFactory.Options()
                 //options.inSampleSize = 4
                // var src = BitmapFactory.decodeFile(uri.toString(),options)
-
+                Log.d("uri_check__", "$uri  ,  $uuid")
                 textEditorViewModel.uploadImage(nurbanToken, uuidPart, imageFilePart)
             }
         }
@@ -146,20 +146,22 @@ class TextEditorFragment : BaseFragment() {
                     "editor_check__",
                     "${
                         prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString()
-                    }  ,  ${binding.titleEdtv.text} , ${mEditor.html} , $uuid ," +
+                    }  ,  ${binding.titleEt.text} , ${mEditor.html} , $uuid ," +
                             " ${textEditorViewModel.searchThumbnail(mEditor.html.toString())}"
                 )
                 val thumbnailUrl = textEditorViewModel.searchThumbnail(mEditor.html.toString())
                 val temp = textEditorViewModel.uploadArticle(
                     prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
-                    binding.titleEdtv.text.toString(),
+                    binding.titleEt.text.toString(),
                     uuid.toString(),
-                    0L,
+                    binding.lossCutEt.text.toString().toLong(),
                     thumbnailUrl,
                     mEditor.html.toString()
                 )
 
                 Log.d("check___" , temp.toString())
+                requireActivity().supportFragmentManager.popBackStack()
+                requireActivity().finish()
             }
             else -> return super.onOptionsItemSelected(item)
         }

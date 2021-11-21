@@ -21,6 +21,7 @@ class NurbanHoneyViewModel
     val articles: LiveData<List<NurbanHoneyArticle>> = _articles
     var offset = 0
     private val limit = 10
+
     private fun _getArticles(token: String, flag: Int, offset: Int, limit: Int) =
         getArticles(GetArticlesUseCase.Params(token, flag, offset, limit), viewModelScope) {
             it.fold(
@@ -49,4 +50,5 @@ class NurbanHoneyViewModel
             prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString()
         )
     }
+
 }

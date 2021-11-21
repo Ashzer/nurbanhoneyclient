@@ -1,15 +1,14 @@
 package org.devjj.platform.nurbanhoney.features.ui.login
 
 import android.os.Bundle
-import android.view.View
-import dagger.hilt.android.AndroidEntryPoint
-import org.devjj.platform.nurbanhoney.R
-import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.kakao.sdk.user.UserApiClient
+import dagger.hilt.android.AndroidEntryPoint
+import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.exception.Failure.NetworkConnection
 import org.devjj.platform.nurbanhoney.core.exception.Failure.ServerError
@@ -17,8 +16,8 @@ import org.devjj.platform.nurbanhoney.core.extension.close
 import org.devjj.platform.nurbanhoney.core.extension.failure
 import org.devjj.platform.nurbanhoney.core.extension.observe
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
+import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentLoginBinding
-import org.devjj.platform.nurbanhoney.features.network.LoginService
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,7 +28,7 @@ class LoginFragment : BaseFragment() {
     lateinit var navigator: Navigator
 
     private val loginViewModel by viewModels<LoginViewModel>()
-    private var _binding : FragmentLoginBinding? = null
+    private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -43,7 +42,7 @@ class LoginFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        with(loginViewModel){
+        with(loginViewModel) {
             observe(nurbanToken, ::tokenHandler)
             observe(isValid, ::loggedIn)
             failure(failure, ::handleFailure)
@@ -60,21 +59,20 @@ class LoginFragment : BaseFragment() {
         _binding = null
     }
 
-
-    private fun tokenHandler(nurbanToken: NurbanToken?){
+    private fun tokenHandler(nurbanToken: NurbanToken?) {
         notify(R.string.test_string)
-        if(nurbanToken != null ) {
+        if (nurbanToken != null) {
             loginViewModel.isTokenValid(nurbanToken.token)
         }
     }
 
-    private fun loggedIn(isValid:TokenStatus?){
-        if(isValid != null) {
+    private fun loggedIn(isValid: TokenStatus?) {
+        if (isValid != null) {
             navigator.showHome(requireContext())
         }
     }
 
-    private fun handleFailure(failure: Failure?){
+    private fun handleFailure(failure: Failure?) {
         when (failure) {
             is NetworkConnection -> {
                 notify(R.string.failure_network_connection); close()
@@ -88,15 +86,19 @@ class LoginFragment : BaseFragment() {
         }
     }
 
-    private fun kakaoLoginBtnListener(view : View) = view.setOnClickListener {
-        UserApiClient.instance.loginWithKakaoTalk(requireContext()){ token, error ->
-            if(error != null){
+    private fun kakaoLoginBtnListener(view: View) = view.setOnClickListener {
+        UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
+            if (error != null) {
                 Log.d("login_check__", "kakao login failed")
-            }
-            else if( token != null){
-                loginViewModel.getNurbanToken("kakao",token.accessToken)
+            } else if (token != null) {
+                loginViewModel.getNurbanToken("kakao", token.accessToken)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().finishAfterTransition()
     }
 }
 

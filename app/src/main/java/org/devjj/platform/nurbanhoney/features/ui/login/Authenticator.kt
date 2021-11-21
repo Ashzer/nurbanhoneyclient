@@ -11,12 +11,16 @@ import javax.inject.Singleton
 @Singleton
 class Authenticator
 @Inject constructor(
-    val loginService: LoginService,
+    private val loginService: LoginService,
     val prefs: SharedPreferences
-){
-    suspend fun userLoggedIn() :Boolean = CoroutineScope(Dispatchers.IO).async {
-        Log.d("token_check__","${prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString()} by sharedPreference")
-        return@async loginService.validationCheck(prefs.getString(R.string.prefs_nurban_token_key.toString(), "").orEmpty()).execute().body()?.result?.isValid?:false
+) {
+    suspend fun userLoggedIn(): Boolean = CoroutineScope(Dispatchers.IO).async {
+        return@async loginService.validationCheck(
+            prefs.getString(
+                R.string.prefs_nurban_token_key.toString(),
+                ""
+            ).orEmpty()
+        ).execute().body()?.isValid ?: false
     }.await()
 /*
     suspend fun userLoggedIn() :Boolean = CoroutineScope(Dispatchers.IO).async {
