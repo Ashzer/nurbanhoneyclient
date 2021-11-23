@@ -1,6 +1,5 @@
 package org.devjj.platform.nurbanhoney.features.ui.article
 
-import android.app.Activity
 import android.content.SharedPreferences
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +22,7 @@ class CommentAdapter
 
     internal var deleteClickListener: (Int) -> Unit = { _ -> }
     internal var updateClickListener: (String, Int) -> Unit = { _,_ -> }
-    internal var insertClickListener: () -> Unit = {}
+    internal var modifyClickListener: () -> Unit = {}
     internal var cancelClickListener: () -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -34,7 +33,7 @@ class CommentAdapter
             collection[position],
             deleteClickListener,
             updateClickListener,
-            insertClickListener,
+            modifyClickListener,
             cancelClickListener,
             prefs
         )
@@ -46,7 +45,7 @@ class CommentAdapter
             comment: Comment,
             deleteClickListener: (Int) -> Unit,
             updateClickListener: (String, Int) -> Unit,
-            insertClickListener: () -> Unit,
+            modifyClickListener: () -> Unit,
             cancelClickListener: () -> Unit,
             prefs: SharedPreferences
         ) {
@@ -54,35 +53,35 @@ class CommentAdapter
             if (prefs.getString(R.string.prefs_user_id.toString(), "-1")
                     ?.toInt() ?: -1 != comment.userId
             ) {
-                itemView.comment_insert_btn.invisible()
-                itemView.comment_delete_btn.invisible()
+                itemView.comment_modify_btn_holder_clo.invisible()
+                itemView.comment_delete_btn_holder_clo.invisible()
             }
 
             itemView.comment_badge_iv.loadFromUrl(comment.badge, R.drawable.ic_action_no_badge)
             itemView.comment_nickname_tv.text = comment.nickname
             itemView.comment_comment_tv.text = comment.comment
-            itemView.comment_delete_btn.setOnSingleClickListener {
+            itemView.comment_delete_btn_holder_clo.setOnSingleClickListener {
                 deleteClickListener(comment.id)
             }
 
-            itemView.comment_insert_btn.setOnSingleClickListener {
-                itemView.comment_delete_btn.invisible()
-                itemView.comment_insert_btn.invisible()
-                itemView.comment_update_btn.visible()
-                itemView.comment_cancel_btn.visible()
+            itemView.comment_modify_btn_holder_clo.setOnSingleClickListener {
+                itemView.comment_delete_btn_holder_clo.invisible()
+                itemView.comment_modify_btn_holder_clo.invisible()
+                itemView.comment_update_btn_holder_clo.visible()
+                itemView.comment_cancel_btn_holder_clo.visible()
                 itemView.comment_update_text_clo.visible()
                 itemView.comment_update_text_et.setText(itemView.comment_comment_tv.text)
                 itemView.comment_comment_clo.invisible()
                 itemView.comment_update_text_et.isFocusable = true
                 itemView.comment_update_text_et.requestFocus()
-                insertClickListener()
+                modifyClickListener()
             }
 
-            itemView.comment_update_btn.setOnSingleClickListener {
-                itemView.comment_delete_btn.visible()
-                itemView.comment_insert_btn.visible()
-                itemView.comment_update_btn.invisible()
-                itemView.comment_cancel_btn.invisible()
+            itemView.comment_update_btn_holder_clo.setOnSingleClickListener {
+                itemView.comment_delete_btn_holder_clo.visible()
+                itemView.comment_modify_btn_holder_clo.visible()
+                itemView.comment_update_btn_holder_clo.invisible()
+                itemView.comment_cancel_btn_holder_clo.invisible()
                 itemView.comment_update_text_clo.invisible()
                 itemView.comment_comment_clo.visible()
                 itemView.comment_comment_tv.isFocusable = true
@@ -90,11 +89,11 @@ class CommentAdapter
                 updateClickListener(newComment, comment.id)
             }
 
-            itemView.comment_cancel_btn.setOnSingleClickListener {
-                itemView.comment_delete_btn.visible()
-                itemView.comment_insert_btn.visible()
-                itemView.comment_update_btn.invisible()
-                itemView.comment_cancel_btn.invisible()
+            itemView.comment_cancel_btn_holder_clo.setOnSingleClickListener {
+                itemView.comment_delete_btn_holder_clo.visible()
+                itemView.comment_modify_btn_holder_clo.visible()
+                itemView.comment_update_btn_holder_clo.invisible()
+                itemView.comment_cancel_btn_holder_clo.invisible()
                 itemView.comment_update_text_clo.invisible()
                 itemView.comment_comment_clo.visible()
                 itemView.comment_comment_tv.isFocusable = true
