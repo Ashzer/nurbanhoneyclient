@@ -15,6 +15,7 @@ import org.devjj.platform.nurbanhoney.core.exception.Failure.ServerError
 import org.devjj.platform.nurbanhoney.core.extension.close
 import org.devjj.platform.nurbanhoney.core.extension.failure
 import org.devjj.platform.nurbanhoney.core.extension.observe
+import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentLoginBinding
@@ -86,7 +87,7 @@ class LoginFragment : BaseFragment() {
         }
     }
 
-    private fun kakaoLoginBtnListener(view: View) = view.setOnClickListener {
+    private fun kakaoLoginBtnListener(view: View) = view.setOnSingleClickListener {
         UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
             if (error != null) {
                 Log.d("login_check__", "kakao login failed")

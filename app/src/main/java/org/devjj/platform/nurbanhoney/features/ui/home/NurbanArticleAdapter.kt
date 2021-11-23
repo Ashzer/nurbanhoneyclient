@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.item_article.view.*
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.inflate
 import org.devjj.platform.nurbanhoney.core.extension.loadFromUrl
+import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -41,7 +42,7 @@ class NurbanArticleAdapter
             itemView.ivBadge.loadFromUrl(nurbanHoneyArticle.badge, R.drawable.ic_action_no_badge)
             itemView.tvUserName.text = nurbanHoneyArticle.author
 
-            itemView.setOnClickListener {
+            itemView.setOnSingleClickListener {
                 clickListener(nurbanHoneyArticle.id)
             }
         }

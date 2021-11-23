@@ -35,17 +35,4 @@ class BoardService
         limit: Int
     ) = boardApi.getArticles(token, flag, offset, limit)
 
-    override fun getArticle(token: String, id: Int) = boardApi.getArticle(token, id)
-
-    override fun postLike(token: String, id: Int) = boardApi.postLike(token, id)
-
-    override fun postDislike(token: String, id: Int) = boardApi.postDislike(token, id)
-
-    override fun postComment(token: String, comment: String, id: Int) =
-        boardApi.postComment(token, comment, id)
-
-    override fun getComments(id: Int, offset: Int, limit: Int) =
-        boardApi.getComments(id, offset, limit)
-
-    override fun deleteComment(token: String, id: Int) = boardApi.deleteComment(token, id)
 }

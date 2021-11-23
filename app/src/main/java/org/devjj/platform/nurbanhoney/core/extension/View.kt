@@ -1,5 +1,8 @@
 package org.devjj.platform.nurbanhoney.core.extension
 
+import android.graphics.PorterDuff
+import android.os.SystemClock
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +10,7 @@ import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import org.devjj.platform.nurbanhoney.R
 
 fun View.isVisible() = this.visibility == View.VISIBLE
 
@@ -28,3 +32,23 @@ fun ImageView.loadFromUrl(url: String, resourceId: Int) =
         .placeholder(resourceId)
         .error(resourceId)
         .into(this)
+
+fun ImageView.loadFromDrawable(resourceId: Int) =
+    Glide.with(this.context.applicationContext)
+        .load(resourceId)
+        .into(this)
+
+fun View.setOnSingleClickListener(debounceTime: Long = 1000L, action: () -> Unit) {
+    this.setOnClickListener(object : View.OnClickListener {
+        private var lastClickTime: Long = 0
+
+        override fun onClick(v: View) {
+
+            if (SystemClock.elapsedRealtime() - lastClickTime < debounceTime) return
+            else action()
+
+            lastClickTime = SystemClock.elapsedRealtime()
+        }
+    })
+}
+
