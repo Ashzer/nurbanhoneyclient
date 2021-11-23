@@ -60,7 +60,7 @@ class ArticleFragment : BaseFragment() {
             observe(ratings, ::renderLikes)
             observe(commentResponse, ::responseComment)
             observe(commentsResponse, ::responseComments)
-            observe(comments, ::responseComments)
+            observe(comments, ::initComments)
             failure(failure, ::failureHandler)
         }
     }
@@ -80,7 +80,7 @@ class ArticleFragment : BaseFragment() {
         viewModel.getComment(viewModel.updatingCommentId)
     }
 
-    private fun responseComments(comment: List<Comment>?) {
+    private fun initComments(comment: List<Comment>?) {
         commentAdapter.collection = comment.orEmpty()
     }
 
@@ -127,13 +127,9 @@ class ArticleFragment : BaseFragment() {
             viewModel.postLike()
         }
 
-//        binding.articleDislikesClo.setOnClickListener {
-//            viewModel.postDislike()
-//        }
         binding.articleDislikesClo.setOnSingleClickListener{
             viewModel.postDislike()
         }
-
 
         /*
         binding.articleCommentEt.setOnTouchListener { view, event ->
@@ -145,40 +141,53 @@ class ArticleFragment : BaseFragment() {
         }*/
 
         binding.articleCommentBtn.setOnSingleClickListener {
-            AlertDialog.Builder(this.requireContext())
-                .setMessage("댓글을 등록하시겠습니까?")
-                .setPositiveButton("확인") { _, _ ->
-                    viewModel.postComment(binding.articleCommentEt.text.toString())
-                    binding.articleCommentEt.text.clear()
-                }
-                .setNegativeButton("취소") { _, _ ->
-                    Toast.makeText(this.requireContext(), "취소되었습니다", Toast.LENGTH_SHORT).show()
-                }
-                .show()
+            getConfirmation("댓글을 등록하시겠습니까?") {
+                viewModel.postComment(binding.articleCommentEt.text.toString())
+                binding.articleCommentEt.text.clear()
+            }
+
         }
 
         binding.articleCommentsRv.layoutManager = LinearLayoutManager(requireContext())
         binding.articleCommentsRv.adapter = commentAdapter
 
         commentAdapter.deleteClickListener = { id ->
-            AlertDialog.Builder(this.requireContext())
-                .setMessage("댓글을 삭제하시겠습니까?")
-                .setPositiveButton("확인") { _, _ ->
-                    viewModel.deleteComment(id)
-                }
-                .setNegativeButton("취소") { _, _ ->
-                    Toast.makeText(this.requireContext(), "취소 되었습니다", Toast.LENGTH_SHORT).show()
-                }
-                .show()
+            getConfirmation("댓글을 삭제하시겠습니까?") { viewModel.deleteComment(id) }
         }
 
-        commentAdapter.insertClickListener = {
+        commentAdapter.modifyClickListener = {
             showKeyboard(requireActivity())
+            binding.articleCommentClo.invisible()
+            binding.articleCommentVisibilityClo.invisible()
         }
 
         commentAdapter.updateClickListener ={ comment, id ->
-            viewModel.updateComment(comment, id)
+            getConfirmation("댓글을 수정하시겠습니까?") {
+                viewModel.updateComment(comment, id)
+                binding.articleCommentClo.visible()
+                binding.articleCommentVisibilityClo.visible()
+                showKeyboard(requireActivity())
+            }
         }
+
+        commentAdapter.cancelClickListener = {
+            binding.articleCommentClo.visible()
+            binding.articleCommentVisibilityClo.visible()
+            showKeyboard(requireActivity())
+        }
+    }
+
+    private fun getConfirmation(msg : String, action : () -> Unit){
+        AlertDialog.Builder(this.requireContext())
+            .setMessage(msg)
+            .setPositiveButton("확인") { _, _ ->
+                action()
+            }
+            .setNegativeButton("취소") { _, _ ->
+                Toast.makeText(this.requireContext(), "취소 되었습니다", Toast.LENGTH_SHORT).show()
+            }
+            .show()
+
     }
 
 }
