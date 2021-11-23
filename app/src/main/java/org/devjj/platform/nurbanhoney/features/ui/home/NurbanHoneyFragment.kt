@@ -16,6 +16,7 @@ import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.extension.failure
 import org.devjj.platform.nurbanhoney.core.extension.observe
+import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentNurbanboardBinding
@@ -61,7 +62,7 @@ class NurbanHoneyFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.WriteNurban.setOnClickListener {
+        binding.WriteNurban.setOnSingleClickListener {
             //navigator.showTextEditor(requireContext())
             CoroutineScope(Dispatchers.IO).async {
                 navigator.showTextEditorWithLoginCheck(requireContext())
@@ -97,4 +98,5 @@ class NurbanHoneyFragment : BaseFragment() {
             }
         })
     }
+
 }

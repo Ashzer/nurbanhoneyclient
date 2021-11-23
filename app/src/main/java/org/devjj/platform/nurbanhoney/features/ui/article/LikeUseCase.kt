@@ -6,7 +6,7 @@ import javax.inject.Inject
 class LikeUseCase
 @Inject constructor(
     private val repository: ArticleRepository
-) : UseCase<LikeResult, LikeUseCase.Params>() {
+) : UseCase<RatingResponse, LikeUseCase.Params>() {
     override suspend fun run(params: Params) = repository.postLike(params.token, params.id)
 
     data class Params(

@@ -84,8 +84,8 @@
 
                 <ImageView
                     android:id="@+id/article_info_badge_iv"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -131,6 +131,8 @@
                     android:id="@+id/article_likes_clo"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/article_dislikes_clo"
                     app:layout_constraintStart_toStartOf="parent"
@@ -144,9 +146,7 @@
                         app:layout_constraintEnd_toStartOf="@id/article_likes_tv"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:layout_editor_absoluteX="34dp"
-                        tools:layout_editor_absoluteY="10dp"
-                        tools:srcCompat="@tools:sample/avatars" />
+                        tools:srcCompat="@drawable/ic_action_like" />
 
                     <TextView
                         android:id="@+id/article_likes_tv"
@@ -165,6 +165,8 @@
                     android:id="@+id/article_dislikes_clo"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/article_share_clo"
                     app:layout_constraintStart_toEndOf="@id/article_likes_clo"
@@ -178,7 +180,7 @@
                         app:layout_constraintEnd_toStartOf="@id/article_dislikes_tv"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:srcCompat="@tools:sample/avatars" />
+                        tools:srcCompat="@drawable/ic_action_dislike" />
 
                     <TextView
                         android:id="@+id/article_dislikes_tv"
@@ -209,7 +211,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:srcCompat="@tools:sample/avatars" />
+                        tools:srcCompat="@drawable/ic_action_share" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -223,6 +225,7 @@
                     android:id="@+id/article_comments_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -247,6 +250,7 @@
             android:layout_height="wrap_content"
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

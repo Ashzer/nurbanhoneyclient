@@ -7,10 +7,11 @@ class DeleteCommentUseCase
 @Inject constructor(
     private val repository: ArticleRepository
 ) : UseCase<CommentResponse, DeleteCommentUseCase.Params>() {
-    override suspend fun run(params: Params) = repository.deleteComment(params.token, params.id)
+    override suspend fun run(params: Params) = repository.deleteComment(params.token, params.id, params.articleId)
 
     data class Params(
         val token : String,
-        val id : Int
+        val id : Int,
+        val articleId : Int
     )
 }

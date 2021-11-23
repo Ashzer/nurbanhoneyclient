@@ -3,7 +3,7 @@ package org.devjj.platform.nurbanhoney.features.ui.article
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
-import org.devjj.platform.nurbanhoney.features.network.BoardService
+import org.devjj.platform.nurbanhoney.features.network.ArticleService
 import org.devjj.platform.nurbanhoney.features.network.SimpleResponseEntity
 import org.devjj.platform.nurbanhoney.features.ui.home.ArticleEntity
 import javax.inject.Inject
@@ -11,21 +11,24 @@ import javax.inject.Inject
 interface ArticleRepository {
 
     fun getArticle(token: String, id: Int): Either<Failure, Article>
-
-    fun postLike(token: String, id: Int): Either<Failure, LikeResult>
-    fun postDislike(token: String, id: Int): Either<Failure, LikeResult>
+    fun postLike(token: String, id: Int): Either<Failure, RatingResponse>
+    fun postDislike(token: String, id: Int): Either<Failure, RatingResponse>
+    fun getRatings( articleId: Int ) : Either<Failure, Ratings>
     fun postComment(token: String, comment: String, id: Int): Either<Failure, CommentResponse>
     fun getComments(articleId: Int, offset: Int, limit: Int): Either<Failure, List<Comment>>
-    fun deleteComment(token: String, id: Int): Either<Failure, CommentResponse>
+    fun deleteComment(token: String, id: Int, articleId: Int): Either<Failure, CommentResponse>
+    fun updateComment(token: String, id: Int, content: String): Either<Failure, CommentResponse>
+    fun getComment(commentId : Int) : Either<Failure,Comment>
+
     class Network
     @Inject constructor(
         private val networkHandler: NetworkHandler,
-        private val boardService: BoardService
+        private val articleService: ArticleService
     ) : ArticleRepository {
         override fun getArticle(token: String, id: Int): Either<Failure, Article> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    boardService.getArticle(token, id),
+                    articleService.getArticle(token, id),
                     { it.toArticle() },
                     ArticleEntity.empty
                 )
@@ -33,23 +36,34 @@ interface ArticleRepository {
             }
         }
 
-        override fun postLike(token: String, id: Int): Either<Failure, LikeResult> {
+        override fun postLike(token: String, id: Int): Either<Failure, RatingResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    boardService.postLike(token, id),
-                    { it.toLikeResult() },
-                    ActionResultEntity.empty
+                    articleService.postLike(token, id),
+                    { it.toRatingResponse() },
+                    SimpleResponseEntity.empty
                 )
                 false -> Either.Left(Failure.NetworkConnection)
             }
         }
 
-        override fun postDislike(token: String, id: Int): Either<Failure, LikeResult> {
+        override fun postDislike(token: String, id: Int): Either<Failure, RatingResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    boardService.postDislike(token, id),
-                    { it.toLikeResult() },
-                    ActionResultEntity.empty
+                    articleService.postDislike(token, id),
+                    { it.toRatingResponse() },
+                    SimpleResponseEntity.empty
+                )
+                false -> Either.Left(Failure.NetworkConnection)
+            }
+        }
+
+        override fun getRatings(articleId: Int): Either<Failure, Ratings> {
+            return when(networkHandler.isNetworkAvailable()){
+                true -> networkHandler.request(
+                    articleService.getRatings(articleId),
+                    {it.toRatings()},
+                    RatingsEntity.empty
                 )
                 false -> Either.Left(Failure.NetworkConnection)
             }
@@ -62,7 +76,7 @@ interface ArticleRepository {
         ): Either<Failure, CommentResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    boardService.postComment(token, comment, id),
+                    articleService.postComment(token, comment, id),
                     { it.toCommentResponse() },
                     SimpleResponseEntity.empty
                 )
@@ -77,7 +91,7 @@ interface ArticleRepository {
         ): Either<Failure, List<Comment>> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    boardService.getComments(articleId, offset, limit),
+                    articleService.getComments(articleId, offset, limit),
                     { it.map { CommentEntity -> CommentEntity.toComment() } },
                     listOf(CommentEntity.empty)
                 )
@@ -85,10 +99,40 @@ interface ArticleRepository {
             }
         }
 
-        override fun deleteComment(token: String, id: Int): Either<Failure,CommentResponse> {
+        override fun getComment(commentId: Int): Either<Failure, Comment> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    boardService.deleteComment(token, id),
+                    articleService.getComment(commentId),
+                    { it.toComment() },
+                    CommentEntity.empty
+                )
+                false -> Either.Left(Failure.NetworkConnection)
+            }
+        }
+
+        override fun deleteComment(
+            token: String,
+            id: Int,
+            articleId: Int
+        ): Either<Failure, CommentResponse> {
+            return when (networkHandler.isNetworkAvailable()) {
+                true -> networkHandler.request(
+                    articleService.deleteComment(token, id, articleId),
+                    { it.toCommentResponse() },
+                    SimpleResponseEntity.empty
+                )
+                false -> Either.Left(Failure.NetworkConnection)
+            }
+        }
+
+        override fun updateComment(
+            token: String,
+            id: Int,
+            content: String
+        ): Either<Failure, CommentResponse> {
+            return when (networkHandler.isNetworkAvailable()) {
+                true -> networkHandler.request(
+                    articleService.updateComment(token, id, content),
                     { it.toCommentResponse() },
                     SimpleResponseEntity.empty
                 )
