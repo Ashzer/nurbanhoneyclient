@@ -173,7 +173,7 @@ class ArticleFragment : BaseFragment() {
         }
 
         commentAdapter.insertClickListener = {
-
+            showKeyboard(requireActivity())
         }
 
         commentAdapter.updateClickListener ={ comment, id ->
