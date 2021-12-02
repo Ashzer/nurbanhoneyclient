@@ -1,10 +1,9 @@
 package org.devjj.platform.nurbanhoney.features.ui.article
 
 import android.app.AlertDialog
-import android.graphics.BlendMode
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +12,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.runBlocking
-import okhttp3.internal.wait
 import org.devjj.platform.nurbanhoney.R
+import org.devjj.platform.nurbanhoney.core.controller.removeKeyboard
+import org.devjj.platform.nurbanhoney.core.controller.showKeyboard
 import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentArticleBinding
@@ -65,18 +64,22 @@ class ArticleFragment : BaseFragment() {
         }
     }
 
-    private fun setArticleId( id: Int? ){
+    private fun setArticleId(id: Int?) {
         viewModel.getArticle()
     }
 
-    private fun responseRating(result : String?){
+    private fun responseRating(result: String?) {
+        Log.d("rating_check__", result.toString())
         viewModel.getRatings()
     }
+
     private fun responseComments(result: String?) {
-        viewModel.initComments()
+        //viewModel.initComments()
+        Log.d("Controller_check__", "comment initialized")
+        viewModel.controller.initialize()
     }
 
-    private fun responseComment(result: String?){
+    private fun responseComment(result: String?) {
         viewModel.getComment(viewModel.updatingCommentId)
     }
 
@@ -87,14 +90,15 @@ class ArticleFragment : BaseFragment() {
     private fun renderLikes(ratings: Ratings?) {
         binding.articleLikesTv.text = ratings?.likes.toString()
         binding.articleDislikesTv.text = ratings?.dislikes.toString()
-        if(!ratings?.myRating.isNullOrEmpty()){
-            if(ratings?.myRating == "like"){
+        Log.d("rating_check__",ratings?.myRating.toString() ?: "empty")
+        if (!ratings?.myRating.isNullOrEmpty()) {
+            /*if (ratings?.myRating == "like") {
                 binding.articleLikesIv.drawable.setTint(R.color.colorWhite)
                 binding.articleLikesIv.setColorFilter(R.color.colorWhite)
-            }else{
+            } else {
                 binding.articleDislikesIv.drawable.setTint(R.color.colorWhite)
                 binding.articleDislikesIv.setColorFilter(R.color.colorWhite)
-            }
+            }*/
         }
     }
 
@@ -121,14 +125,31 @@ class ArticleFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setArticleId(arguments?.get(PARAM_ARTICLE) as Int)
-
+        viewModel.getRatings()
         binding.articleContentWv.setInputEnabled(false)
-        binding.articleLikesClo.setOnSingleClickListener {
-            viewModel.postLike()
+
+        //if(viewModel.article.value.nickname == )
+
+        binding.articleInfoDelete.setOnSingleClickListener {
+            viewModel.deleteArticle()
         }
 
-        binding.articleDislikesClo.setOnSingleClickListener{
-            viewModel.postDislike()
+        binding.articleLikesClo.setOnSingleClickListener {
+            Log.d("rating_check__+",viewModel.ratings.value?.myRating.toString() ?: "empty")
+            if(viewModel.ratings.value?.myRating.toString() == "like"){
+                viewModel.unLike()
+            }else{
+                viewModel.postLike()
+            }
+        }
+
+        binding.articleDislikesClo.setOnSingleClickListener {
+            Log.d("rating_check__+",viewModel.ratings.value?.myRating.toString() ?: "empty")
+            if(viewModel.ratings.value?.myRating.toString() == "dislike"){
+                viewModel.unDislike()
+            }else{
+                viewModel.postDislike()
+            }
         }
 
         /*
@@ -151,33 +172,52 @@ class ArticleFragment : BaseFragment() {
         binding.articleCommentsRv.layoutManager = LinearLayoutManager(requireContext())
         binding.articleCommentsRv.adapter = commentAdapter
 
+        binding.articleCommentVisibilityClo.setOnSingleClickListener {
+            Log.d("equals_check__", binding.articleCommentVisibilityTv.text.toString())
+            Log.d("equals_check__", resources.getString(R.string.comment_drop_up))
+            if (binding.articleCommentVisibilityTv.text.toString().equals(resources.getString(R.string.comment_drop_up))) {
+                binding.articleCommentVisibilityIv.loadFromDrawable(R.drawable.ic_action_dropdown)
+                binding.articleCommentVisibilityTv.setText(R.string.comment_drop_down)
+                binding.articleCommentClo.visible()
+            } else {
+                binding.articleCommentVisibilityIv.loadFromDrawable(R.drawable.ic_action_dropup)
+                binding.articleCommentVisibilityTv.setText(R.string.comment_drop_up)
+                binding.articleCommentClo.invisible()
+            }
+        }
+
         commentAdapter.deleteClickListener = { id ->
             getConfirmation("댓글을 삭제하시겠습니까?") { viewModel.deleteComment(id) }
         }
 
         commentAdapter.modifyClickListener = {
-            showKeyboard(requireActivity())
+            showKeyboard(requireActivity(), it)
             binding.articleCommentClo.invisible()
             binding.articleCommentVisibilityClo.invisible()
         }
 
-        commentAdapter.updateClickListener ={ comment, id ->
+        commentAdapter.updateClickListener = { view, comment, id ->
             getConfirmation("댓글을 수정하시겠습니까?") {
                 viewModel.updateComment(comment, id)
                 binding.articleCommentClo.visible()
                 binding.articleCommentVisibilityClo.visible()
-                showKeyboard(requireActivity())
+                removeKeyboard(requireActivity(), view)
             }
         }
 
         commentAdapter.cancelClickListener = {
             binding.articleCommentClo.visible()
             binding.articleCommentVisibilityClo.visible()
-            showKeyboard(requireActivity())
+            removeKeyboard(requireActivity(), it)
         }
+
+       // viewModel.controller.init()
+       // viewModel.controller.getNext(viewModel.comments.value)
+      //  viewModel.controller.loadNext()
+
     }
 
-    private fun getConfirmation(msg : String, action : () -> Unit){
+    private fun getConfirmation(msg: String, action: () -> Unit) {
         AlertDialog.Builder(this.requireContext())
             .setMessage(msg)
             .setPositiveButton("확인") { _, _ ->

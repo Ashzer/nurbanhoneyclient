@@ -26,7 +26,9 @@
     <string name="article_author_str">작성자 : </string>
     <string name="article_inquiries_str">조회수 : </string>
 
-    <string name="comment_insert_str">수정</string>
+    <string name="comment_drop_up">댓글 입력</string>
+    <string name="comment_drop_down">댓글 입력 숨김</string>
+    <string name="comment_modify_str">수정</string>
     <string name="comment_delete_str">삭제</string>
     <string name="comment_update_str">완료</string>
     <string name="comment_cancel_str">취소</string>

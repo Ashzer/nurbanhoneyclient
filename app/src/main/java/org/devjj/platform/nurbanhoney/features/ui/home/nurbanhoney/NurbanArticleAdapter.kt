@@ -1,4 +1,4 @@
-package org.devjj.platform.nurbanhoney.features.ui.home
+package org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney
 
 import android.view.View
 import android.view.ViewGroup

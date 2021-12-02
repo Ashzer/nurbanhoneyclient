@@ -55,9 +55,9 @@ class TextEditorViewModel
 
         return ""
     }
-    private fun handleUploading(uploadResult: UploadResult) {
+    private fun handleUploading(articleResponse: ArticleResponse) {
         //Toast.makeText(this , "글 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-        Log.d("check__", uploadResult.toString())
+        Log.d("check__", articleResponse.toString())
     }
 
     private fun handleImageURL(imageUploadResult: ImageUploadResult) {

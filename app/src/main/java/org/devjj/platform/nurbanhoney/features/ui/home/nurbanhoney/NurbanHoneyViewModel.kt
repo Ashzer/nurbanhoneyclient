@@ -1,4 +1,4 @@
-package org.devjj.platform.nurbanhoney.features.ui.home
+package org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney
 
 import android.content.SharedPreferences
 import android.util.Log
@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
+import org.devjj.platform.nurbanhoney.core.platform.DataLoadController
+import org.devjj.platform.nurbanhoney.features.ui.home.GetArticlesUseCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,17 +24,38 @@ class NurbanHoneyViewModel
     var offset = 0
     private val limit = 10
 
-    private fun _getArticles(token: String, flag: Int, offset: Int, limit: Int) =
-        getArticles(GetArticlesUseCase.Params(token, flag, offset, limit), viewModelScope) {
+    val controller = DataLoadController(
+        initialize = {initArticles()},
+        getNext = {getNext()},
+        loadNext = {loadNext()}
+    )
+
+    private fun getArticles(flag: Int, offset: Int, limit: Int) =
+        getArticles(GetArticlesUseCase.Params(flag, offset, limit), viewModelScope) {
             it.fold(
                 ::handleFailure,
                 ::handArticles
             )
         }
 
+    private fun initArticles(){
+        getArticles(
+            flag = 0,
+            0,
+            limit
+        )
+    }
+
+    fun getNext(){
+
+    }
+
+    fun loadNext() : List<NurbanHoneyArticle>{
+        return emptyList()
+    }
+
     fun getArticles() {
-        _getArticles(
-            prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
+        getArticles(
             flag = 0,
             offset,
             limit

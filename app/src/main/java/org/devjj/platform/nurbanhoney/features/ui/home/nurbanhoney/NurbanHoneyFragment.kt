@@ -1,4 +1,4 @@
-package org.devjj.platform.nurbanhoney.features.ui.home
+package org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney
 
 import android.os.Bundle
 import android.util.Log
@@ -13,7 +13,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import org.devjj.platform.nurbanhoney.R
-import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.extension.failure
 import org.devjj.platform.nurbanhoney.core.extension.observe
 import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
@@ -81,7 +80,7 @@ class NurbanHoneyFragment : BaseFragment() {
         binding.rvNurbanBoard.layoutManager = LinearLayoutManager(requireContext())
         binding.rvNurbanBoard.adapter = articleAdapter
 
-        viewModel.getArticles()
+        viewModel.controller.initialize()
 
         binding.rvNurbanBoard.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
