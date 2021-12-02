@@ -6,7 +6,7 @@ import javax.inject.Inject
 class UploadArticleUseCase
 @Inject constructor(
     private val repository: TextEditorRepository
-) : UseCase<UploadResult, UploadArticleUseCase.Params>() {
+) : UseCase<ArticleResponse, UploadArticleUseCase.Params>() {
     override suspend fun run(params: Params) =
         repository.uploadArticle(
             params.token,

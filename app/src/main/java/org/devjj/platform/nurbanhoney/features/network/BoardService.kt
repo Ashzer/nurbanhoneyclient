@@ -29,10 +29,11 @@ class BoardService
     override fun deleteImage(token: String, uuid: String) = boardApi.deleteImage(token, uuid)
 
     override fun getArticles(
-        token: String,
         flag: Int,
         offset: Int,
         limit: Int
-    ) = boardApi.getArticles(token, flag, offset, limit)
+    ) = boardApi.getArticles(flag, offset, limit)
 
+    override fun deleteArticle(token: String, articleId: Int, uuid: String) =
+        boardApi.deleteArticle(token, articleId, uuid)
 }

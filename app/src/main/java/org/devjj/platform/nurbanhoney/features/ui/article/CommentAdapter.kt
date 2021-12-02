@@ -21,9 +21,9 @@ class CommentAdapter
     }
 
     internal var deleteClickListener: (Int) -> Unit = { _ -> }
-    internal var updateClickListener: (String, Int) -> Unit = { _,_ -> }
-    internal var modifyClickListener: () -> Unit = {}
-    internal var cancelClickListener: () -> Unit = {}
+    internal var updateClickListener: (View, String, Int) -> Unit = { _, _, _ -> }
+    internal var modifyClickListener: (View) -> Unit = { _ -> }
+    internal var cancelClickListener: (View) -> Unit = { _ -> }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(parent.inflate(R.layout.item_comment))
@@ -44,9 +44,9 @@ class CommentAdapter
         fun bind(
             comment: Comment,
             deleteClickListener: (Int) -> Unit,
-            updateClickListener: (String, Int) -> Unit,
-            modifyClickListener: () -> Unit,
-            cancelClickListener: () -> Unit,
+            updateClickListener: (View, String, Int) -> Unit,
+            modifyClickListener: (View) -> Unit,
+            cancelClickListener: (View) -> Unit,
             prefs: SharedPreferences
         ) {
 
@@ -74,7 +74,7 @@ class CommentAdapter
                 itemView.comment_comment_clo.invisible()
                 itemView.comment_update_text_et.isFocusable = true
                 itemView.comment_update_text_et.requestFocus()
-                modifyClickListener()
+                modifyClickListener(itemView.comment_update_text_et)
             }
 
             itemView.comment_update_btn_holder_clo.setOnSingleClickListener {
@@ -86,7 +86,7 @@ class CommentAdapter
                 itemView.comment_comment_clo.visible()
                 itemView.comment_comment_tv.isFocusable = true
                 var newComment = itemView.comment_update_text_et.text.toString()
-                updateClickListener(newComment, comment.id)
+                updateClickListener(itemView.comment_update_text_et,newComment, comment.id)
             }
 
             itemView.comment_cancel_btn_holder_clo.setOnSingleClickListener {
@@ -97,7 +97,7 @@ class CommentAdapter
                 itemView.comment_update_text_clo.invisible()
                 itemView.comment_comment_clo.visible()
                 itemView.comment_comment_tv.isFocusable = true
-                cancelClickListener()
+                cancelClickListener(itemView.comment_update_text_et)
             }
         }
     }

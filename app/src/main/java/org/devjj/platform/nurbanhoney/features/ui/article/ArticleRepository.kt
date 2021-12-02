@@ -12,13 +12,15 @@ interface ArticleRepository {
 
     fun getArticle(token: String, id: Int): Either<Failure, Article>
     fun postLike(token: String, id: Int): Either<Failure, RatingResponse>
+    fun cancelLike(token: String, id: Int): Either<Failure, RatingResponse>
     fun postDislike(token: String, id: Int): Either<Failure, RatingResponse>
-    fun getRatings( articleId: Int ) : Either<Failure, Ratings>
+    fun cancelDislike(token: String, id: Int): Either<Failure, RatingResponse>
+    fun getRatings(token: String, articleId: Int): Either<Failure, Ratings>
     fun postComment(token: String, comment: String, id: Int): Either<Failure, CommentResponse>
     fun getComments(articleId: Int, offset: Int, limit: Int): Either<Failure, List<Comment>>
     fun deleteComment(token: String, id: Int, articleId: Int): Either<Failure, CommentResponse>
     fun updateComment(token: String, id: Int, content: String): Either<Failure, CommentResponse>
-    fun getComment(commentId : Int) : Either<Failure,Comment>
+    fun getComment(commentId: Int): Either<Failure, Comment>
 
     class Network
     @Inject constructor(
@@ -47,6 +49,17 @@ interface ArticleRepository {
             }
         }
 
+        override fun cancelLike(token: String, id: Int): Either<Failure, RatingResponse> {
+            return when (networkHandler.isNetworkAvailable()) {
+                true -> networkHandler.request(
+                    articleService.cancelLike(token, id),
+                    { it.toRatingResponse() },
+                    SimpleResponseEntity.empty
+                )
+                false -> Either.Left(Failure.NetworkConnection)
+            }
+        }
+
         override fun postDislike(token: String, id: Int): Either<Failure, RatingResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
@@ -58,11 +71,22 @@ interface ArticleRepository {
             }
         }
 
-        override fun getRatings(articleId: Int): Either<Failure, Ratings> {
-            return when(networkHandler.isNetworkAvailable()){
+        override fun cancelDislike(token: String, id: Int): Either<Failure, RatingResponse> {
+            return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    articleService.getRatings(articleId),
-                    {it.toRatings()},
+                    articleService.cancelDislike(token, id),
+                    { it.toRatingResponse() },
+                    SimpleResponseEntity.empty
+                )
+                false -> Either.Left(Failure.NetworkConnection)
+            }
+        }
+
+        override fun getRatings(token: String, articleId: Int): Either<Failure, Ratings> {
+            return when (networkHandler.isNetworkAvailable()) {
+                true -> networkHandler.request(
+                    articleService.getRatings(token ,articleId),
+                    { it.toRatings() },
                     RatingsEntity.empty
                 )
                 false -> Either.Left(Failure.NetworkConnection)

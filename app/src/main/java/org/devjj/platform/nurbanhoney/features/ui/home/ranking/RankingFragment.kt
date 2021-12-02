@@ -1,18 +1,17 @@
-package org.devjj.platform.nurbanhoney.features.ui.home
+package org.devjj.platform.nurbanhoney.features.ui.home.ranking
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
-import org.devjj.platform.nurbanhoney.databinding.FragmentHomeBinding
+import org.devjj.platform.nurbanhoney.databinding.FragmentRankingBinding
 
-class HomeFragment : BaseFragment(){
-    override fun layoutId() = R.layout.fragment_home
+class RankingFragment : BaseFragment() {
+    override fun layoutId() = R.layout.fragment_ranking
 
-    private var _binding : FragmentHomeBinding? = null
+    private var _binding: FragmentRankingBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -20,7 +19,7 @@ class HomeFragment : BaseFragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentRankingBinding.inflate(inflater, container, false)
         return binding.root
     }
 }

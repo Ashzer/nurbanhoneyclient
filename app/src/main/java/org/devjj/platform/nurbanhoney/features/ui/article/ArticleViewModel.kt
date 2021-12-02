@@ -8,6 +8,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
+import org.devjj.platform.nurbanhoney.core.platform.DataLoadController
+import org.devjj.platform.nurbanhoney.features.ui.textedit.ArticleResponse
+import org.devjj.platform.nurbanhoney.features.ui.textedit.DeleteArticleUseCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,13 +19,16 @@ class ArticleViewModel
     private val prefs: SharedPreferences,
     private val getArticle: GetArticleUseCase,
     private val postLike: LikeUseCase,
+    private val unLike: UnLikeUseCase,
     private val postDislike: DislikeUseCase,
+    private val unDislike: UnDislikeUseCase,
     private val postComment: PostCommentUseCase,
     private val getComments: GetCommentsUseCase,
     private val deleteComment: DeleteCommentUseCase,
     private val updateComment: UpdateCommentUseCase,
     private val getRatings: GetRatingsUseCase,
-    private val getComment: GetCommentUseCase
+    private val getComment: GetCommentUseCase,
+    private val deleteArticle: DeleteArticleUseCase
 ) : BaseViewModel() {
     private val _articleId: MutableLiveData<Int> = MutableLiveData()
     val articleId: LiveData<Int> = _articleId
@@ -40,6 +46,12 @@ class ArticleViewModel
     val comments: LiveData<List<Comment>> = _comments
     var updatingCommentId = -1
 
+    val controller: DataLoadController<Comment> = DataLoadController(
+        initialize = { initComments() },
+        getNext = { getNextComment() },
+        loadNext = { loadNextComment() }
+    )
+
     fun setArticleId(id: Int) {
         _articleId.postValue(id)
     }
@@ -49,6 +61,13 @@ class ArticleViewModel
             R.string.prefs_nurban_token_key.toString(),
             ""
         ).toString()
+    }
+
+    fun getNextComment() {
+    }
+
+    fun loadNextComment(): List<Comment> {
+        return emptyList()
     }
 
     /*****************Loading*****************/
@@ -64,8 +83,27 @@ class ArticleViewModel
     private fun handleArticle(article: Article) {
         Log.d("article_check__", article.toString())
         _article.postValue(article)
+        _ratings.postValue(Ratings(article.likes, article.dislikes, article.myRating))
     }
+
     /*****************Loading*****************/
+
+    fun deleteArticle() {
+        fun deleteArticle(token: String, articleId: Int, uuid: String) = deleteArticle(
+            DeleteArticleUseCase.Params(token, articleId, uuid), viewModelScope
+        ) {
+            it.fold(
+                ::handleFailure,
+                ::handleDeletion
+            )
+        }
+
+        deleteArticle(getToken(), articleId.value ?: -1, article.value?.uuid.toString())
+    }
+
+    private fun handleDeletion(articleResponse: ArticleResponse) {
+
+    }
 
     /*****************Ratings*****************/
     fun postLike() {
@@ -83,6 +121,20 @@ class ArticleViewModel
         )
     }
 
+    fun unLike() {
+        fun unLike(token: String, id: Int) =
+            unLike(UnLikeUseCase.Params(token, id), viewModelScope) {
+                it.fold(
+                    ::handleFailure,
+                    ::handleRating
+                )
+            }
+        unLike(
+            getToken(),
+            article.value?.id ?: -1
+        )
+    }
+
     fun postDislike() {
         fun postDislike(token: String, id: Int) =
             postDislike(DislikeUseCase.Params(token, id), viewModelScope) {
@@ -95,26 +147,38 @@ class ArticleViewModel
         postDislike(getToken(), article.value?.id ?: -1)
     }
 
+    fun unDislike() {
+        fun unDislike(token: String, id: Int) =
+            unDislike(UnDislikeUseCase.Params(token, id), viewModelScope) {
+                it.fold(
+                    ::handleFailure,
+                    ::handleRating
+                )
+            }
+
+        unDislike(getToken(), article.value?.id ?: -1)
+    }
+
     private fun handleRating(response: RatingResponse) {
-        // Log.d("result_like_check__",result.result)
-        //_likes.postValue(Pair(result.likes, result.dislikes))
+        Log.d("rating_check__",response.result)
         _ratingResponse.postValue(response.result)
     }
     /*****************Ratings*****************/
 
     /*****************Refresh Rating*****************/
     fun getRatings() {
-        fun getRatings(articleId: Int) =
-            getRatings(GetRatingsUseCase.Params(articleId), viewModelScope) {
+        fun getRatings(token: String, articleId: Int) =
+            getRatings(GetRatingsUseCase.Params(token, articleId), viewModelScope) {
                 it.fold(
                     ::handleFailure,
                     ::handleGetRatings
                 )
             }
-        getRatings(articleId?.value ?: -1)
+        getRatings(getToken(),articleId?.value ?: -1)
     }
 
     private fun handleGetRatings(ratings: Ratings) {
+        Log.d("rating_check__",ratings.toString())
         _ratings.postValue(ratings)
     }
     /*****************Refresh Rating*****************/
@@ -132,7 +196,8 @@ class ArticleViewModel
     }
 
     private fun handlePostComment(response: CommentResponse) {
-        initComments()
+        //initComments()
+        controller.initialize()
     }
 
     /*****************Post Comment*****************/
@@ -225,4 +290,6 @@ class ArticleViewModel
     private fun handleInitComments(comments: List<Comment>) {
         _comments.postValue(comments)
     }
+
+
 }

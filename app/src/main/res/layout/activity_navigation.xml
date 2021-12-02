@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/app_navi_drawer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/app_navigator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/app_navi_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/NavigationFragmentContainer"/>
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/NavigationFragmentContainer"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                tools:layout_editor_absoluteX="10dp"
+                tools:layout_editor_absoluteY="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/app_navi_toolbar"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--            app:layout_constraintBottom_toTopOf="@id/app_navi_drawer"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+        <!--    app:layout_constraintBottom_toTopOf="@id/NavigationFragmentContainer"-->
+
+        <!--            app:layout_constraintBottom_toTopOf="@id/app_navigator"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/app_navi_toolbar"/> -->
+
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/app_navi_sidemenu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:menu="@menu/item_navigation_menu" />
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/app_navigator"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/app_navi_drawer"
+        app:menu="@menu/item_navigation_menu" />
+<!--        app:layout_constraintTop_toBottomOf="@id/NavigationFragmentContainer" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

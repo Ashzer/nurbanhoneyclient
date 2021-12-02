@@ -1,7 +1,7 @@
 package org.devjj.platform.nurbanhoney.features.ui.home
 
 import com.google.gson.annotations.SerializedName
-import org.devjj.platform.nurbanhoney.features.ui.login.ValidationEntity
+import org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney.NurbanHoneyArticle
 
 data class ArticlesRequestEntity(
     @SerializedName("id") val id: Int,

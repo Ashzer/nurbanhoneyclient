@@ -1,10 +1,8 @@
 package org.devjj.platform.nurbanhoney.features.network
 
 import okhttp3.MultipartBody
-import org.devjj.platform.nurbanhoney.features.ui.home.ArticleEntity
 import org.devjj.platform.nurbanhoney.features.ui.home.ArticlesRequestEntity
 import org.devjj.platform.nurbanhoney.features.ui.textedit.UploadImageEntity
-import org.devjj.platform.nurbanhoney.features.ui.textedit.UploadResultEntity
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -24,7 +22,7 @@ internal interface BoardApi {
         @Field("lossCut") lossCut: Long,
         @Field("thumbnail") thumbnail: String,
         @Field("content") content: String
-    ): Call<UploadResultEntity>
+    ): Call<SimpleResponseEntity>
 
 
     @Multipart
@@ -43,12 +41,15 @@ internal interface BoardApi {
 
     @GET(NURBAN_LIST)
     fun getArticles(
-        @Header("token") token: String,
         @Query("flag") flag: Int = 0,
         @Query("offset") offset: Int,
         @Query("limit") limit: Int
     ): Call<List<ArticlesRequestEntity>>
 
-
-
+    @DELETE(NURBAN_LIST)
+    fun deleteArticle(
+        @Header("token") token: String,
+        @Query("id") articleId: Int,
+        @Query("uuid") uuid: String
+    ): Call<SimpleResponseEntity>
 }

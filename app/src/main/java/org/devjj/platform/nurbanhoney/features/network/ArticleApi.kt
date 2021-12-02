@@ -29,6 +29,12 @@ internal interface ArticleApi {
         @Field("articleId") id: Int
     ): Call<SimpleResponseEntity>
 
+    @DELETE(ARTICLE_LIKE)
+    fun cancelLike(
+        @Header("token") token: String,
+        @Query("articleId") id: Int
+    ): Call<SimpleResponseEntity>
+
     @FormUrlEncoded
     @POST(ARTICLE_DISLIKE)
     fun postDislike(
@@ -36,8 +42,15 @@ internal interface ArticleApi {
         @Field("articleId") id: Int
     ): Call<SimpleResponseEntity>
 
+    @DELETE(ARTICLE_DISLIKE)
+    fun cancelDislike(
+        @Header("token") token: String,
+        @Query("articleId") id: Int
+    ): Call<SimpleResponseEntity>
+
     @GET(ARTICLE_RATING)
     fun getRatings(
+        @Header("token") token: String,
         @Query("articleId") articleId: Int
     ): Call<RatingsEntity>
 
@@ -73,6 +86,6 @@ internal interface ArticleApi {
 
     @GET(ARTICLE_COMMENT)
     fun getComment(
-        @Query("commentId") commentId : Int
-    ) : Call<CommentEntity>
+        @Query("commentId") commentId: Int
+    ): Call<CommentEntity>
 }

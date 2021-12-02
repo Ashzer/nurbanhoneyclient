@@ -12,11 +12,13 @@ class ArticleService
     private val articleApi by lazy { retrofit.create(ArticleApi::class.java) }
 
     override fun getArticle(token: String, id: Int) = articleApi.getArticle(token, id)
+
     override fun postLike(token: String, id: Int) = articleApi.postLike(token, id)
-
+    override fun cancelLike(token: String, id: Int) = articleApi.cancelLike(token, id)
     override fun postDislike(token: String, id: Int) = articleApi.postDislike(token, id)
+    override fun cancelDislike(token: String, id: Int) = articleApi.cancelDislike(token, id)
 
-    override fun getRatings(articleId: Int) = articleApi.getRatings(articleId)
+    override fun getRatings(token: String, articleId: Int) = articleApi.getRatings(token, articleId)
 
     override fun postComment(token: String, comment: String, id: Int) =
         articleApi.postComment(token, comment, id)
