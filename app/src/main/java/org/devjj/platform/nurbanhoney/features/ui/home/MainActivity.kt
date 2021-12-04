@@ -4,11 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.MenuItem
 import androidx.core.view.GravityCompat
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_navigation.*
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
@@ -23,10 +21,9 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : BaseTabLayoutActivity() {
     override fun fragment() = NurbanHoneyFragment()
-
+    private val gravity = GravityCompat.START
     @Inject
     lateinit var navigator: Navigator
-
     private lateinit var binding: ActivityNavigationBinding
 
     companion object {
@@ -69,33 +66,29 @@ class MainActivity : BaseTabLayoutActivity() {
         setSupportActionBar(binding.appNaviToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_menu)
-
     }
 
     override fun onBackPressed() {
-        if(binding.appNaviDrawer.isDrawerOpen(GravityCompat.START)){
-            binding.appNaviDrawer.closeDrawer(GravityCompat.START)
-        }else {
+        if (binding.appNaviDrawer.isDrawerOpen(gravity)) {
+            binding.appNaviDrawer.closeDrawer(gravity)
+        } else {
             super.onBackPressed()
         }
     }
-
-
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 val layoutDrawer = binding.appNaviDrawer
-                val gravity = GravityCompat.START
 
-                if(layoutDrawer.isDrawerOpen(gravity)){
+                if (layoutDrawer.isDrawerOpen(gravity)) {
                     layoutDrawer.closeDrawer(gravity)
-                }else{
+                } else {
                     layoutDrawer.openDrawer(gravity)
                 }
             }
-            else ->{}
+            else -> {
+            }
         }
         return false
     }
@@ -106,34 +99,5 @@ class MainActivity : BaseTabLayoutActivity() {
             fragment,
             binding.NavigationFragmentContainer
         )
-//
-//    private fun tapSelectedListener(tabLayout: TabLayout) =
-//        tabLayout.addOnTabSelectedListener(
-//            object : TabLayout.OnTabSelectedListener {
-//                override fun onTabSelected(tab: TabLayout.Tab?) {
-//                    selectTab(tab!!.position)
-//                }
-//
-//                override fun onTabReselected(tab: TabLayout.Tab?) {
-//                    selectTab(tab!!.position)
-//                }
-//
-//                override fun onTabUnselected(tab: TabLayout.Tab?) {
-//                }
-//
-//                fun selectTab(position: Int) =
-//                    when (position) {
-//                        0 -> navigate(RankingFragment())
-//                        1 -> navigate(NurbanHoneyFragment())
-//                        2 -> navigate(FreeBoardFragment())
-//                        else -> navigate(RankingFragment())
-//                    }
-//
-//                fun navigate(fragment: BaseFragment) =
-//                    navigator.transFragment(
-//                        supportFragmentManager,
-//                        fragment,
-//                        binding.TabLayoutFragmentContainer
-//                    )
-//            })
+
 }

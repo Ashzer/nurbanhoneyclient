@@ -45,6 +45,8 @@ class ArticleViewModel
     private val _comments: MutableLiveData<List<Comment>> = MutableLiveData()
     val comments: LiveData<List<Comment>> = _comments
     var updatingCommentId = -1
+    var offset = 0
+    val limit = 5
 
     val controller: DataLoadController<Comment> = DataLoadController(
         initialize = { initComments() },
@@ -256,15 +258,22 @@ class ArticleViewModel
         _commentsResponse.postValue(response.result)
     }
 
+    private fun getComments(articleId: Int, offset: Int, limit: Int) =
+        getComments(GetCommentsUseCase.Params(articleId, offset, limit), viewModelScope) {
+            it.fold(
+                ::handleFailure,
+                ::handleComments
+            )
+        }
     fun getComments() {
-        fun getComments(articleId: Int, offset: Int, limit: Int) =
-            getComments(GetCommentsUseCase.Params(articleId, offset, limit), viewModelScope) {
-                it.fold(
-                    ::handleFailure,
-                    ::handleComments
-                )
-            }
-        getComments(article.value!!.id, 0, 10)
+
+        getComments(article.value!!.id, 0, limit)
+        offset += limit
+    }
+
+    fun getNextComments(){
+        getComments(article.value!!.id, offset, limit)
+        offset += limit
     }
 
     private fun handleComments(comments: List<Comment>) {
@@ -290,6 +299,5 @@ class ArticleViewModel
     private fun handleInitComments(comments: List<Comment>) {
         _comments.postValue(comments)
     }
-
 
 }
