@@ -215,6 +215,12 @@ class ArticleFragment : BaseFragment() {
        // viewModel.controller.getNext(viewModel.comments.value)
       //  viewModel.controller.loadNext()
 
+        binding.articleContainerSv.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            Log.d("scroll_check__"," $scrollX , $scrollY , $oldScrollX , $oldScrollY ")
+            if(!v.canScrollVertically(1)){
+                viewModel.getNextComments()
+            }
+        }
     }
 
     private fun getConfirmation(msg: String, action: () -> Unit) {
