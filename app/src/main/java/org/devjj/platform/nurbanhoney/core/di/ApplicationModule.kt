@@ -15,12 +15,12 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.devjj.platform.nurbanhoney.BuildConfig
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.features.ui.article.ArticleRepository
+import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileRepository
 import org.devjj.platform.nurbanhoney.features.ui.login.LoginManager
 import org.devjj.platform.nurbanhoney.features.ui.textedit.TextEditorRepository
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
-
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -69,5 +69,10 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun providerArticleRepository(dataSource : ArticleRepository.Network) : ArticleRepository = dataSource
+
+    @Provides
+    @Singleton
+    fun providerProfileRepository(dataSource : ProfileRepository.Network) : ProfileRepository = dataSource
+
 
 }

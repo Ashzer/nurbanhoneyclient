@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">NurbanHoney</string>
 
+    <!-- -->
+    <string name="server_address">http://3.37.155.214:8080</string>
+    <string name="kakao_app_key">8afc185b39976c8da64f53954aff69ff</string>
+    <string name="kakao_app_oauth_key">kakao8afc185b39976c8da64f53954aff69ff</string>
+    <!-- -->
 
     <string name="test_string">test</string>
     <string name="rank">랭킹</string>
@@ -32,5 +37,16 @@
     <string name="comment_delete_str">삭제</string>
     <string name="comment_update_str">완료</string>
     <string name="comment_cancel_str">취소</string>
+
+    <!-- profile -->
+    <string name="profile_edit_str">편집하기</string>
+    <string name="profile_nickname_str">닉네임</string>
+    <string name="profile_point_str">포인트</string>
+    <string name="profile_description_str">설명</string>
+    <string name="profile_insignia_show_str">보여주는 휘장</string>
+    <string name="profile_insignia_own_str">소유한 휘장</string>
+    <string name="profile_myarticle_str">내 글 수</string>
+    <string name="profile_mycomment_str">내 댓글 수</string>
+
 
 </resources>

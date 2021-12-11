@@ -17,8 +17,7 @@ class NurbanHoneyViewModel
 @Inject constructor(
     private val getArticles: GetArticlesUseCase,
     private val prefs: SharedPreferences
-) :
-    BaseViewModel() {
+) : BaseViewModel() {
     private val _articles: MutableLiveData<List<NurbanHoneyArticle>> = MutableLiveData()
     val articles: LiveData<List<NurbanHoneyArticle>> = _articles
     var offset = 0

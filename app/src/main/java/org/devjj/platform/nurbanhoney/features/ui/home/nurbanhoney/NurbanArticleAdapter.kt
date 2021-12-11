@@ -13,7 +13,6 @@ import kotlin.properties.Delegates
 
 class NurbanArticleAdapter
 @Inject constructor() : RecyclerView.Adapter<NurbanArticleAdapter.ViewHolder>() {
-
     internal var collection: List<NurbanHoneyArticle> by Delegates.observable(emptyList()) { _, old, new ->
         //  Log.d("adapter_check__" , "$old")
         //  Log.d("adapter_check__" , "$new")

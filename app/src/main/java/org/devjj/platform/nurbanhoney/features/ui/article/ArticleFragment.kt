@@ -22,7 +22,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class ArticleFragment : BaseFragment() {
-
     companion object {
         private const val PARAM_ARTICLE = "param_article"
 

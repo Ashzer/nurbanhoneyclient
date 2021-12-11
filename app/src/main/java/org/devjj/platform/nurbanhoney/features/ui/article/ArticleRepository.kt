@@ -9,7 +9,6 @@ import org.devjj.platform.nurbanhoney.features.ui.home.ArticleEntity
 import javax.inject.Inject
 
 interface ArticleRepository {
-
     fun getArticle(token: String, id: Int): Either<Failure, Article>
     fun postLike(token: String, id: Int): Either<Failure, RatingResponse>
     fun cancelLike(token: String, id: Int): Either<Failure, RatingResponse>
@@ -21,7 +20,7 @@ interface ArticleRepository {
     fun deleteComment(token: String, id: Int, articleId: Int): Either<Failure, CommentResponse>
     fun updateComment(token: String, id: Int, content: String): Either<Failure, CommentResponse>
     fun getComment(commentId: Int): Either<Failure, Comment>
-
+ 
     class Network
     @Inject constructor(
         private val networkHandler: NetworkHandler,
