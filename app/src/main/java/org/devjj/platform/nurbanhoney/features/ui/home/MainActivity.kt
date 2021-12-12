@@ -97,7 +97,7 @@ class MainActivity : BaseTabLayoutActivity() {
         navigator.transFragment(
             supportFragmentManager,
             fragment,
-            binding.NavigationFragmentContainer
+            binding.aNavigationFragmentContainer
         )
 
 }

@@ -20,6 +20,15 @@ class BoardService
     ) =
         boardApi.uploadRequest(token, title, uuid, lossCut, thumbnail, content)
 
+    override fun modifyRequest(
+        token: String,
+        articleId: Int,
+        thumbnail: String,
+        title: String,
+        lossCut: Long,
+        content: String
+    ) = boardApi.modifyRequest(token, articleId, thumbnail, title, lossCut, content)
+
     override fun uploadImage(
         token: String,
         uuid: MultipartBody.Part,
@@ -28,11 +37,6 @@ class BoardService
 
     override fun deleteImage(token: String, uuid: String) = boardApi.deleteImage(token, uuid)
 
-    override fun getArticles(
-        flag: Int,
-        offset: Int,
-        limit: Int
-    ) = boardApi.getArticles(flag, offset, limit)
 
     override fun deleteArticle(token: String, articleId: Int, uuid: String) =
         boardApi.deleteArticle(token, articleId, uuid)

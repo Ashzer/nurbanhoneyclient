@@ -9,8 +9,8 @@ import retrofit2.http.*
 internal interface BoardApi {
 
     companion object {
-        private const val NURBAN_LIST = "nurbanboard"
-        private const val UPLOAD_IMG = "nurbanboard/upload/image"
+        private const val NURBAN_LIST = "nurban"
+        private const val UPLOAD_IMG = "nurban/upload/image"
     }
 
     @FormUrlEncoded
@@ -24,6 +24,16 @@ internal interface BoardApi {
         @Field("content") content: String
     ): Call<SimpleResponseEntity>
 
+    @FormUrlEncoded
+    @PATCH(NURBAN_LIST)
+    fun modifyRequest(
+        @Header("token") token : String,
+        @Field("id") articleId : Int,
+        @Field("thumbnail") thumbnail: String,
+        @Field("title") title : String,
+        @Field("lossCut") lossCut: Long,
+        @Field("content") content :String
+    ) : Call<SimpleResponseEntity>
 
     @Multipart
     @POST(UPLOAD_IMG)
@@ -37,14 +47,7 @@ internal interface BoardApi {
     fun deleteImage(
         @Header("token") token: String,
         @Query("uuid") uuid: String
-    )
-
-    @GET(NURBAN_LIST)
-    fun getArticles(
-        @Query("flag") flag: Int = 0,
-        @Query("offset") offset: Int,
-        @Query("limit") limit: Int
-    ): Call<List<ArticlesRequestEntity>>
+    ) : Call<SimpleResponseEntity>
 
     @DELETE(NURBAN_LIST)
     fun deleteArticle(
@@ -52,4 +55,5 @@ internal interface BoardApi {
         @Query("id") articleId: Int,
         @Query("uuid") uuid: String
     ): Call<SimpleResponseEntity>
+
 }

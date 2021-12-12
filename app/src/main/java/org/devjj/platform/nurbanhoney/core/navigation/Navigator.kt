@@ -1,11 +1,13 @@
 package org.devjj.platform.nurbanhoney.core.navigation
 
 import android.content.Context
+import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
+import org.devjj.platform.nurbanhoney.features.ui.article.Article
 import org.devjj.platform.nurbanhoney.features.ui.article.ArticleActivity
 import org.devjj.platform.nurbanhoney.features.ui.home.MainActivity
 import org.devjj.platform.nurbanhoney.features.ui.login.Authenticator
@@ -36,8 +38,22 @@ class Navigator
             false -> showLogin(context)
         }
     }
+
+    suspend fun showTextEditorToModifyWithLoginCheck(context: Context,article : Article){
+        when (authenticator.userLoggedIn()){
+            true -> showTextEditorToModify(context , article)
+            false -> showLogin(context)
+        }
+    }
+
     fun showTextEditor(context: Context) =
         context.startActivity(TextEditorActivity.callingIntent(context))
+    fun showTextEditorToModify(context: Context, article : Article) {
+        val intent =TextEditorActivity.callingIntentToModify(context, article)
+        val activityOptions = ActivityOptionsCompat.makeBasic()
+        context.startActivity(intent,activityOptions.toBundle())
+    }
+
 
     fun transFragment(supportFragmentManager : FragmentManager, frag : BaseFragment, containerView: FragmentContainerView){
         supportFragmentManager.beginTransaction()

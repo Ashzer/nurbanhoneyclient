@@ -9,8 +9,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
 import org.devjj.platform.nurbanhoney.core.platform.DataLoadController
+import org.devjj.platform.nurbanhoney.features.network.repositories.article.usecases.*
 import org.devjj.platform.nurbanhoney.features.ui.textedit.ArticleResponse
-import org.devjj.platform.nurbanhoney.features.ui.textedit.DeleteArticleUseCase
+import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.usecases.DeleteArticleUseCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,6 +49,8 @@ class ArticleViewModel
     var offset = 0
     val limit = 5
 
+    fun isAuthor() = article.value?.userId == getUserId()
+
     val controller: DataLoadController<Comment> = DataLoadController(
         initialize = { initComments() },
         getNext = { getNextComment() },
@@ -63,6 +66,10 @@ class ArticleViewModel
             R.string.prefs_nurban_token_key.toString(),
             ""
         ).toString()
+    }
+
+    private fun getUserId() : Int? {
+        return prefs.getString(R.string.prefs_user_id.toString(),"-1")?.toInt()
     }
 
     fun getNextComment() {

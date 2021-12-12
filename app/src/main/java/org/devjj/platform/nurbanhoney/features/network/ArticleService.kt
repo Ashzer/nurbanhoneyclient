@@ -33,4 +33,10 @@ class ArticleService
         articleApi.updateComment(token, id, content)
 
     override fun getComment(commentId: Int): Call<CommentEntity> = articleApi.getComment(commentId)
+
+    override fun getArticles(
+        flag: Int,
+        offset: Int,
+        limit: Int
+    ) = articleApi.getArticles(flag, offset, limit)
 }

@@ -6,41 +6,43 @@ import org.devjj.platform.nurbanhoney.features.ui.article.Article
 data class ArticleEntity(
     @SerializedName("id") val id: Int,
     @SerializedName("uuid") val uuid: String,
-    //@SerializedName("thumbnail") val thumbnail : String?,
+    @SerializedName("thumbnail") val thumbnail: String?,
     @SerializedName("title") val title: String?,
-    @SerializedName("lossCut") val lossCut: Int,
+    @SerializedName("lossCut") val lossCut: Int?,
     @SerializedName("content") val content: String?,
     @SerializedName("count") val inquiries: Int,
     @SerializedName("commentCount") val comments: Int,
     @SerializedName("likeCount") val likes: Int,
     @SerializedName("dislikeCount") val dislikes: Int,
-    @SerializedName("updatedAt") val date: String,
+    @SerializedName("updatedAt") val date: String?,
+    @SerializedName("userId") val userId : Int,
     @SerializedName("badge") val badge: String?,
     @SerializedName("nickname") val nickname: String,
     @SerializedName("insignia") val insignia: String?,
     @SerializedName("myRating") val myRating: String?,
-    @SerializedName("error") val error: String?,
 ) {
 
     fun toArticle() =
         Article(
             id,
             uuid,
+            thumbnail ?: "",
             title ?: "",
-            lossCut,
+            lossCut ?: -1,
             content ?: "",
             inquiries,
             comments,
             likes,
             dislikes,
+            date?:"",
+            userId,
             badge ?: "",
             nickname,
             insignia ?: "",
             myRating ?: "",
-            error ?: ""
         )
 
     companion object {
-        val empty = ArticleEntity(-1, "", "", 0, "", 0, 0, 0, 0, "", "", "", "", "", "")
+        val empty = ArticleEntity(-1, "", "","", 0, "", 0, 0, 0, 0, "", 0,"", "", "", "")
     }
 }

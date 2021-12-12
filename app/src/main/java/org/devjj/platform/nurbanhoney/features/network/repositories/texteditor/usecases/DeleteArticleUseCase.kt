@@ -1,6 +1,8 @@
-package org.devjj.platform.nurbanhoney.features.ui.textedit
+package org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.usecases
 
 import org.devjj.platform.nurbanhoney.core.interactor.UseCase
+import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.TextEditorRepository
+import org.devjj.platform.nurbanhoney.features.ui.textedit.ArticleResponse
 import javax.inject.Inject
 
 class DeleteArticleUseCase

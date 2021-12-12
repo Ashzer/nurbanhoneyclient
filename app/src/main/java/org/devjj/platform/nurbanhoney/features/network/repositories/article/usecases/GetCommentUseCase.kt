@@ -1,14 +1,14 @@
-package org.devjj.platform.nurbanhoney.features.ui.article
+package org.devjj.platform.nurbanhoney.features.network.repositories.article.usecases
 
-import org.devjj.platform.nurbanhoney.core.exception.Failure
-import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.interactor.UseCase
+import org.devjj.platform.nurbanhoney.features.network.repositories.article.ArticleRepository
+import org.devjj.platform.nurbanhoney.features.ui.article.Comment
 import javax.inject.Inject
 
 class GetCommentUseCase
 @Inject constructor(
     private val repository: ArticleRepository
-) : UseCase<Comment , GetCommentUseCase.Params>() {
+) : UseCase<Comment, GetCommentUseCase.Params>() {
     override suspend fun run(params: Params) = repository.getComment(params.commentId)
 
     data class Params(val commentId : Int)
