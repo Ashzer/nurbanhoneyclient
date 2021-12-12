@@ -3,18 +3,27 @@ package org.devjj.platform.nurbanhoney.features.network
 import org.devjj.platform.nurbanhoney.features.ui.article.CommentEntity
 import org.devjj.platform.nurbanhoney.features.ui.article.RatingsEntity
 import org.devjj.platform.nurbanhoney.features.ui.home.ArticleEntity
+import org.devjj.platform.nurbanhoney.features.ui.home.ArticlesRequestEntity
 import retrofit2.Call
 import retrofit2.http.*
 
 internal interface ArticleApi {
     companion object {
-        private const val ARTICLE_LIKE = "nurbanlike"
-        private const val ARTICLE_DISLIKE = "nurbandislike"
-        private const val ARTICLE_COMMENTS = "nurbancomment"
-        private const val ARTICLE_COMMENT = "nurbancomment/detail"
-        private const val NURBAN_ARTICLE = "nurbanboard/detail"
-        private const val ARTICLE_RATING = "nurbanboard/myrating"
+        private const val NURBAN_LIST = "nurban"
+        private const val ARTICLE_LIKE = "nurban/detail/like"
+        private const val ARTICLE_DISLIKE = "nurban/detail/dislike"
+        private const val ARTICLE_COMMENTS = "nurban/comment"
+        private const val ARTICLE_COMMENT = "nurban/comment/detail"
+        private const val NURBAN_ARTICLE = "nurban/detail"
+        private const val ARTICLE_RATING = "nurban/myrating"
     }
+
+    @GET(NURBAN_LIST)
+    fun getArticles(
+        @Query("flag") flag: Int = 0,
+        @Query("offset") offset: Int,
+        @Query("limit") limit: Int
+    ): Call<List<ArticlesRequestEntity>>
 
     @GET(NURBAN_ARTICLE)
     fun getArticle(

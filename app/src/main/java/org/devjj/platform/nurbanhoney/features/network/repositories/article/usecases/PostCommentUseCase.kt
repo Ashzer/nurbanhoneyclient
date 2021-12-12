@@ -1,6 +1,8 @@
-package org.devjj.platform.nurbanhoney.features.ui.article
+package org.devjj.platform.nurbanhoney.features.network.repositories.article.usecases
 
 import org.devjj.platform.nurbanhoney.core.interactor.UseCase
+import org.devjj.platform.nurbanhoney.features.network.repositories.article.ArticleRepository
+import org.devjj.platform.nurbanhoney.features.ui.article.CommentResponse
 import javax.inject.Inject
 
 class PostCommentUseCase

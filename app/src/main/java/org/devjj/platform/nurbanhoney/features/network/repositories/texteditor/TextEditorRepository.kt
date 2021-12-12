@@ -1,4 +1,4 @@
-package org.devjj.platform.nurbanhoney.features.ui.textedit
+package org.devjj.platform.nurbanhoney.features.network.repositories.texteditor
 
 import okhttp3.MultipartBody
 import org.devjj.platform.nurbanhoney.core.exception.Failure
@@ -7,7 +7,10 @@ import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
 import org.devjj.platform.nurbanhoney.features.network.BoardService
 import org.devjj.platform.nurbanhoney.features.network.SimpleResponseEntity
-import org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney.NurbanHoneyArticle
+import org.devjj.platform.nurbanhoney.features.ui.textedit.ArticleResponse
+import org.devjj.platform.nurbanhoney.features.ui.textedit.ImageResponse
+import org.devjj.platform.nurbanhoney.features.ui.textedit.ImageUploadResult
+import org.devjj.platform.nurbanhoney.features.ui.textedit.UploadImageEntity
 import javax.inject.Inject
 
 interface TextEditorRepository {
@@ -20,7 +23,16 @@ interface TextEditorRepository {
         content: String
     ): Either<Failure, ArticleResponse>
 
-    fun deleteArticle(token: String, articleId : Int, uuid: String) : Either<Failure,ArticleResponse>
+    fun modifyArticle(
+        token: String,
+        articleId: Int,
+        thumbnail: String,
+        title: String,
+        lossCut: Long,
+        content: String
+    ): Either<Failure, ArticleResponse>
+
+    fun deleteArticle(token: String, articleId: Int, uuid: String): Either<Failure, ArticleResponse>
 
     fun uploadImage(
         token: String,
@@ -28,12 +40,7 @@ interface TextEditorRepository {
         image: MultipartBody.Part
     ): Either<Failure, ImageUploadResult>
 
-    fun getArticles(
-        flag: Int,
-        offset: Int,
-        limit: Int
-    ): Either<Failure, List<NurbanHoneyArticle>>
-
+    fun deleteImages(token: String, uuid: String): Either<Failure, ImageResponse>
 
     class Network
     @Inject constructor(
@@ -58,15 +65,33 @@ interface TextEditorRepository {
             }
         }
 
+        override fun modifyArticle(
+            token: String,
+            articleId: Int,
+            thumbnail: String,
+            title: String,
+            lossCut: Long,
+            content: String
+        ): Either<Failure, ArticleResponse> {
+            return when (networkHandler.isNetworkAvailable()) {
+                true -> networkHandler.request(
+                    boardService.modifyRequest(token, articleId, thumbnail, title, lossCut, content),
+                    {it.toArticleResponse()},
+                    SimpleResponseEntity.empty
+                )
+                false -> Either.Left(NetworkConnection)
+            }
+        }
+
         override fun deleteArticle(
             token: String,
             articleId: Int,
             uuid: String
         ): Either<Failure, ArticleResponse> {
-            return when(networkHandler.isNetworkAvailable()){
+            return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    boardService.deleteArticle(token,articleId,uuid),
-                    {it.toArticleResponse()},
+                    boardService.deleteArticle(token, articleId, uuid),
+                    { it.toArticleResponse() },
                     SimpleResponseEntity.empty
                 )
                 false -> Either.Left(NetworkConnection)
@@ -89,21 +114,15 @@ interface TextEditorRepository {
 
         }
 
-        override fun getArticles(
-            flag: Int,
-            offset: Int,
-            limit: Int
-        ): Either<Failure, List<NurbanHoneyArticle>> {
+        override fun deleteImages(token: String, uuid: String): Either<Failure, ImageResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    boardService.getArticles(flag, offset, limit),
-                    { it.map { ArticlesRequestEntity -> ArticlesRequestEntity.toNurbanHoneyArticle() } },
-                    emptyList()
+                    boardService.deleteImage(token, uuid),
+                    { it.toImageResponse() },
+                    SimpleResponseEntity.empty
                 )
                 false -> Either.Left(NetworkConnection)
             }
         }
-
-
     }
 }

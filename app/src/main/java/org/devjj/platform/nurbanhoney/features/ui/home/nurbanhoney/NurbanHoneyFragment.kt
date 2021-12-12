@@ -80,7 +80,7 @@ class NurbanHoneyFragment : BaseFragment() {
         binding.rvNurbanBoard.layoutManager = LinearLayoutManager(requireContext())
         binding.rvNurbanBoard.adapter = articleAdapter
 
-        viewModel.controller.initialize()
+        //viewModel.controller.initialize()
 
         binding.rvNurbanBoard.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -96,6 +96,11 @@ class NurbanHoneyFragment : BaseFragment() {
                 }
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.controller.initialize()
     }
 
 }

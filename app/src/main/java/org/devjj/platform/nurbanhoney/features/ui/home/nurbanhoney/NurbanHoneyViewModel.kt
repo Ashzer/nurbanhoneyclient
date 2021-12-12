@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
 import org.devjj.platform.nurbanhoney.core.platform.DataLoadController
-import org.devjj.platform.nurbanhoney.features.ui.home.GetArticlesUseCase
+import org.devjj.platform.nurbanhoney.features.network.repositories.article.usecases.GetArticlesUseCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,44 +22,48 @@ class NurbanHoneyViewModel
     private val _articles: MutableLiveData<List<NurbanHoneyArticle>> = MutableLiveData()
     val articles: LiveData<List<NurbanHoneyArticle>> = _articles
     var offset = 0
-    private val limit = 10
+    private val limit = 5
 
     val controller = DataLoadController(
-        initialize = {initArticles()},
-        getNext = {getNext()},
-        loadNext = {loadNext()}
+        initialize = { initArticles() },
+        getNext = { getNext() },
+        loadNext = { loadNext() }
     )
 
-    private fun getArticles(flag: Int, offset: Int, limit: Int) =
-        getArticles(GetArticlesUseCase.Params(flag, offset, limit), viewModelScope) {
-            it.fold(
-                ::handleFailure,
-                ::handArticles
-            )
-        }
+    private fun initArticles() {
+        fun initArticles(flag: Int, offset: Int, limit: Int) =
+            getArticles(GetArticlesUseCase.Params(flag, offset, limit), viewModelScope) {
+                it.fold(
+                    ::handleFailure,
+                    ::handleInitArticles
+                )
+            }
 
-    private fun initArticles(){
-        getArticles(
-            flag = 0,
-            0,
-            limit
-        )
+        initArticles(flag = 0, 0, limit)
+        offset += limit
     }
 
-    fun getNext(){
+    private fun handleInitArticles(articles: List<NurbanHoneyArticle>) {
+        _articles.postValue(articles)
+    }
+
+    fun getNext() {
 
     }
 
-    fun loadNext() : List<NurbanHoneyArticle>{
+    fun loadNext(): List<NurbanHoneyArticle> {
         return emptyList()
     }
 
     fun getArticles() {
-        getArticles(
-            flag = 0,
-            offset,
-            limit
-        )
+        fun getArticles(flag: Int, offset: Int, limit: Int) =
+            getArticles(GetArticlesUseCase.Params(flag, offset, limit), viewModelScope) {
+                it.fold(
+                    ::handleFailure,
+                    ::handArticles
+                )
+            }
+        getArticles(flag = 0, offset, limit)
         offset += limit
     }
 

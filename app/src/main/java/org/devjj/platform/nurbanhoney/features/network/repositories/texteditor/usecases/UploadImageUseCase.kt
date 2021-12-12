@@ -1,9 +1,9 @@
-package org.devjj.platform.nurbanhoney.features.ui.textedit
+package org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.usecases
 
 import okhttp3.MultipartBody
-import org.devjj.platform.nurbanhoney.core.exception.Failure
-import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.interactor.UseCase
+import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.TextEditorRepository
+import org.devjj.platform.nurbanhoney.features.ui.textedit.ImageUploadResult
 import javax.inject.Inject
 
 class UploadImageUseCase

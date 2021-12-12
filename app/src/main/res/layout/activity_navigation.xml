@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/app_navi_drawer"
         android:layout_width="0dp"
@@ -31,10 +29,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/NavigationFragmentContainer"/>
+                app:layout_constraintBottom_toTopOf="@id/aNavigation_fragment_container"/>
 
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/NavigationFragmentContainer"
+                android:id="@+id/aNavigation_fragment_container"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 tools:layout_editor_absoluteX="10dp"

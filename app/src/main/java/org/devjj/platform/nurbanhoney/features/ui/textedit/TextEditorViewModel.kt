@@ -7,6 +7,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import okhttp3.MultipartBody
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
+import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.usecases.DeleteImagesUseCase
+import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.usecases.ModifyArticleUseCase
+import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.usecases.UploadArticleUseCase
+import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.usecases.UploadImageUseCase
 import java.net.URL
 import javax.inject.Inject
 
@@ -14,10 +18,27 @@ import javax.inject.Inject
 class TextEditorViewModel
 @Inject constructor(
     private val uploadImage: UploadImageUseCase,
-    private val uploadArticle: UploadArticleUseCase
+    private val uploadArticle: UploadArticleUseCase,
+    private val deleteImages: DeleteImagesUseCase,
+    private val modifyArticle: ModifyArticleUseCase
 ) : BaseViewModel() {
     private val _imageURLs: MutableLiveData<List<URL>> = MutableLiveData()
     val imageURLs: LiveData<List<URL>> = _imageURLs
+    private val _articleResponse: MutableLiveData<String> = MutableLiveData()
+    val articleResponse: LiveData<String> = _articleResponse
+
+    fun deleteImages(token: String, uuid: String) =
+        deleteImages(DeleteImagesUseCase.Params(token, uuid), viewModelScope) {
+            it.fold(
+                ::handleFailure,
+                ::handleImageDeletion
+            )
+        }
+
+    private fun handleImageDeletion(response: ImageResponse) {
+        Log.d("text_check__", response.result)
+    }
+
 
     fun uploadImage(token: String, uuid: MultipartBody.Part, image: MultipartBody.Part) =
         uploadImage(UploadImageUseCase.Params(token, uuid, image), viewModelScope) {
@@ -45,19 +66,33 @@ class TextEditorViewModel
             )
         }
 
-    fun searchThumbnail(content: String) : String{
+    fun modifyArticle(
+        token: String,
+        articleId: Int,
+        thumbnail: String,
+        title: String,
+        lossCut: Long,
+        content: String
+    ) = modifyArticle(
+        ModifyArticleUseCase.Params(token, articleId, thumbnail, title, lossCut, content),
+        viewModelScope
+    ) {
+        it.fold(
+            ::handleFailure,
+            ::handleUploading
+        )
+    }
 
-        for(index in 0 until (imageURLs.value?.size ?: 0)){
-            var url = imageURLs.value?.get(index).toString()
-            if(content.contains(url))
-                return url
+    fun searchThumbnail(content: String) =
+        "(<img src=)[^>]*(/>|>)".toRegex().find(content)?.value.run {
+            this.toString().substring(10, (this?.length ?: 36) - 26)
+            //this.toString().replace( """(<img src=)[]*(")""", "")
         }
 
-        return ""
-    }
-    private fun handleUploading(articleResponse: ArticleResponse) {
+    private fun handleUploading(response: ArticleResponse) {
         //Toast.makeText(this , "글 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-        Log.d("check__", articleResponse.toString())
+        Log.d("text_check__", response.result)
+        _articleResponse.postValue(response.result)
     }
 
     private fun handleImageURL(imageUploadResult: ImageUploadResult) {

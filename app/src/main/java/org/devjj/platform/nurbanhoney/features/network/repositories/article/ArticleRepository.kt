@@ -1,11 +1,13 @@
-package org.devjj.platform.nurbanhoney.features.ui.article
+package org.devjj.platform.nurbanhoney.features.network.repositories.article
 
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
 import org.devjj.platform.nurbanhoney.features.network.ArticleService
 import org.devjj.platform.nurbanhoney.features.network.SimpleResponseEntity
+import org.devjj.platform.nurbanhoney.features.ui.article.*
 import org.devjj.platform.nurbanhoney.features.ui.home.ArticleEntity
+import org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney.NurbanHoneyArticle
 import javax.inject.Inject
 
 interface ArticleRepository {
@@ -21,12 +23,27 @@ interface ArticleRepository {
     fun deleteComment(token: String, id: Int, articleId: Int): Either<Failure, CommentResponse>
     fun updateComment(token: String, id: Int, content: String): Either<Failure, CommentResponse>
     fun getComment(commentId: Int): Either<Failure, Comment>
-
+    fun getArticles(flag: Int, offset: Int, limit: Int): Either<Failure, List<NurbanHoneyArticle>>
     class Network
     @Inject constructor(
         private val networkHandler: NetworkHandler,
         private val articleService: ArticleService
     ) : ArticleRepository {
+
+        override fun getArticles(
+            flag: Int,
+            offset: Int,
+            limit: Int
+        ): Either<Failure, List<NurbanHoneyArticle>> {
+            return when (networkHandler.isNetworkAvailable()) {
+                true -> networkHandler.request(
+                    articleService.getArticles(flag, offset, limit),
+                    { it.map { ArticlesRequestEntity -> ArticlesRequestEntity.toNurbanHoneyArticle() } },
+                    emptyList()
+                )
+                false -> Either.Left(Failure.NetworkConnection)
+            }
+        }
         override fun getArticle(token: String, id: Int): Either<Failure, Article> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
@@ -85,7 +102,7 @@ interface ArticleRepository {
         override fun getRatings(token: String, articleId: Int): Either<Failure, Ratings> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    articleService.getRatings(token ,articleId),
+                    articleService.getRatings(token, articleId),
                     { it.toRatings() },
                     RatingsEntity.empty
                 )

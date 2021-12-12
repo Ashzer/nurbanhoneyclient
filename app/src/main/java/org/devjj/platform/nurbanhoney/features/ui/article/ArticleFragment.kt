@@ -12,10 +12,14 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.controller.removeKeyboard
 import org.devjj.platform.nurbanhoney.core.controller.showKeyboard
 import org.devjj.platform.nurbanhoney.core.extension.*
+import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentArticleBinding
 import javax.inject.Inject
@@ -37,6 +41,8 @@ class ArticleFragment : BaseFragment() {
     private val viewModel by viewModels<ArticleViewModel>()
     private var _binding: FragmentArticleBinding? = null
     private val binding get() = _binding!!
+    @Inject
+    lateinit var navigator: Navigator
 
     @Inject
     lateinit var commentAdapter: CommentAdapter
@@ -66,6 +72,7 @@ class ArticleFragment : BaseFragment() {
 
     private fun setArticleId(id: Int?) {
         viewModel.getArticle()
+        viewModel.getRatings()
     }
 
     private fun responseRating(result: String?) {
@@ -120,18 +127,35 @@ class ArticleFragment : BaseFragment() {
         binding.articleShareIv.loadFromDrawable(R.drawable.ic_action_share)
 
         viewModel.getComments()
+        if(!viewModel.isAuthor()){
+            binding.articleInfoModifyClo.invisible()
+            binding.articleInfoDeleteClo.invisible()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setArticleId(arguments?.get(PARAM_ARTICLE) as Int)
-        viewModel.getRatings()
+
         binding.articleContentWv.setInputEnabled(false)
 
-        //if(viewModel.article.value.nickname == )
+        binding.articleInfoModifyClo.setOnSingleClickListener {
+            getConfirmation(requireContext(),"글을 수정하시겠습니까?") {
+                //viewModel.deleteArticle()
+                CoroutineScope(Dispatchers.IO).async {
+                    navigator.showTextEditorToModifyWithLoginCheck(
+                        requireContext(),
+                        viewModel.article.value!!
+                    )
+                }
+                //navigator.showTextEditorToModify(requireContext(),viewModel.article.value!!)
+            }
+        }
 
-        binding.articleInfoDelete.setOnSingleClickListener {
-            viewModel.deleteArticle()
+        binding.articleInfoDeleteClo.setOnSingleClickListener {
+            getConfirmation(requireContext(),"글을 삭제하시겠습니까?") {
+                viewModel.deleteArticle()
+            }
         }
 
         binding.articleLikesClo.setOnSingleClickListener {
@@ -162,11 +186,10 @@ class ArticleFragment : BaseFragment() {
         }*/
 
         binding.articleCommentBtn.setOnSingleClickListener {
-            getConfirmation("댓글을 등록하시겠습니까?") {
+            getConfirmation(requireContext(),"댓글을 등록하시겠습니까?") {
                 viewModel.postComment(binding.articleCommentEt.text.toString())
                 binding.articleCommentEt.text.clear()
             }
-
         }
 
         binding.articleCommentsRv.layoutManager = LinearLayoutManager(requireContext())
@@ -187,7 +210,7 @@ class ArticleFragment : BaseFragment() {
         }
 
         commentAdapter.deleteClickListener = { id ->
-            getConfirmation("댓글을 삭제하시겠습니까?") { viewModel.deleteComment(id) }
+            getConfirmation(requireContext(),"댓글을 삭제하시겠습니까?") { viewModel.deleteComment(id) }
         }
 
         commentAdapter.modifyClickListener = {
@@ -197,7 +220,7 @@ class ArticleFragment : BaseFragment() {
         }
 
         commentAdapter.updateClickListener = { view, comment, id ->
-            getConfirmation("댓글을 수정하시겠습니까?") {
+            getConfirmation(requireContext(),"댓글을 수정하시겠습니까?") {
                 viewModel.updateComment(comment, id)
                 binding.articleCommentClo.visible()
                 binding.articleCommentVisibilityClo.visible()
@@ -220,9 +243,15 @@ class ArticleFragment : BaseFragment() {
             if(!v.canScrollVertically(1)){
                 viewModel.getNextComments()
             }
+
         }
     }
 
+    override fun onResume() {
+        viewModel.setArticleId(arguments?.get(PARAM_ARTICLE) as Int)
+        super.onResume()
+    }
+/*
     private fun getConfirmation(msg: String, action: () -> Unit) {
         AlertDialog.Builder(this.requireContext())
             .setMessage(msg)
@@ -233,7 +262,6 @@ class ArticleFragment : BaseFragment() {
                 Toast.makeText(this.requireContext(), "취소 되었습니다", Toast.LENGTH_SHORT).show()
             }
             .show()
-
     }
-
+*/
 }

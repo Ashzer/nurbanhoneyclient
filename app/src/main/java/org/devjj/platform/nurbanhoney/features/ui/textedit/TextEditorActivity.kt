@@ -7,13 +7,19 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseEmptyActivity
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
+import org.devjj.platform.nurbanhoney.features.ui.article.Article
 
 @AndroidEntryPoint
 class TextEditorActivity : BaseEmptyActivity() {
 
     companion object{
+        private const val INTENT_EXTRA_PARAM_ARTICLE = "INTENT_PARAM_ARTICLE"
         fun callingIntent(context: Context) =
             Intent(context, TextEditorActivity::class.java)
+        fun callingIntentToModify(context: Context , article: Article) =
+            Intent(context, TextEditorActivity::class.java).apply {
+                putExtra(INTENT_EXTRA_PARAM_ARTICLE , article)
+            }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,5 +33,11 @@ class TextEditorActivity : BaseEmptyActivity() {
         finish()
     }
 
-    override fun fragment(): BaseFragment = TextEditorFragment()
+    override fun fragment(): BaseFragment {
+        return try{
+            TextEditorFragment.toModify(intent.getParcelableExtra(INTENT_EXTRA_PARAM_ARTICLE))
+        }catch(e : Exception){
+            TextEditorFragment()
+        }
+    }
 }
