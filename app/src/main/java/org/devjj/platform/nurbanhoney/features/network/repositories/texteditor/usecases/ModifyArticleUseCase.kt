@@ -10,6 +10,7 @@ class ModifyArticleUseCase
     private val repository: TextEditorRepository
 ) : UseCase<ArticleResponse, ModifyArticleUseCase.Params>() {
     override suspend fun run(params: Params) = repository.modifyArticle(
+        params.board,
         params.token,
         params.articleId,
         params.thumbnail,
@@ -19,6 +20,7 @@ class ModifyArticleUseCase
     )
 
     data class Params(
+        val board: String,
         val token: String,
         val articleId: Int,
         val thumbnail: String,

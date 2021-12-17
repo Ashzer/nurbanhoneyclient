@@ -14,10 +14,14 @@ class TextEditorActivity : BaseEmptyActivity() {
 
     companion object{
         private const val INTENT_EXTRA_PARAM_ARTICLE = "INTENT_PARAM_ARTICLE"
-        fun callingIntent(context: Context) =
-            Intent(context, TextEditorActivity::class.java)
-        fun callingIntentToModify(context: Context , article: Article) =
+        private const val INTENT_EXTRA_PARAM_BOARD="INTENT_PARAM_BOARD"
+        fun callingIntent(context: Context , board : String) =
+            Intent(context, TextEditorActivity::class.java).apply{
+                putExtra(INTENT_EXTRA_PARAM_BOARD,board)
+            }
+        fun callingIntentToModify(context: Context, board : String , article: Article) =
             Intent(context, TextEditorActivity::class.java).apply {
+                putExtra(INTENT_EXTRA_PARAM_BOARD,board)
                 putExtra(INTENT_EXTRA_PARAM_ARTICLE , article)
             }
     }

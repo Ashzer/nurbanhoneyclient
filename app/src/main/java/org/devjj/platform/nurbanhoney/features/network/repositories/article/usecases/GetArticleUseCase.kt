@@ -8,8 +8,10 @@ import javax.inject.Inject
 class GetArticleUseCase
 @Inject constructor(
     private val repository: ArticleRepository
-) : UseCase<Article, GetArticleUseCase.Params>(){
+) : UseCase<Article, GetArticleUseCase.Params>() {
 
-    override suspend fun run(params: Params) = repository.getArticle(params.token,params.id)
-    data class Params(val token : String, val id : Int)
+    override suspend fun run(params: Params) =
+        repository.getArticle(params.board, params.token, params.id)
+
+    data class Params(val board: String, val token: String, val id: Int)
 }

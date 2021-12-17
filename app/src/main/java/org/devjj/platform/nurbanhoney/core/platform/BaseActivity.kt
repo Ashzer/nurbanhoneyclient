@@ -13,7 +13,5 @@ abstract class BaseActivity : AppCompatActivity() {
     abstract fun fragment() : BaseFragment
 
     private var backPressedTime = 0L
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
+
 }

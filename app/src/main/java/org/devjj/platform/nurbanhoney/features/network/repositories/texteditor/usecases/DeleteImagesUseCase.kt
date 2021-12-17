@@ -9,9 +9,11 @@ class DeleteImagesUseCase
 @Inject constructor(
     private val repository: TextEditorRepository
 ) : UseCase<ImageResponse, DeleteImagesUseCase.Params>() {
-    override suspend fun run(params: Params) = repository.deleteImages(params.token, params.uuid)
+    override suspend fun run(params: Params) =
+        repository.deleteImages(params.board, params.token, params.uuid)
 
     data class Params(
+        val board: String,
         val token: String,
         val uuid: String,
     )

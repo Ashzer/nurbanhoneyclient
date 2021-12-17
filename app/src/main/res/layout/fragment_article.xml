@@ -6,10 +6,10 @@
     android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/article_container_sv"
+        android:id="@+id/articleContainerSv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/article_comment_holder_clo"
+        app:layout_constraintBottom_toTopOf="@id/articleCommentHolderClo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,102 +20,102 @@
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/article_title_clo"
+                android:id="@+id/articleTitleClo"
                 android:layout_width="match_parent"
                 android:layout_height="50dp">
 
                 <TextView
-                    android:id="@+id/article_title_str_tv"
+                    android:id="@+id/articleTitleStrTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="@string/article_title_str"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/article_title_tv"
+                    app:layout_constraintEnd_toStartOf="@+id/articleTitleTv"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/article_title_tv"
+                    android:id="@+id/articleTitleTv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/article_inquiries_str_tv"
-                    app:layout_constraintStart_toEndOf="@+id/article_title_str_tv"
+                    app:layout_constraintEnd_toStartOf="@id/articleInquiriesStrTv"
+                    app:layout_constraintStart_toEndOf="@+id/articleTitleStrTv"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/article_inquiries_str_tv"
+                    android:id="@+id/articleInquiriesStrTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/article_inquiries_str"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/article_inquiries_tv"
-                    app:layout_constraintStart_toEndOf="@+id/article_title_tv"
+                    app:layout_constraintEnd_toStartOf="@id/articleInquiriesTv"
+                    app:layout_constraintStart_toEndOf="@+id/articleTitleTv"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/article_inquiries_tv"
+                    android:id="@+id/articleInquiriesTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/article_inquiries_str_tv"
+                    app:layout_constraintStart_toEndOf="@+id/articleInquiriesStrTv"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/article_info_clo"
+                android:id="@+id/articleInfoClo"
                 android:layout_width="match_parent"
                 android:layout_height="50dp">
 
                 <TextView
-                    android:id="@+id/article_info_nickname_str_tv"
+                    android:id="@+id/articleInfoNicknameStrTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/article_author_str"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/article_info_badge_iv"
+                    app:layout_constraintEnd_toStartOf="@id/articleInfoBadgeIv"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/article_info_badge_iv"
+                    android:id="@+id/articleInfoBadgeIv"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/article_info_nickname_tv"
-                    app:layout_constraintStart_toEndOf="@id/article_info_nickname_str_tv"
+                    app:layout_constraintEnd_toStartOf="@id/articleInfoNicknameTv"
+                    app:layout_constraintStart_toEndOf="@id/articleInfoNicknameStrTv"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <TextView
-                    android:id="@+id/article_info_nickname_tv"
+                    android:id="@+id/articleInfoNicknameTv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:text="TextView"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/article_info_modify_clo"
-                    app:layout_constraintStart_toEndOf="@id/article_info_badge_iv"
+                    app:layout_constraintEnd_toStartOf="@+id/articleInfoModifyClo"
+                    app:layout_constraintStart_toEndOf="@id/articleInfoBadgeIv"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/article_info_modify_clo"
+                    android:id="@+id/articleInfoModifyClo"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/article_info_delete_clo"
-                    app:layout_constraintStart_toEndOf="@id/article_info_nickname_tv"
+                    app:layout_constraintEnd_toStartOf="@id/articleInfoDeleteClo"
+                    app:layout_constraintStart_toEndOf="@id/articleInfoNicknameTv"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/article_info_modify"
+                        android:id="@+id/articleInfoModify"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -126,17 +126,17 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/article_info_delete_clo"
+                    android:id="@+id/articleInfoDeleteClo"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/article_info_modify_clo"
+                    app:layout_constraintStart_toEndOf="@id/articleInfoModifyClo"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/article_info_delete"
+                        android:id="@+id/articleInfoDelete"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -150,16 +150,16 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/article_content_clo"
+                android:id="@+id/articleContentClo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/article_info_nickname_tv"
+                app:layout_constraintStart_toEndOf="@+id/articleInfoNicknameTv"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <jp.wasabeef.richeditor.RichEditor
-                    android:id="@+id/article_content_wv"
+                    android:id="@+id/articleContentWv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -169,88 +169,88 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/article_action_clo"
+                android:id="@+id/articleActionClo"
                 android:layout_width="match_parent"
                 android:layout_height="50dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/article_likes_clo"
+                    android:id="@+id/articleLikesClo"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/article_dislikes_clo"
+                    app:layout_constraintEnd_toStartOf="@id/articleDislikesClo"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/article_likes_iv"
+                        android:id="@+id/articleLikesIv"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/article_likes_tv"
+                        app:layout_constraintEnd_toStartOf="@id/articleLikesTv"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:srcCompat="@drawable/ic_action_like" />
 
                     <TextView
-                        android:id="@+id/article_likes_tv"
+                        android:id="@+id/articleLikesTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="TextView"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/article_likes_iv"
+                        app:layout_constraintStart_toEndOf="@id/articleLikesIv"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteX="99dp"
                         tools:layout_editor_absoluteY="15dp" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/article_dislikes_clo"
+                    android:id="@+id/articleDislikesClo"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/article_share_clo"
-                    app:layout_constraintStart_toEndOf="@id/article_likes_clo"
+                    app:layout_constraintEnd_toStartOf="@id/articleShareClo"
+                    app:layout_constraintStart_toEndOf="@id/articleLikesClo"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/article_dislikes_iv"
+                        android:id="@+id/articleDislikesIv"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/article_dislikes_tv"
+                        app:layout_constraintEnd_toStartOf="@id/articleDislikesTv"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:srcCompat="@drawable/ic_action_dislike" />
 
                     <TextView
-                        android:id="@+id/article_dislikes_tv"
+                        android:id="@+id/articleDislikesTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="TextView"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/article_dislikes_iv"
+                        app:layout_constraintStart_toEndOf="@id/articleDislikesIv"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:layout_editor_absoluteY="15dp" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/article_share_clo"
+                    android:id="@+id/articleShareClo"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/article_dislikes_clo"
+                    app:layout_constraintStart_toEndOf="@id/articleDislikesClo"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/article_share_iv"
+                        android:id="@+id/articleShareIv"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -263,12 +263,12 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/article_comments_clo"
+                android:id="@+id/articleCommentsClo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/article_comments_rv"
+                    android:id="@+id/articleCommentsRv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
@@ -282,41 +282,41 @@
     </androidx.core.widget.NestedScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/article_comment_holder_clo"
+        android:id="@+id/articleCommentHolderClo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/article_container_sv">
+        app:layout_constraintTop_toBottomOf="@id/articleContainerSv">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/article_comment_visibility_clo"
+            android:id="@+id/articleCommentVisibilityClo"
             android:layout_width="0dp"
             android:layout_height="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/article_comment_clo">
+            app:layout_constraintBottom_toTopOf="@id/articleCommentClo">
 
             <TextView
-                android:id="@+id/article_comment_visibility_tv"
+                android:id="@+id/articleCommentVisibilityTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/comment_drop_up"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/article_comment_visibility_iv"
+                app:layout_constraintEnd_toStartOf="@+id/articleCommentVisibilityIv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/comment_drop_up" />
 
             <ImageView
-                android:id="@+id/article_comment_visibility_iv"
+                android:id="@+id/articleCommentVisibilityIv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/article_comment_visibility_tv"
+                app:layout_constraintStart_toEndOf="@+id/articleCommentVisibilityTv"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_action_dropup"
                 tools:srcCompat="@drawable/ic_action_dropup" />
@@ -324,17 +324,17 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/article_comment_clo"
+            android:id="@+id/articleCommentClo"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/article_comment_visibility_clo">
+            app:layout_constraintTop_toBottomOf="@id/articleCommentVisibilityClo">
 
             <EditText
-                android:id="@+id/article_comment_et"
+                android:id="@+id/articleCommentEt"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="5dp"
@@ -345,12 +345,12 @@
                 android:scrollbarStyle="insideInset"
                 android:scrollbars="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/article_comment_btn"
+                app:layout_constraintEnd_toStartOf="@+id/articleCommentBtn"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/article_comment_btn"
+                android:id="@+id/articleCommentBtn"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="5dp"
@@ -360,7 +360,7 @@
                 android:background="@drawable/ic_action_save"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/article_comment_et"
+                app:layout_constraintStart_toEndOf="@+id/articleCommentEt"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

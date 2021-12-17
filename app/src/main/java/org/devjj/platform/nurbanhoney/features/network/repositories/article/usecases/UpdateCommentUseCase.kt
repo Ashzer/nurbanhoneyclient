@@ -10,9 +10,10 @@ class UpdateCommentUseCase
     private val repository: ArticleRepository
 ) : UseCase<CommentResponse, UpdateCommentUseCase.Params>() {
     override suspend fun run(params: Params) =
-        repository.updateComment(params.token, params.id, params.comment)
+        repository.updateComment(params.board, params.token, params.id, params.comment)
 
     data class Params(
+        val board: String,
         val token: String,
         val id: Int,
         val comment: String

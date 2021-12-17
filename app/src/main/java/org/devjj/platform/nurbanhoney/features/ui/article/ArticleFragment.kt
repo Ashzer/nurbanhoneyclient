@@ -1,14 +1,13 @@
 package org.devjj.platform.nurbanhoney.features.ui.article
 
-import android.app.AlertDialog
-import android.graphics.drawable.Drawable
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,10 +28,11 @@ class ArticleFragment : BaseFragment() {
 
     companion object {
         private const val PARAM_ARTICLE = "param_article"
+        private const val PARAM_BOARD = "param_board"
 
-        fun forArticle(id: Int?) =
+        fun forArticle(board: String?, id: Int?) =
             ArticleFragment().apply {
-                arguments = bundleOf(PARAM_ARTICLE to id)
+                arguments = bundleOf(PARAM_BOARD to board, PARAM_ARTICLE to id)
             }
     }
 
@@ -41,6 +41,7 @@ class ArticleFragment : BaseFragment() {
     private val viewModel by viewModels<ArticleViewModel>()
     private var _binding: FragmentArticleBinding? = null
     private val binding get() = _binding!!
+
     @Inject
     lateinit var navigator: Navigator
 
@@ -97,7 +98,7 @@ class ArticleFragment : BaseFragment() {
     private fun renderLikes(ratings: Ratings?) {
         binding.articleLikesTv.text = ratings?.likes.toString()
         binding.articleDislikesTv.text = ratings?.dislikes.toString()
-        Log.d("rating_check__",ratings?.myRating.toString() ?: "empty")
+        Log.d("rating_check__", ratings?.myRating.toString() ?: "empty")
         if (!ratings?.myRating.isNullOrEmpty()) {
             /*if (ratings?.myRating == "like") {
                 binding.articleLikesIv.drawable.setTint(R.color.colorWhite)
@@ -127,7 +128,7 @@ class ArticleFragment : BaseFragment() {
         binding.articleShareIv.loadFromDrawable(R.drawable.ic_action_share)
 
         viewModel.getComments()
-        if(!viewModel.isAuthor()){
+        if (!viewModel.isAuthor()) {
             binding.articleInfoModifyClo.invisible()
             binding.articleInfoDeleteClo.invisible()
         }
@@ -140,7 +141,7 @@ class ArticleFragment : BaseFragment() {
         binding.articleContentWv.setInputEnabled(false)
 
         binding.articleInfoModifyClo.setOnSingleClickListener {
-            getConfirmation(requireContext(),"글을 수정하시겠습니까?") {
+            getConfirmation(requireContext(), "글을 수정하시겠습니까?") {
                 //viewModel.deleteArticle()
                 CoroutineScope(Dispatchers.IO).async {
                     navigator.showTextEditorToModifyWithLoginCheck(
@@ -153,25 +154,25 @@ class ArticleFragment : BaseFragment() {
         }
 
         binding.articleInfoDeleteClo.setOnSingleClickListener {
-            getConfirmation(requireContext(),"글을 삭제하시겠습니까?") {
+            getConfirmation(requireContext(), "글을 삭제하시겠습니까?") {
                 viewModel.deleteArticle()
             }
         }
 
         binding.articleLikesClo.setOnSingleClickListener {
-            Log.d("rating_check__+",viewModel.ratings.value?.myRating.toString() ?: "empty")
-            if(viewModel.ratings.value?.myRating.toString() == "like"){
+            Log.d("rating_check__+", viewModel.ratings.value?.myRating.toString() ?: "empty")
+            if (viewModel.ratings.value?.myRating.toString() == "like") {
                 viewModel.unLike()
-            }else{
+            } else {
                 viewModel.postLike()
             }
         }
 
         binding.articleDislikesClo.setOnSingleClickListener {
-            Log.d("rating_check__+",viewModel.ratings.value?.myRating.toString() ?: "empty")
-            if(viewModel.ratings.value?.myRating.toString() == "dislike"){
+            Log.d("rating_check__+", viewModel.ratings.value?.myRating.toString() ?: "empty")
+            if (viewModel.ratings.value?.myRating.toString() == "dislike") {
                 viewModel.unDislike()
-            }else{
+            } else {
                 viewModel.postDislike()
             }
         }
@@ -186,7 +187,7 @@ class ArticleFragment : BaseFragment() {
         }*/
 
         binding.articleCommentBtn.setOnSingleClickListener {
-            getConfirmation(requireContext(),"댓글을 등록하시겠습니까?") {
+            getConfirmation(requireContext(), "댓글을 등록하시겠습니까?") {
                 viewModel.postComment(binding.articleCommentEt.text.toString())
                 binding.articleCommentEt.text.clear()
             }
@@ -198,7 +199,9 @@ class ArticleFragment : BaseFragment() {
         binding.articleCommentVisibilityClo.setOnSingleClickListener {
             Log.d("equals_check__", binding.articleCommentVisibilityTv.text.toString())
             Log.d("equals_check__", resources.getString(R.string.comment_drop_up))
-            if (binding.articleCommentVisibilityTv.text.toString().equals(resources.getString(R.string.comment_drop_up))) {
+            if (binding.articleCommentVisibilityTv.text.toString()
+                    .equals(resources.getString(R.string.comment_drop_up))
+            ) {
                 binding.articleCommentVisibilityIv.loadFromDrawable(R.drawable.ic_action_dropdown)
                 binding.articleCommentVisibilityTv.setText(R.string.comment_drop_down)
                 binding.articleCommentClo.visible()
@@ -210,7 +213,7 @@ class ArticleFragment : BaseFragment() {
         }
 
         commentAdapter.deleteClickListener = { id ->
-            getConfirmation(requireContext(),"댓글을 삭제하시겠습니까?") { viewModel.deleteComment(id) }
+            getConfirmation(requireContext(), "댓글을 삭제하시겠습니까?") { viewModel.deleteComment(id) }
         }
 
         commentAdapter.modifyClickListener = {
@@ -220,7 +223,7 @@ class ArticleFragment : BaseFragment() {
         }
 
         commentAdapter.updateClickListener = { view, comment, id ->
-            getConfirmation(requireContext(),"댓글을 수정하시겠습니까?") {
+            getConfirmation(requireContext(), "댓글을 수정하시겠습니까?") {
                 viewModel.updateComment(comment, id)
                 binding.articleCommentClo.visible()
                 binding.articleCommentVisibilityClo.visible()
@@ -234,16 +237,20 @@ class ArticleFragment : BaseFragment() {
             removeKeyboard(requireActivity(), it)
         }
 
-       // viewModel.controller.init()
-       // viewModel.controller.getNext(viewModel.comments.value)
-      //  viewModel.controller.loadNext()
+        // viewModel.controller.init()
+        // viewModel.controller.getNext(viewModel.comments.value)
+        //  viewModel.controller.loadNext()
+        val scrollBounds = Rect()
+        binding.articleContainerSv.getHitRect(scrollBounds)
 
         binding.articleContainerSv.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            Log.d("scroll_check__"," $scrollX , $scrollY , $oldScrollX , $oldScrollY ")
-            if(!v.canScrollVertically(1)){
+            Log.d("scroll_check__", " $scrollX , $scrollY , $oldScrollX , $oldScrollY ")
+            if (!v.canScrollVertically(1)) {
                 viewModel.getNextComments()
             }
 
+//            Log.d("recyclerview_check__" , (binding.articleCommentsRv.layoutManager as LinearLayoutManager).itemCount.toString())
+//            Log.d("recyclerview_check__" , (binding.articleCommentsRv.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition().toString())
         }
     }
 

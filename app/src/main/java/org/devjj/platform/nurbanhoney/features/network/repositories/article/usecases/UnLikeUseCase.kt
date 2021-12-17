@@ -9,9 +9,11 @@ class UnLikeUseCase
 @Inject constructor(
     private val repository: ArticleRepository
 ) : UseCase<RatingResponse, UnLikeUseCase.Params>() {
-    override suspend fun run(params: Params) = repository.cancelLike(params.token, params.id)
+    override suspend fun run(params: Params) =
+        repository.cancelLike(params.board, params.token, params.id)
 
     data class Params(
+        val board: String,
         val token: String,
         val id: Int
     )

@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentTransaction
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.features.ui.article.Article
 import org.devjj.platform.nurbanhoney.features.ui.article.ArticleActivity
-import org.devjj.platform.nurbanhoney.features.ui.home.MainActivity
+import org.devjj.platform.nurbanhoney.features.ui.home.BoardActivity
 import org.devjj.platform.nurbanhoney.features.ui.login.Authenticator
 import org.devjj.platform.nurbanhoney.features.ui.login.LoginActivity
 import org.devjj.platform.nurbanhoney.features.ui.textedit.TextEditorActivity
@@ -18,51 +18,62 @@ import javax.inject.Singleton
 
 @Singleton
 class Navigator
-@Inject constructor(private val authenticator: Authenticator){
+@Inject constructor(private val authenticator: Authenticator) {
     private fun showLogin(context: Context) =
         context.startActivity(LoginActivity.callingIntent(context))
 
-    suspend fun showMain(context: Context){
-        when (authenticator.userLoggedIn()){
+    suspend fun showMain(context: Context) {
+        when (authenticator.userLoggedIn()) {
             true -> showHome(context)
             false -> showLogin(context)
         }
     }
 
     fun showHome(context: Context) =
-        context.startActivity(MainActivity.callingIntent(context))
+        context.startActivity(BoardActivity.callingIntent(context))
 
-    suspend fun showTextEditorWithLoginCheck(context: Context){
-        when (authenticator.userLoggedIn()){
-            true -> showTextEditor(context)
+    suspend fun showTextEditorWithLoginCheck(context: Context, board: String) {
+        fun showTextEditor(context: Context, board: String) =
+            context.startActivity(TextEditorActivity.callingIntent(context,board))
+
+        when (authenticator.userLoggedIn()) {
+            true -> showTextEditor(context,board)
             false -> showLogin(context)
         }
     }
 
-    suspend fun showTextEditorToModifyWithLoginCheck(context: Context,article : Article){
-        when (authenticator.userLoggedIn()){
-            true -> showTextEditorToModify(context , article)
+    suspend fun showTextEditorToModifyWithLoginCheck(context: Context, board: String, article: Article) {
+        fun showTextEditorToModify(context: Context, board: String, article: Article) {
+            val intent = TextEditorActivity.callingIntentToModify(context,board, article)
+            val activityOptions = ActivityOptionsCompat.makeBasic()
+            context.startActivity(intent, activityOptions.toBundle())
+        }
+
+        when (authenticator.userLoggedIn()) {
+            true -> showTextEditorToModify(context, board,article)
             false -> showLogin(context)
         }
     }
 
-    fun showTextEditor(context: Context) =
-        context.startActivity(TextEditorActivity.callingIntent(context))
-    fun showTextEditorToModify(context: Context, article : Article) {
-        val intent =TextEditorActivity.callingIntentToModify(context, article)
-        val activityOptions = ActivityOptionsCompat.makeBasic()
-        context.startActivity(intent,activityOptions.toBundle())
-    }
 
 
-    fun transFragment(supportFragmentManager : FragmentManager, frag : BaseFragment, containerView: FragmentContainerView){
+
+
+
+    fun transFragment(
+        supportFragmentManager: FragmentManager,
+        frag: BaseFragment,
+        containerView: FragmentContainerView
+    ) {
+
         supportFragmentManager.beginTransaction()
             .replace(containerView.id, frag)
+            .addToBackStack(null)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commit()
     }
 
-    fun showArticle(activity: FragmentActivity, id :Int)=
-        activity.startActivity(ArticleActivity.callingIntent(activity ,id))
+    fun showArticle(activity: FragmentActivity, board: String, id: Int) =
+        activity.startActivity(ArticleActivity.callingIntent(activity, board, id))
 
 }

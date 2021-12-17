@@ -1,7 +1,6 @@
 package org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,7 +47,6 @@ class NurbanHoneyFragment : BaseFragment() {
     }
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,28 +59,26 @@ class NurbanHoneyFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.WriteNurban.setOnSingleClickListener {
+        binding.boardWriteFab.setOnSingleClickListener {
             //navigator.showTextEditor(requireContext())
             CoroutineScope(Dispatchers.IO).async {
                 navigator.showTextEditorWithLoginCheck(requireContext())
             }
         }
 
-        articleAdapter.clickListener = {id ->
-            Log.d("id_check__",id.toString())
-
-            navigator.showArticle(requireActivity(),id)
+        articleAdapter.clickListener = { id ->
+            navigator.showArticle(requireActivity(), viewModel.board, id)
         }
 
-        val set : MutableSet<NurbanHoneyArticle> = mutableSetOf()
-        set.add(NurbanHoneyArticle(0,"","",0,"","",""))
+        val set: MutableSet<NurbanHoneyArticle> = mutableSetOf()
+        set.add(NurbanHoneyArticle(0, "", "", 0, "", "", ""))
 
-        binding.rvNurbanBoard.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvNurbanBoard.adapter = articleAdapter
+        binding.boardListRv.layoutManager = LinearLayoutManager(requireContext())
+        binding.boardListRv.adapter = articleAdapter
 
         //viewModel.controller.initialize()
 
-        binding.rvNurbanBoard.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.boardListRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
@@ -91,9 +87,11 @@ class NurbanHoneyFragment : BaseFragment() {
 //                val count = (recyclerView.adapter?.itemCount ?: 0)
 //
 //                if(count - 1 == position){
-                if (!binding.rvNurbanBoard.canScrollVertically(1)) {
+                if (!binding.boardListRv.canScrollVertically(1)) {
                     viewModel.getArticles()
                 }
+
+
             }
         })
     }

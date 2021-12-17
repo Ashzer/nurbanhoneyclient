@@ -9,92 +9,103 @@ import retrofit2.http.*
 
 internal interface ArticleApi {
     companion object {
-        private const val NURBAN_LIST = "nurban"
-        private const val ARTICLE_LIKE = "nurban/detail/like"
-        private const val ARTICLE_DISLIKE = "nurban/detail/dislike"
-        private const val ARTICLE_COMMENTS = "nurban/comment"
-        private const val ARTICLE_COMMENT = "nurban/comment/detail"
-        private const val NURBAN_ARTICLE = "nurban/detail"
-        private const val ARTICLE_RATING = "nurban/myrating"
+        private const val DETAIL = "/detail"
+        private const val LIKE = "/like"
+        private const val DISLIKE = "/dislike"
+        private const val COMMENTS = "/comment"
+        private const val RATING = "/myrating"
     }
 
-    @GET(NURBAN_LIST)
+    @GET("{board}")
     fun getArticles(
+        @Path("board") board: String,
         @Query("flag") flag: Int = 0,
         @Query("offset") offset: Int,
         @Query("limit") limit: Int
     ): Call<List<ArticlesRequestEntity>>
 
-    @GET(NURBAN_ARTICLE)
+    //@GET(NURBAN_ARTICLE)
+    @GET("{board}$DETAIL")
     fun getArticle(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Query("id") id: Int
     ): Call<ArticleEntity>
 
     @FormUrlEncoded
-    @POST(ARTICLE_LIKE)
+    @POST("{board}$DETAIL$LIKE")
     fun postLike(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Field("articleId") id: Int
     ): Call<SimpleResponseEntity>
 
-    @DELETE(ARTICLE_LIKE)
+    @DELETE("{board}$DETAIL$LIKE")
     fun cancelLike(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Query("articleId") id: Int
     ): Call<SimpleResponseEntity>
 
     @FormUrlEncoded
-    @POST(ARTICLE_DISLIKE)
+    @POST("{board}$DETAIL$DISLIKE")
     fun postDislike(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Field("articleId") id: Int
     ): Call<SimpleResponseEntity>
 
-    @DELETE(ARTICLE_DISLIKE)
+    @DELETE("{board}$DETAIL$DISLIKE")
     fun cancelDislike(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Query("articleId") id: Int
     ): Call<SimpleResponseEntity>
 
-    @GET(ARTICLE_RATING)
+    @GET("{board}$RATING")
     fun getRatings(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Query("articleId") articleId: Int
     ): Call<RatingsEntity>
 
     @FormUrlEncoded
-    @POST(ARTICLE_COMMENTS)
+    @POST("{board}$COMMENTS")
     fun postComment(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Field("content") comment: String,
         @Field("articleId") id: Int
     ): Call<SimpleResponseEntity>
 
-    @GET(ARTICLE_COMMENTS)
+    @GET("{board}$COMMENTS")
     fun getComments(
+        @Path("board") board: String,
         @Query("articleId") id: Int,
         @Query("offset") offset: Int,
         @Query("limit") limit: Int
     ): Call<List<CommentEntity>>
 
-    @DELETE(ARTICLE_COMMENTS)
+    @DELETE("{board}$COMMENTS")
     fun deleteComment(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Query("id") id: Int,
         @Query("articleId") articleId: Int
     ): Call<SimpleResponseEntity>
 
     @FormUrlEncoded
-    @PATCH(ARTICLE_COMMENTS)
+    @PATCH("{board}$COMMENTS")
     fun updateComment(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Field("id") id: Int,
         @Field("content") content: String
     ): Call<SimpleResponseEntity>
 
-    @GET(ARTICLE_COMMENT)
+    @GET("{board}$COMMENTS$DETAIL")
     fun getComment(
+        @Path("board") board: String,
         @Query("commentId") commentId: Int
     ): Call<CommentEntity>
 }

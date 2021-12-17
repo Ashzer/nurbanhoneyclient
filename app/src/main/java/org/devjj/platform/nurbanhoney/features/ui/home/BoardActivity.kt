@@ -19,16 +19,17 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class MainActivity : BaseTabLayoutActivity() {
+class BoardActivity : BaseTabLayoutActivity() {
     override fun fragment() = NurbanHoneyFragment()
     private val gravity = GravityCompat.START
+
     @Inject
     lateinit var navigator: Navigator
     private lateinit var binding: ActivityNavigationBinding
 
     companion object {
         fun callingIntent(context: Context) =
-            Intent(context, MainActivity::class.java)
+            Intent(context, BoardActivity::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,11 +40,11 @@ class MainActivity : BaseTabLayoutActivity() {
         setContentView(view)
         addFragment(savedInstanceState)
 
-        binding.appNavigator.setOnNavigationItemSelectedListener {
+        binding.NavigationNavigator.setOnNavigationItemSelectedListener {
 
             Log.d("navi_check__", it.itemId.toString())
             when (it.itemId) {
-                R.id.menu_popular -> navigate(NurbanHoneyFragment())
+                R.id.menu_popular_board -> navigate(NurbanHoneyFragment())
                 R.id.menu_ranking -> navigate(RankingFragment())
                 R.id.menu_profile -> navigate(ProfileFragment())
                 else -> navigate(RankingFragment())
@@ -51,26 +52,39 @@ class MainActivity : BaseTabLayoutActivity() {
             true
         }
 
-        binding.appNaviSidemenu.setNavigationItemSelectedListener {
-            Log.d("navi_check__", it.itemId.toString())
-            when (it.itemId) {
-                R.id.menu_popular -> navigate(NurbanHoneyFragment())
-                R.id.menu_ranking -> navigate(RankingFragment())
-                R.id.menu_profile -> navigate(ProfileFragment())
-                else -> navigate(RankingFragment())
+        var menu = binding.NavigationSideMenu.menu
+        var boardList = listOf("nurban", "bbb", "ccc")
+
+        boardList.forEachIndexed { i, e ->
+            menu.add(R.id.menu_group_boards, i, i, e)
+        }
+
+        binding.NavigationSideMenu.setNavigationItemSelectedListener {
+            if (it.groupId == R.id.menu_group_boards) {
+                Log.d("navi_check__bottom", it.toString())
+                Log.d("navi_check__", it.groupId.toString())
+                Log.d("navi_check__", it.itemId.toString())
+            } else {
+                Log.d("navi_check__top", it.itemId.toString())
+                when (it.itemId) {
+                    R.id.menu_popular_board -> navigate(NurbanHoneyFragment())
+                    R.id.menu_ranking -> navigate(RankingFragment())
+                    R.id.menu_profile -> navigate(ProfileFragment())
+                }
             }
-            binding.appNaviDrawer.closeDrawer(GravityCompat.START)
+
+            binding.NavigationDrawer.closeDrawer(GravityCompat.START)
             false
         }
 
-        setSupportActionBar(binding.appNaviToolbar)
+        setSupportActionBar(binding.NavigationToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_menu)
     }
 
     override fun onBackPressed() {
-        if (binding.appNaviDrawer.isDrawerOpen(gravity)) {
-            binding.appNaviDrawer.closeDrawer(gravity)
+        if (binding.NavigationDrawer.isDrawerOpen(gravity)) {
+            binding.NavigationDrawer.closeDrawer(gravity)
         } else {
             super.onBackPressed()
         }
@@ -79,7 +93,7 @@ class MainActivity : BaseTabLayoutActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                val layoutDrawer = binding.appNaviDrawer
+                val layoutDrawer = binding.NavigationDrawer
 
                 if (layoutDrawer.isDrawerOpen(gravity)) {
                     layoutDrawer.closeDrawer(gravity)
@@ -97,7 +111,7 @@ class MainActivity : BaseTabLayoutActivity() {
         navigator.transFragment(
             supportFragmentManager,
             fragment,
-            binding.aNavigationFragmentContainer
+            binding.NavigationFragmentContainer
         )
 
 }

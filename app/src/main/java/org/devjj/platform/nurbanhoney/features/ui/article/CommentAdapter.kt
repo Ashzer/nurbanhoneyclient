@@ -53,51 +53,51 @@ class CommentAdapter
             if (prefs.getString(R.string.prefs_user_id.toString(), "-1")
                     ?.toInt() ?: -1 != comment.userId
             ) {
-                itemView.comment_modify_btn_holder_clo.invisible()
-                itemView.comment_delete_btn_holder_clo.invisible()
+                itemView.itemCommentModifyBtnClo.invisible()
+                itemView.itemCommentDeleteBtnClo.invisible()
             }
 
-            itemView.comment_badge_iv.loadFromUrl(comment.badge, R.drawable.ic_action_no_badge)
-            itemView.comment_nickname_tv.text = comment.nickname
-            itemView.comment_comment_tv.text = comment.comment
-            itemView.comment_delete_btn_holder_clo.setOnSingleClickListener {
+            itemView.itemCommentBadgeIv.loadFromUrl(comment.badge, R.drawable.ic_action_no_badge)
+            itemView.itemCommentNicknameTv.text = comment.nickname
+            itemView.itemCommentContentTv.text = comment.comment
+            itemView.itemCommentDeleteBtnClo.setOnSingleClickListener {
                 deleteClickListener(comment.id)
             }
 
-            itemView.comment_modify_btn_holder_clo.setOnSingleClickListener {
-                itemView.comment_delete_btn_holder_clo.invisible()
-                itemView.comment_modify_btn_holder_clo.invisible()
-                itemView.comment_update_btn_holder_clo.visible()
-                itemView.comment_cancel_btn_holder_clo.visible()
-                itemView.comment_update_text_clo.visible()
-                itemView.comment_update_text_et.setText(itemView.comment_comment_tv.text)
-                itemView.comment_comment_clo.invisible()
-                itemView.comment_update_text_et.isFocusable = true
-                itemView.comment_update_text_et.requestFocus()
-                modifyClickListener(itemView.comment_update_text_et)
+            itemView.itemCommentModifyBtnClo.setOnSingleClickListener {
+                itemView.itemCommentDeleteBtnClo.invisible()
+                itemView.itemCommentModifyBtnClo.invisible()
+                itemView.itemCommentUpdateBtnClo.visible()
+                itemView.itemCommentCancelBtnClo.visible()
+                itemView.itemCommentUpdateEtClo.visible()
+                itemView.itemCommentUpdateEt.setText(itemView.itemCommentContentTv.text)
+                itemView.itemCommentContentClo.invisible()
+                itemView.itemCommentUpdateEt.isFocusable = true
+                itemView.itemCommentUpdateEt.requestFocus()
+                modifyClickListener(itemView.itemCommentUpdateEt)
             }
 
-            itemView.comment_update_btn_holder_clo.setOnSingleClickListener {
-                itemView.comment_delete_btn_holder_clo.visible()
-                itemView.comment_modify_btn_holder_clo.visible()
-                itemView.comment_update_btn_holder_clo.invisible()
-                itemView.comment_cancel_btn_holder_clo.invisible()
-                itemView.comment_update_text_clo.invisible()
-                itemView.comment_comment_clo.visible()
-                itemView.comment_comment_tv.isFocusable = true
-                var newComment = itemView.comment_update_text_et.text.toString()
-                updateClickListener(itemView.comment_update_text_et,newComment, comment.id)
+            itemView.itemCommentUpdateBtnClo.setOnSingleClickListener {
+                itemView.itemCommentDeleteBtnClo.visible()
+                itemView.itemCommentModifyBtnClo.visible()
+                itemView.itemCommentUpdateBtnClo.invisible()
+                itemView.itemCommentCancelBtnClo.invisible()
+                itemView.itemCommentUpdateEtClo.invisible()
+                itemView.itemCommentContentClo.visible()
+                itemView.itemCommentContentTv.isFocusable = true
+                var newComment = itemView.itemCommentUpdateEt.text.toString()
+                updateClickListener(itemView.itemCommentUpdateEt,newComment, comment.id)
             }
 
-            itemView.comment_cancel_btn_holder_clo.setOnSingleClickListener {
-                itemView.comment_delete_btn_holder_clo.visible()
-                itemView.comment_modify_btn_holder_clo.visible()
-                itemView.comment_update_btn_holder_clo.invisible()
-                itemView.comment_cancel_btn_holder_clo.invisible()
-                itemView.comment_update_text_clo.invisible()
-                itemView.comment_comment_clo.visible()
-                itemView.comment_comment_tv.isFocusable = true
-                cancelClickListener(itemView.comment_update_text_et)
+            itemView.itemCommentCancelBtnClo.setOnSingleClickListener {
+                itemView.itemCommentDeleteBtnClo.visible()
+                itemView.itemCommentModifyBtnClo.visible()
+                itemView.itemCommentUpdateBtnClo.invisible()
+                itemView.itemCommentCancelBtnClo.invisible()
+                itemView.itemCommentUpdateEtClo.invisible()
+                itemView.itemCommentContentClo.visible()
+                itemView.itemCommentContentTv.isFocusable = true
+                cancelClickListener(itemView.itemCommentUpdateEt)
             }
         }
     }

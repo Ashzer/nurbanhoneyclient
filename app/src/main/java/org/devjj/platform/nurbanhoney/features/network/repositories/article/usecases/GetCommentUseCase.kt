@@ -9,7 +9,7 @@ class GetCommentUseCase
 @Inject constructor(
     private val repository: ArticleRepository
 ) : UseCase<Comment, GetCommentUseCase.Params>() {
-    override suspend fun run(params: Params) = repository.getComment(params.commentId)
+    override suspend fun run(params: Params) = repository.getComment(params.board, params.commentId)
 
-    data class Params(val commentId : Int)
+    data class Params(val board: String, val commentId: Int)
 }

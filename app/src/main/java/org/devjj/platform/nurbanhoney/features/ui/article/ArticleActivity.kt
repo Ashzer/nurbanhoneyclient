@@ -12,14 +12,19 @@ class ArticleActivity : BaseEmptyActivity() {
 
     companion object{
         private const val INTENT_EXTRA_PARAM_ARTICLE = "INTENT_PARAM_ARTICLE"
+        private const val INTENT_EXTRA_PARAM_BOARD = "INTENT_PARAM_BOARD"
         //fun callingIntent(context: Context) = Intent(context, ArticleActivity::class.java)
-        fun callingIntent(context: Context, id: Int) =
+        fun callingIntent(context: Context, board : String ,id: Int) =
             Intent(context , ArticleActivity::class.java).apply{
+                putExtra(INTENT_EXTRA_PARAM_BOARD, board)
                 putExtra(INTENT_EXTRA_PARAM_ARTICLE,id)
             }
     }
 
-    override fun fragment() = ArticleFragment.forArticle(intent.getIntExtra(INTENT_EXTRA_PARAM_ARTICLE, -1))
+    override fun fragment() = ArticleFragment.forArticle(
+        intent.getStringExtra(INTENT_EXTRA_PARAM_BOARD),
+        intent.getIntExtra(INTENT_EXTRA_PARAM_ARTICLE, -1)
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
