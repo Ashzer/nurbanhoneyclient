@@ -7,13 +7,13 @@
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/LoginKakaoClo"
+        android:id="@+id/loginKakaoClo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
 
         <ImageView
-            android:id="@+id/LoginKakaoBtn"
+            android:id="@+id/loginKakaoBtn"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_weight="1"
@@ -25,13 +25,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/LoginNaverClo"
+        android:id="@+id/loginNaverClo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
 
         <ImageView
-            android:id="@+id/LoginNaverBtn"
+            android:id="@+id/loginNaverBtn"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_weight="1"
@@ -44,13 +44,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/LoginGoogleClo"
+        android:id="@+id/loginGoogleClo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
 
         <ImageView
-            android:id="@+id/LoginGoogleBtn"
+            android:id="@+id/loginGoogleBtn"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_weight="1"
