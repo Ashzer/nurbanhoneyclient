@@ -33,7 +33,7 @@ data class Article(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.readInt(),
+        parcel.readValue(Int::class.java.classLoader) as Int?,
         parcel.readString()!!,
         parcel.readInt(),
         parcel.readInt(),
@@ -54,7 +54,7 @@ data class Article(
             writeString(uuid)
             writeString(thumbnail)
             writeString(title)
-            writeInt(lossCut ?: -1)
+            writeValue(lossCut)
             writeString(content)
             writeInt(inquiries)
             writeInt(comments)

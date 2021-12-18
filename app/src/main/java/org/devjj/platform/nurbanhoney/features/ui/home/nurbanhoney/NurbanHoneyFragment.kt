@@ -62,7 +62,7 @@ class NurbanHoneyFragment : BaseFragment() {
         binding.boardWriteFab.setOnSingleClickListener {
             //navigator.showTextEditor(requireContext())
             CoroutineScope(Dispatchers.IO).async {
-                navigator.showTextEditorWithLoginCheck(requireContext())
+                navigator.showTextEditorWithLoginCheck(requireContext(),viewModel.board)
             }
         }
 

@@ -8,11 +8,13 @@ import retrofit2.http.*
 internal interface BoardApi {
 
     companion object {
+        private const val BASE_BOARD ="/board"
+        private const val ARTICLE ="/article"
         private const val UPLOAD_IMG = "/upload/image"
     }
 
     @FormUrlEncoded
-    @POST("{board}")
+    @POST("$BASE_BOARD/{board}$ARTICLE")
     fun uploadRequest(
         @Path("board") board: String,
         @Header("token") token: String,
@@ -24,7 +26,7 @@ internal interface BoardApi {
     ): Call<SimpleResponseEntity>
 
     @FormUrlEncoded
-    @PATCH("{board}")
+    @PATCH("$BASE_BOARD/{board}$ARTICLE")
     fun modifyRequest(
         @Path("board") board: String,
         @Header("token") token: String,
@@ -36,7 +38,7 @@ internal interface BoardApi {
     ): Call<SimpleResponseEntity>
 
     @Multipart
-    @POST("{board}$UPLOAD_IMG")
+    @POST("$BASE_BOARD/{board}$ARTICLE$UPLOAD_IMG")
     fun uploadImage(
         @Path("board") board: String,
         @Header("token") token: String,
@@ -44,14 +46,14 @@ internal interface BoardApi {
         @Part image: MultipartBody.Part
     ): Call<UploadImageEntity>
 
-    @DELETE("{board}$UPLOAD_IMG")
+    @DELETE("$BASE_BOARD/{board}$ARTICLE$UPLOAD_IMG")
     fun deleteImage(
         @Path("board") board: String,
         @Header("token") token: String,
         @Query("uuid") uuid: String
     ): Call<SimpleResponseEntity>
 
-    @DELETE("{board}")
+    @DELETE("$BASE_BOARD/{board}$ARTICLE")
     fun deleteArticle(
         @Path("board") board: String,
         @Header("token") token: String,

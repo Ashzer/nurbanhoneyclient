@@ -3,6 +3,7 @@ package org.devjj.platform.nurbanhoney.features.ui.textedit
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import dagger.hilt.android.AndroidEntryPoint
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseEmptyActivity
@@ -38,10 +39,18 @@ class TextEditorActivity : BaseEmptyActivity() {
     }
 
     override fun fragment(): BaseFragment {
-        return try{
-            TextEditorFragment.toModify(intent.getParcelableExtra(INTENT_EXTRA_PARAM_ARTICLE))
-        }catch(e : Exception){
-            TextEditorFragment()
-        }
+        Log.d("bundle_check__",intent.getStringExtra(INTENT_EXTRA_PARAM_BOARD).toString())
+        return if(intent.getStringExtra(INTENT_EXTRA_PARAM_BOARD).toString() == "nurban")
+            try{
+                TextEditorFragment.toModify(intent.getParcelableExtra(INTENT_EXTRA_PARAM_ARTICLE))
+            }catch(e : Exception){
+                TextEditorFragment()
+            }
+        else
+            try{
+                TextEditorFragment.toModify(intent.getParcelableExtra(INTENT_EXTRA_PARAM_ARTICLE))
+            }catch(e : Exception){
+                TextEditorFragment()
+            }
     }
 }

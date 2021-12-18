@@ -36,7 +36,7 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TextEditorFragment : BaseFragment() {
+open class TextEditorFragment : BaseFragment() {
     override fun layoutId() = R.layout.fragment_text_editor_nurban
 
     companion object {

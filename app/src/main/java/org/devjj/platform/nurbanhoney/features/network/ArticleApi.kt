@@ -9,14 +9,16 @@ import retrofit2.http.*
 
 internal interface ArticleApi {
     companion object {
-        private const val DETAIL = "/detail"
+        private const val BASE_BOARD ="/board"
+        private const val ARTICLE = "/article"
         private const val LIKE = "/like"
         private const val DISLIKE = "/dislike"
         private const val COMMENTS = "/comment"
+        private const val COMMENT = "/detail"
         private const val RATING = "/myrating"
     }
 
-    @GET("{board}")
+    @GET("$BASE_BOARD/{board}")
     fun getArticles(
         @Path("board") board: String,
         @Query("flag") flag: Int = 0,
@@ -25,7 +27,7 @@ internal interface ArticleApi {
     ): Call<List<ArticlesRequestEntity>>
 
     //@GET(NURBAN_ARTICLE)
-    @GET("{board}$DETAIL")
+    @GET("$BASE_BOARD/{board}$ARTICLE")
     fun getArticle(
         @Path("board") board: String,
         @Header("token") token: String,
@@ -33,14 +35,14 @@ internal interface ArticleApi {
     ): Call<ArticleEntity>
 
     @FormUrlEncoded
-    @POST("{board}$DETAIL$LIKE")
+    @POST("$BASE_BOARD/{board}$ARTICLE$LIKE")
     fun postLike(
         @Path("board") board: String,
         @Header("token") token: String,
         @Field("articleId") id: Int
     ): Call<SimpleResponseEntity>
 
-    @DELETE("{board}$DETAIL$LIKE")
+    @DELETE("$BASE_BOARD/{board}$ARTICLE$LIKE")
     fun cancelLike(
         @Path("board") board: String,
         @Header("token") token: String,
@@ -48,21 +50,21 @@ internal interface ArticleApi {
     ): Call<SimpleResponseEntity>
 
     @FormUrlEncoded
-    @POST("{board}$DETAIL$DISLIKE")
+    @POST("$BASE_BOARD/{board}$ARTICLE$DISLIKE")
     fun postDislike(
         @Path("board") board: String,
         @Header("token") token: String,
         @Field("articleId") id: Int
     ): Call<SimpleResponseEntity>
 
-    @DELETE("{board}$DETAIL$DISLIKE")
+    @DELETE("$BASE_BOARD/{board}$ARTICLE$DISLIKE")
     fun cancelDislike(
         @Path("board") board: String,
         @Header("token") token: String,
         @Query("articleId") id: Int
     ): Call<SimpleResponseEntity>
 
-    @GET("{board}$RATING")
+    @GET("$BASE_BOARD/{board}$ARTICLE$RATING")
     fun getRatings(
         @Path("board") board: String,
         @Header("token") token: String,
@@ -70,7 +72,7 @@ internal interface ArticleApi {
     ): Call<RatingsEntity>
 
     @FormUrlEncoded
-    @POST("{board}$COMMENTS")
+    @POST("$BASE_BOARD/{board}$ARTICLE$COMMENTS")
     fun postComment(
         @Path("board") board: String,
         @Header("token") token: String,
@@ -78,7 +80,7 @@ internal interface ArticleApi {
         @Field("articleId") id: Int
     ): Call<SimpleResponseEntity>
 
-    @GET("{board}$COMMENTS")
+    @GET("$BASE_BOARD/{board}$ARTICLE$COMMENTS")
     fun getComments(
         @Path("board") board: String,
         @Query("articleId") id: Int,
@@ -86,7 +88,7 @@ internal interface ArticleApi {
         @Query("limit") limit: Int
     ): Call<List<CommentEntity>>
 
-    @DELETE("{board}$COMMENTS")
+    @DELETE("$BASE_BOARD/{board}$ARTICLE$COMMENTS")
     fun deleteComment(
         @Path("board") board: String,
         @Header("token") token: String,
@@ -95,7 +97,7 @@ internal interface ArticleApi {
     ): Call<SimpleResponseEntity>
 
     @FormUrlEncoded
-    @PATCH("{board}$COMMENTS")
+    @PATCH("$BASE_BOARD/{board}$ARTICLE$COMMENTS")
     fun updateComment(
         @Path("board") board: String,
         @Header("token") token: String,
@@ -103,7 +105,7 @@ internal interface ArticleApi {
         @Field("content") content: String
     ): Call<SimpleResponseEntity>
 
-    @GET("{board}$COMMENTS$DETAIL")
+    @GET("$BASE_BOARD/{board}$ARTICLE$COMMENTS$COMMENT")
     fun getComment(
         @Path("board") board: String,
         @Query("commentId") commentId: Int
