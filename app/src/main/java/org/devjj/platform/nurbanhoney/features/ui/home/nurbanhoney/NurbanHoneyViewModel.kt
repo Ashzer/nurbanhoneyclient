@@ -21,8 +21,9 @@ class NurbanHoneyViewModel
     BaseViewModel() {
     private val _articles: MutableLiveData<List<NurbanHoneyArticle>> = MutableLiveData()
     val articles: LiveData<List<NurbanHoneyArticle>> = _articles
-    var offset = 0
+    private var offset = 0
     private val limit = 5
+    var board = "nurban"
 
     val controller = DataLoadController(
         initialize = { initArticles() },
@@ -31,16 +32,16 @@ class NurbanHoneyViewModel
     )
 
     private fun initArticles() {
-        fun initArticles(flag: Int, offset: Int, limit: Int) =
-            getArticles(GetArticlesUseCase.Params(flag, offset, limit), viewModelScope) {
+        fun initArticles(board: String, flag: Int, offset: Int, limit: Int) =
+            getArticles(GetArticlesUseCase.Params(board, flag, offset, limit), viewModelScope) {
                 it.fold(
                     ::handleFailure,
                     ::handleInitArticles
                 )
             }
 
-        initArticles(flag = 0, 0, limit)
-        offset += limit
+        initArticles(board, flag = 0, 0, limit)
+        offset = limit
     }
 
     private fun handleInitArticles(articles: List<NurbanHoneyArticle>) {
@@ -56,14 +57,14 @@ class NurbanHoneyViewModel
     }
 
     fun getArticles() {
-        fun getArticles(flag: Int, offset: Int, limit: Int) =
-            getArticles(GetArticlesUseCase.Params(flag, offset, limit), viewModelScope) {
+        fun getArticles(board: String, flag: Int, offset: Int, limit: Int) =
+            getArticles(GetArticlesUseCase.Params(board, flag, offset, limit), viewModelScope) {
                 it.fold(
                     ::handleFailure,
                     ::handArticles
                 )
             }
-        getArticles(flag = 0, offset, limit)
+        getArticles(board, flag = 0, offset, limit)
         offset += limit
     }
 

@@ -9,10 +9,12 @@ class GetRatingsUseCase
 @Inject constructor(
     private val repository: ArticleRepository
 ) : UseCase<Ratings, GetRatingsUseCase.Params>() {
-    override suspend fun run(params: Params) = repository.getRatings(params.token,params.articleId)
+    override suspend fun run(params: Params) =
+        repository.getRatings(params.board, params.token, params.articleId)
 
     data class Params(
-        val token : String,
+        val board: String,
+        val token: String,
         val articleId: Int
     )
 }

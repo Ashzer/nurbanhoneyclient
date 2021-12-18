@@ -11,6 +11,7 @@ class UploadArticleUseCase
 ) : UseCase<ArticleResponse, UploadArticleUseCase.Params>() {
     override suspend fun run(params: Params) =
         repository.uploadArticle(
+            params.board,
             params.token,
             params.title,
             params.uuid,
@@ -20,6 +21,7 @@ class UploadArticleUseCase
         )
 
     data class Params(
+        val board: String,
         val token: String,
         val title: String,
         val uuid: String,

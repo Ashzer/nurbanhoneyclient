@@ -6,10 +6,10 @@
     android:layout_height="match_parent">
 
     <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/app_navi_drawer"
+        android:id="@+id/NavigationDrawer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/app_navigator"
+        app:layout_constraintBottom_toTopOf="@id/NavigationNavigator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,7 +20,7 @@
             android:layout_height="match_parent">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/app_navi_toolbar"
+                android:id="@+id/NavigationToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorPrimary"
@@ -29,10 +29,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/aNavigation_fragment_container"/>
+                app:layout_constraintBottom_toTopOf="@id/NavigationFragmentContainer"/>
 
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/aNavigation_fragment_container"
+                android:id="@+id/NavigationFragmentContainer"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 tools:layout_editor_absoluteX="10dp"
@@ -40,7 +40,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/app_navi_toolbar"/>
+                app:layout_constraintTop_toBottomOf="@id/NavigationToolbar"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!--            app:layout_constraintBottom_toTopOf="@id/app_navi_drawer"-->
@@ -56,7 +56,7 @@
 
 
         <com.google.android.material.navigation.NavigationView
-            android:id="@+id/app_navi_sidemenu"
+            android:id="@+id/NavigationSideMenu"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
@@ -66,13 +66,13 @@
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/app_navigator"
+        android:id="@+id/NavigationNavigator"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_navi_drawer"
+        app:layout_constraintTop_toBottomOf="@id/NavigationDrawer"
         app:menu="@menu/item_navigation_menu" />
 <!--        app:layout_constraintTop_toBottomOf="@id/NavigationFragmentContainer" />-->
 

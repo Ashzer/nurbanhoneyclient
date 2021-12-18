@@ -52,7 +52,7 @@ class LoginFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        kakaoLoginBtnListener(binding.loginKakao)
+        kakaoLoginBtnListener(binding.LoginKakaoClo)
     }
 
     override fun onDestroyView() {
@@ -90,7 +90,8 @@ class LoginFragment : BaseFragment() {
     private fun kakaoLoginBtnListener(view: View) = view.setOnSingleClickListener {
         UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
             if (error != null) {
-                Log.d("login_check__", "kakao login failed")
+                Log.d("login_check__", "${error.localizedMessage}")
+                error.localizedMessage
             } else if (token != null) {
                 loginViewModel.getNurbanToken("kakao", token.accessToken)
             }

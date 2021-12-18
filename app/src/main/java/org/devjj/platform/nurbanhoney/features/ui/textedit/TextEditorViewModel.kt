@@ -27,8 +27,8 @@ class TextEditorViewModel
     private val _articleResponse: MutableLiveData<String> = MutableLiveData()
     val articleResponse: LiveData<String> = _articleResponse
 
-    fun deleteImages(token: String, uuid: String) =
-        deleteImages(DeleteImagesUseCase.Params(token, uuid), viewModelScope) {
+    fun deleteImages(board: String, token: String, uuid: String) =
+        deleteImages(DeleteImagesUseCase.Params(board, token, uuid), viewModelScope) {
             it.fold(
                 ::handleFailure,
                 ::handleImageDeletion
@@ -40,8 +40,13 @@ class TextEditorViewModel
     }
 
 
-    fun uploadImage(token: String, uuid: MultipartBody.Part, image: MultipartBody.Part) =
-        uploadImage(UploadImageUseCase.Params(token, uuid, image), viewModelScope) {
+    fun uploadImage(
+        board: String,
+        token: String,
+        uuid: MultipartBody.Part,
+        image: MultipartBody.Part
+    ) =
+        uploadImage(UploadImageUseCase.Params(board, token, uuid, image), viewModelScope) {
             it.fold(
                 ::handleFailure,
                 ::handleImageURL
@@ -49,6 +54,7 @@ class TextEditorViewModel
         }
 
     fun uploadArticle(
+        board: String,
         token: String,
         title: String,
         uuid: String,
@@ -57,7 +63,7 @@ class TextEditorViewModel
         content: String
     ) =
         uploadArticle(
-            UploadArticleUseCase.Params(token, title, uuid, lossCut, thumbnail, content),
+            UploadArticleUseCase.Params(board, token, title, uuid, lossCut, thumbnail, content),
             viewModelScope
         ) {
             it.fold(
@@ -67,6 +73,7 @@ class TextEditorViewModel
         }
 
     fun modifyArticle(
+        board: String,
         token: String,
         articleId: Int,
         thumbnail: String,
@@ -74,7 +81,7 @@ class TextEditorViewModel
         lossCut: Long,
         content: String
     ) = modifyArticle(
-        ModifyArticleUseCase.Params(token, articleId, thumbnail, title, lossCut, content),
+        ModifyArticleUseCase.Params(board, token, articleId, thumbnail, title, lossCut, content),
         viewModelScope
     ) {
         it.fold(
@@ -84,9 +91,9 @@ class TextEditorViewModel
     }
 
     fun searchThumbnail(content: String) =
-        "(<img src=)[^>]*(/>|>)".toRegex().find(content)?.value.run {
-            this.toString().substring(10, (this?.length ?: 36) - 26)
-            //this.toString().replace( """(<img src=)[]*(")""", "")
+        "(http)[^>]*(?=\" alt)".toRegex().find(content)?.value.run {
+            Log.d("string_check__",this.toString())
+            this.toString()
         }
 
     private fun handleUploading(response: ArticleResponse) {

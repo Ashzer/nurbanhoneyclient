@@ -3,13 +3,12 @@ package org.devjj.platform.nurbanhoney.core.extension
 import android.Manifest
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.viewbinding.ViewBinding
 import jp.wasabeef.richeditor.RichEditor
-import kotlinx.android.synthetic.main.frament_text_editor.view.*
+import kotlinx.android.synthetic.main.text_editor_body.view.*
 import org.devjj.platform.nurbanhoney.core.permission.askReadStoragePermission
 import org.devjj.platform.nurbanhoney.core.permission.isNotPermissionsAllowed
 
@@ -27,25 +26,25 @@ fun RichEditor.setTextEditorListeners(binding: ViewBinding) {
 fun RichEditor.undoListener(binding: ViewBinding) =
     binding.root.action_undo.setOnClickListener { this.undo() }
 
-fun RichEditor.redoListener(binding:ViewBinding) =
+fun RichEditor.redoListener(binding: ViewBinding) =
     binding.root.action_redo.setOnClickListener { this.redo() }
 
-fun RichEditor.boldListener(binding:ViewBinding) =
+fun RichEditor.boldListener(binding: ViewBinding) =
     binding.root.action_bold.setOnClickListener { this.setBold() }
 
-fun RichEditor.italicListener(binding:ViewBinding) =
+fun RichEditor.italicListener(binding: ViewBinding) =
     binding.root.action_italic.setOnClickListener { this.setItalic() }
 
-fun RichEditor.underlineListener(binding:ViewBinding) =
+fun RichEditor.underlineListener(binding: ViewBinding) =
     binding.root.action_underline.setOnClickListener { this.setUnderline() }
 
-fun RichEditor.alignLeftListener(binding:ViewBinding) =
+fun RichEditor.alignLeftListener(binding: ViewBinding) =
     binding.root.action_align_left.setOnClickListener { this.setAlignLeft() }
 
-fun RichEditor.alignCenterListener(binding:ViewBinding) =
+fun RichEditor.alignCenterListener(binding: ViewBinding) =
     binding.root.action_align_center.setOnClickListener { this.setAlignCenter() }
 
-fun RichEditor.alignRightListener(binding:ViewBinding) =
+fun RichEditor.alignRightListener(binding: ViewBinding) =
     binding.root.action_align_right.setOnClickListener { this.setAlignRight() }
 
 fun RichEditor.insertImageListener(

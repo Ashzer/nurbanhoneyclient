@@ -9,7 +9,8 @@ class GetArticlesUseCase
 @Inject constructor(
     private val repository: ArticleRepository
 ) : UseCase<List<NurbanHoneyArticle>, GetArticlesUseCase.Params>() {
-    override suspend fun run(params: Params) = repository.getArticles(params.flag, params.offset, params.limit)
+    override suspend fun run(params: Params) =
+        repository.getArticles(params.board, params.flag, params.offset, params.limit)
 
-    data class Params(val flag : Int, val offset: Int, val limit: Int)
+    data class Params(val board: String, val flag: Int, val offset: Int, val limit: Int)
 }

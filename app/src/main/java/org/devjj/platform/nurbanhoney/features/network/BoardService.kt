@@ -11,6 +11,7 @@ class BoardService
     private val boardApi by lazy { retrofit.create(BoardApi::class.java) }
 
     override fun uploadRequest(
+        board: String,
         token: String,
         title: String,
         uuid: String,
@@ -18,26 +19,29 @@ class BoardService
         thumbnail: String,
         content: String
     ) =
-        boardApi.uploadRequest(token, title, uuid, lossCut, thumbnail, content)
+        boardApi.uploadRequest(board, token, title, uuid, lossCut, thumbnail, content)
 
     override fun modifyRequest(
+        board: String,
         token: String,
         articleId: Int,
         thumbnail: String,
         title: String,
         lossCut: Long,
         content: String
-    ) = boardApi.modifyRequest(token, articleId, thumbnail, title, lossCut, content)
+    ) = boardApi.modifyRequest(board, token, articleId, thumbnail, title, lossCut, content)
 
     override fun uploadImage(
+        board: String,
         token: String,
         uuid: MultipartBody.Part,
         image: MultipartBody.Part
-    ) = boardApi.uploadImage(token, uuid, image)
+    ) = boardApi.uploadImage(board, token, uuid, image)
 
-    override fun deleteImage(token: String, uuid: String) = boardApi.deleteImage(token, uuid)
+    override fun deleteImage(board: String, token: String, uuid: String) =
+        boardApi.deleteImage(board, token, uuid)
 
 
-    override fun deleteArticle(token: String, articleId: Int, uuid: String) =
-        boardApi.deleteArticle(token, articleId, uuid)
+    override fun deleteArticle(board: String, token: String, articleId: Int, uuid: String) =
+        boardApi.deleteArticle(board, token, articleId, uuid)
 }

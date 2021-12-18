@@ -11,68 +11,68 @@
     android:background="@drawable/comment_border_even">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/user_info_clo"
+        android:id="@+id/itemCommentUserInfoClo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="2dp"
-        app:layout_constraintBottom_toTopOf="@id/comment_comment_clo"
+        app:layout_constraintBottom_toTopOf="@id/itemCommentContentClo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/comment_badge_iv"
+            android:id="@+id/itemCommentBadgeIv"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/comment_nickname_tv"
+            app:layout_constraintEnd_toStartOf="@id/itemCommentNicknameTv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/comment_nickname_tv"
+            android:id="@+id/itemCommentNicknameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/comment_insignia_clo"
-            app:layout_constraintStart_toEndOf="@+id/comment_badge_iv"
+            app:layout_constraintEnd_toStartOf="@+id/itemCommentInsigniaClo"
+            app:layout_constraintStart_toEndOf="@+id/itemCommentBadgeIv"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/comment_insignia_clo"
+            android:id="@+id/itemCommentInsigniaClo"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/comment_update_clo"
-            app:layout_constraintStart_toEndOf="@id/comment_nickname_tv"
+            app:layout_constraintEnd_toStartOf="@id/itemCommentUpdateClo"
+            app:layout_constraintStart_toEndOf="@id/itemCommentNicknameTv"
             app:layout_constraintTop_toTopOf="parent">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/comment_update_clo"
+            android:id="@+id/itemCommentUpdateClo"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/comment_delete_clo"
-            app:layout_constraintStart_toEndOf="@id/comment_insignia_clo"
+            app:layout_constraintEnd_toStartOf="@id/itemCommentDeleteClo"
+            app:layout_constraintStart_toEndOf="@id/itemCommentInsigniaClo"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/comment_modify_btn_holder_clo"
+                android:id="@+id/itemCommentModifyBtnClo"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:visibility="visible"
@@ -82,7 +82,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/comment_modify_btn"
+                    android:id="@+id/itemCommentModifyBtn"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="10dp"
@@ -98,7 +98,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/comment_cancel_btn_holder_clo"
+                android:id="@+id/itemCommentCancelBtnClo"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:visibility="gone"
@@ -108,7 +108,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/comment_cancel_btn"
+                    android:id="@+id/itemCommentCancelBtn"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="10dp"
@@ -124,19 +124,19 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/comment_delete_clo"
+            android:id="@+id/itemCommentDeleteClo"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/comment_update_clo"
+            app:layout_constraintStart_toEndOf="@id/itemCommentUpdateClo"
             app:layout_constraintTop_toTopOf="parent">
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/comment_delete_btn_holder_clo"
+                android:id="@+id/itemCommentDeleteBtnClo"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:visibility="visible"
@@ -146,7 +146,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/comment_delete_btn"
+                    android:id="@+id/itemCommentDeleteBtn"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="10dp"
@@ -163,7 +163,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/comment_update_btn_holder_clo"
+                android:id="@+id/itemCommentUpdateBtnClo"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:visibility="gone"
@@ -173,7 +173,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/comment_update_btn"
+                    android:id="@+id/itemCommentUpdateBtn"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="10dp"
@@ -191,20 +191,20 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/comment_comment_clo"
+        android:id="@+id/itemCommentContentClo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
-        app:layout_constraintBottom_toTopOf="@id/comment_update_text_clo"
+        app:layout_constraintBottom_toTopOf="@id/itemCommentUpdateEtClo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_info_clo">
+        app:layout_constraintTop_toBottomOf="@+id/itemCommentUserInfoClo">
 
         <TextView
-            android:id="@+id/comment_comment_tv"
+            android:id="@+id/itemCommentContentTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="TextView"
@@ -215,7 +215,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/comment_update_text_clo"
+        android:id="@+id/itemCommentUpdateEtClo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -226,11 +226,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/comment_comment_clo">
+        app:layout_constraintTop_toBottomOf="@id/itemCommentContentClo">
 
 
         <EditText
-            android:id="@+id/comment_update_text_et"
+            android:id="@+id/itemCommentUpdateEt"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"

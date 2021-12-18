@@ -76,4 +76,9 @@ class SplashActivity
     }
 
     override fun onBackPressed() {}
+
+    override fun onDestroy() {
+        super.onDestroy()
+        finish()
+    }
 }

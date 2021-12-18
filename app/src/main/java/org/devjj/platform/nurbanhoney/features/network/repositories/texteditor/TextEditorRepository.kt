@@ -15,6 +15,7 @@ import javax.inject.Inject
 
 interface TextEditorRepository {
     fun uploadArticle(
+        board: String,
         token: String,
         title: String,
         uuid: String,
@@ -24,6 +25,7 @@ interface TextEditorRepository {
     ): Either<Failure, ArticleResponse>
 
     fun modifyArticle(
+        board: String,
         token: String,
         articleId: Int,
         thumbnail: String,
@@ -32,15 +34,21 @@ interface TextEditorRepository {
         content: String
     ): Either<Failure, ArticleResponse>
 
-    fun deleteArticle(token: String, articleId: Int, uuid: String): Either<Failure, ArticleResponse>
+    fun deleteArticle(
+        board: String,
+        token: String,
+        articleId: Int,
+        uuid: String
+    ): Either<Failure, ArticleResponse>
 
     fun uploadImage(
+        board: String,
         token: String,
         uuid: MultipartBody.Part,
         image: MultipartBody.Part
     ): Either<Failure, ImageUploadResult>
 
-    fun deleteImages(token: String, uuid: String): Either<Failure, ImageResponse>
+    fun deleteImages(board: String, token: String, uuid: String): Either<Failure, ImageResponse>
 
     class Network
     @Inject constructor(
@@ -48,6 +56,7 @@ interface TextEditorRepository {
         private val boardService: BoardService
     ) : TextEditorRepository {
         override fun uploadArticle(
+            board: String,
             token: String,
             title: String,
             uuid: String,
@@ -57,7 +66,15 @@ interface TextEditorRepository {
         ): Either<Failure, ArticleResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    boardService.uploadRequest(token, title, uuid, lossCut, thumbnail, content),
+                    boardService.uploadRequest(
+                        board,
+                        token,
+                        title,
+                        uuid,
+                        lossCut,
+                        thumbnail,
+                        content
+                    ),
                     { it.toArticleResponse() },
                     SimpleResponseEntity.empty
                 )
@@ -66,6 +83,7 @@ interface TextEditorRepository {
         }
 
         override fun modifyArticle(
+            board: String,
             token: String,
             articleId: Int,
             thumbnail: String,
@@ -75,8 +93,16 @@ interface TextEditorRepository {
         ): Either<Failure, ArticleResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    boardService.modifyRequest(token, articleId, thumbnail, title, lossCut, content),
-                    {it.toArticleResponse()},
+                    boardService.modifyRequest(
+                        board,
+                        token,
+                        articleId,
+                        thumbnail,
+                        title,
+                        lossCut,
+                        content
+                    ),
+                    { it.toArticleResponse() },
                     SimpleResponseEntity.empty
                 )
                 false -> Either.Left(NetworkConnection)
@@ -84,13 +110,14 @@ interface TextEditorRepository {
         }
 
         override fun deleteArticle(
+            board: String,
             token: String,
             articleId: Int,
             uuid: String
         ): Either<Failure, ArticleResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    boardService.deleteArticle(token, articleId, uuid),
+                    boardService.deleteArticle(board, token, articleId, uuid),
                     { it.toArticleResponse() },
                     SimpleResponseEntity.empty
                 )
@@ -99,13 +126,14 @@ interface TextEditorRepository {
         }
 
         override fun uploadImage(
+            board: String,
             token: String,
             uuid: MultipartBody.Part,
             image: MultipartBody.Part
         ): Either<Failure, ImageUploadResult> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    boardService.uploadImage(token, uuid, image),
+                    boardService.uploadImage(board, token, uuid, image),
                     { it.toImageUploadResult() },
                     UploadImageEntity.empty
                 )
@@ -114,10 +142,14 @@ interface TextEditorRepository {
 
         }
 
-        override fun deleteImages(token: String, uuid: String): Either<Failure, ImageResponse> {
+        override fun deleteImages(
+            board: String,
+            token: String,
+            uuid: String
+        ): Either<Failure, ImageResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    boardService.deleteImage(token, uuid),
+                    boardService.deleteImage(board, token, uuid),
                     { it.toImageResponse() },
                     SimpleResponseEntity.empty
                 )

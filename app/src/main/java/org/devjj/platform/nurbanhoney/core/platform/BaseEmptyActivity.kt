@@ -15,7 +15,7 @@ abstract class BaseEmptyActivity : BaseActivity() {
     override fun addFragment(savedInstanceState: Bundle?) =
         savedInstanceState ?: supportFragmentManager.inTransaction {
             add(
-                R.id.aEmpty_fragment_container, fragment()
+                R.id.EmptyFragmentContainer, fragment()
             )
         }
 

@@ -10,9 +10,10 @@ class DeleteArticleUseCase
     private val repository: TextEditorRepository
 ) : UseCase<ArticleResponse, DeleteArticleUseCase.Params>() {
     override suspend fun run(params: Params) =
-        repository.deleteArticle(params.token, params.articleId, params.uuid)
+        repository.deleteArticle(params.board,params.token, params.articleId, params.uuid)
 
     data class Params(
+        val board: String,
         val token: String,
         val articleId: Int,
         val uuid: String,

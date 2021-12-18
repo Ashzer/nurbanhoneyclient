@@ -12,18 +12,48 @@ import javax.inject.Inject
 
 interface ArticleRepository {
 
-    fun getArticle(token: String, id: Int): Either<Failure, Article>
-    fun postLike(token: String, id: Int): Either<Failure, RatingResponse>
-    fun cancelLike(token: String, id: Int): Either<Failure, RatingResponse>
-    fun postDislike(token: String, id: Int): Either<Failure, RatingResponse>
-    fun cancelDislike(token: String, id: Int): Either<Failure, RatingResponse>
-    fun getRatings(token: String, articleId: Int): Either<Failure, Ratings>
-    fun postComment(token: String, comment: String, id: Int): Either<Failure, CommentResponse>
-    fun getComments(articleId: Int, offset: Int, limit: Int): Either<Failure, List<Comment>>
-    fun deleteComment(token: String, id: Int, articleId: Int): Either<Failure, CommentResponse>
-    fun updateComment(token: String, id: Int, content: String): Either<Failure, CommentResponse>
-    fun getComment(commentId: Int): Either<Failure, Comment>
-    fun getArticles(flag: Int, offset: Int, limit: Int): Either<Failure, List<NurbanHoneyArticle>>
+    fun getArticle(board: String, token: String, id: Int): Either<Failure, Article>
+    fun postLike(board: String, token: String, id: Int): Either<Failure, RatingResponse>
+    fun cancelLike(board: String, token: String, id: Int): Either<Failure, RatingResponse>
+    fun postDislike(board: String, token: String, id: Int): Either<Failure, RatingResponse>
+    fun cancelDislike(board: String, token: String, id: Int): Either<Failure, RatingResponse>
+    fun getRatings(board: String, token: String, articleId: Int): Either<Failure, Ratings>
+    fun postComment(
+        board: String,
+        token: String,
+        comment: String,
+        id: Int
+    ): Either<Failure, CommentResponse>
+
+    fun getComments(
+        board: String,
+        articleId: Int,
+        offset: Int,
+        limit: Int
+    ): Either<Failure, List<Comment>>
+
+    fun deleteComment(
+        board: String,
+        token: String,
+        id: Int,
+        articleId: Int
+    ): Either<Failure, CommentResponse>
+
+    fun updateComment(
+        board: String,
+        token: String,
+        id: Int,
+        content: String
+    ): Either<Failure, CommentResponse>
+
+    fun getComment(board: String, commentId: Int): Either<Failure, Comment>
+    fun getArticles(
+        board: String,
+        flag: Int,
+        offset: Int,
+        limit: Int
+    ): Either<Failure, List<NurbanHoneyArticle>>
+
     class Network
     @Inject constructor(
         private val networkHandler: NetworkHandler,
@@ -31,23 +61,25 @@ interface ArticleRepository {
     ) : ArticleRepository {
 
         override fun getArticles(
+            board: String,
             flag: Int,
             offset: Int,
             limit: Int
         ): Either<Failure, List<NurbanHoneyArticle>> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    articleService.getArticles(flag, offset, limit),
+                    articleService.getArticles(board, flag, offset, limit),
                     { it.map { ArticlesRequestEntity -> ArticlesRequestEntity.toNurbanHoneyArticle() } },
                     emptyList()
                 )
                 false -> Either.Left(Failure.NetworkConnection)
             }
         }
-        override fun getArticle(token: String, id: Int): Either<Failure, Article> {
+
+        override fun getArticle(board: String, token: String, id: Int): Either<Failure, Article> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    articleService.getArticle(token, id),
+                    articleService.getArticle(board, token, id),
                     { it.toArticle() },
                     ArticleEntity.empty
                 )
@@ -55,10 +87,14 @@ interface ArticleRepository {
             }
         }
 
-        override fun postLike(token: String, id: Int): Either<Failure, RatingResponse> {
+        override fun postLike(
+            board: String,
+            token: String,
+            id: Int
+        ): Either<Failure, RatingResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    articleService.postLike(token, id),
+                    articleService.postLike(board, token, id),
                     { it.toRatingResponse() },
                     SimpleResponseEntity.empty
                 )
@@ -66,10 +102,14 @@ interface ArticleRepository {
             }
         }
 
-        override fun cancelLike(token: String, id: Int): Either<Failure, RatingResponse> {
+        override fun cancelLike(
+            board: String,
+            token: String,
+            id: Int
+        ): Either<Failure, RatingResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    articleService.cancelLike(token, id),
+                    articleService.cancelLike(board, token, id),
                     { it.toRatingResponse() },
                     SimpleResponseEntity.empty
                 )
@@ -77,10 +117,14 @@ interface ArticleRepository {
             }
         }
 
-        override fun postDislike(token: String, id: Int): Either<Failure, RatingResponse> {
+        override fun postDislike(
+            board: String,
+            token: String,
+            id: Int
+        ): Either<Failure, RatingResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    articleService.postDislike(token, id),
+                    articleService.postDislike(board, token, id),
                     { it.toRatingResponse() },
                     SimpleResponseEntity.empty
                 )
@@ -88,10 +132,14 @@ interface ArticleRepository {
             }
         }
 
-        override fun cancelDislike(token: String, id: Int): Either<Failure, RatingResponse> {
+        override fun cancelDislike(
+            board: String,
+            token: String,
+            id: Int
+        ): Either<Failure, RatingResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    articleService.cancelDislike(token, id),
+                    articleService.cancelDislike(board, token, id),
                     { it.toRatingResponse() },
                     SimpleResponseEntity.empty
                 )
@@ -99,10 +147,14 @@ interface ArticleRepository {
             }
         }
 
-        override fun getRatings(token: String, articleId: Int): Either<Failure, Ratings> {
+        override fun getRatings(
+            board: String,
+            token: String,
+            articleId: Int
+        ): Either<Failure, Ratings> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    articleService.getRatings(token, articleId),
+                    articleService.getRatings(board, token, articleId),
                     { it.toRatings() },
                     RatingsEntity.empty
                 )
@@ -111,13 +163,14 @@ interface ArticleRepository {
         }
 
         override fun postComment(
+            board: String,
             token: String,
             comment: String,
             id: Int
         ): Either<Failure, CommentResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    articleService.postComment(token, comment, id),
+                    articleService.postComment(board, token, comment, id),
                     { it.toCommentResponse() },
                     SimpleResponseEntity.empty
                 )
@@ -126,13 +179,14 @@ interface ArticleRepository {
         }
 
         override fun getComments(
+            board: String,
             articleId: Int,
             offset: Int,
             limit: Int
         ): Either<Failure, List<Comment>> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    articleService.getComments(articleId, offset, limit),
+                    articleService.getComments(board, articleId, offset, limit),
                     { it.map { CommentEntity -> CommentEntity.toComment() } },
                     listOf(CommentEntity.empty)
                 )
@@ -140,10 +194,10 @@ interface ArticleRepository {
             }
         }
 
-        override fun getComment(commentId: Int): Either<Failure, Comment> {
+        override fun getComment(board: String, commentId: Int): Either<Failure, Comment> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    articleService.getComment(commentId),
+                    articleService.getComment(board, commentId),
                     { it.toComment() },
                     CommentEntity.empty
                 )
@@ -152,13 +206,14 @@ interface ArticleRepository {
         }
 
         override fun deleteComment(
+            board: String,
             token: String,
             id: Int,
             articleId: Int
         ): Either<Failure, CommentResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    articleService.deleteComment(token, id, articleId),
+                    articleService.deleteComment(board, token, id, articleId),
                     { it.toCommentResponse() },
                     SimpleResponseEntity.empty
                 )
@@ -167,13 +222,14 @@ interface ArticleRepository {
         }
 
         override fun updateComment(
+            board: String,
             token: String,
             id: Int,
             content: String
         ): Either<Failure, CommentResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    articleService.updateComment(token, id, content),
+                    articleService.updateComment(board, token, id, content),
                     { it.toCommentResponse() },
                     SimpleResponseEntity.empty
                 )

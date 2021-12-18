@@ -10,6 +10,13 @@ class UploadImageUseCase
 @Inject constructor(
     private val repository: TextEditorRepository
 ) : UseCase<ImageUploadResult, UploadImageUseCase.Params>() {
-    override suspend fun run(params: Params) = repository.uploadImage(params.token,params.uuid,params.image)
-    data class Params(val token : String, val uuid : MultipartBody.Part, val image: MultipartBody.Part)
+    override suspend fun run(params: Params) =
+        repository.uploadImage(params.board, params.token, params.uuid, params.image)
+
+    data class Params(
+        val board: String,
+        val token: String,
+        val uuid: MultipartBody.Part,
+        val image: MultipartBody.Part
+    )
 }
