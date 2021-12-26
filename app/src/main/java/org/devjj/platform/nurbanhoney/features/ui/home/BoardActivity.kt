@@ -40,7 +40,7 @@ class BoardActivity : BaseTabLayoutActivity() {
         setContentView(view)
         addFragment(savedInstanceState)
 
-        binding.NavigationNavigator.setOnNavigationItemSelectedListener {
+        binding.navigationNavigator.setOnNavigationItemSelectedListener {
 
             Log.d("navi_check__", it.itemId.toString())
             when (it.itemId) {
@@ -52,14 +52,14 @@ class BoardActivity : BaseTabLayoutActivity() {
             true
         }
 
-        var menu = binding.NavigationSideMenu.menu
+        var menu = binding.navigationSideMenu.menu
         var boardList = listOf("nurban", "bbb", "ccc")
 
         boardList.forEachIndexed { i, e ->
             menu.add(R.id.menu_group_boards, i, i, e)
         }
 
-        binding.NavigationSideMenu.setNavigationItemSelectedListener {
+        binding.navigationSideMenu.setNavigationItemSelectedListener {
             if (it.groupId == R.id.menu_group_boards) {
                 Log.d("navi_check__bottom", it.toString())
                 Log.d("navi_check__", it.groupId.toString())
@@ -73,18 +73,18 @@ class BoardActivity : BaseTabLayoutActivity() {
                 }
             }
 
-            binding.NavigationDrawer.closeDrawer(GravityCompat.START)
+            binding.navigationDrawer.closeDrawer(GravityCompat.START)
             false
         }
 
-        setSupportActionBar(binding.NavigationToolbar)
+        setSupportActionBar(binding.navigationToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_menu)
     }
 
     override fun onBackPressed() {
-        if (binding.NavigationDrawer.isDrawerOpen(gravity)) {
-            binding.NavigationDrawer.closeDrawer(gravity)
+        if (binding.navigationDrawer.isDrawerOpen(gravity)) {
+            binding.navigationDrawer.closeDrawer(gravity)
         } else {
             super.onBackPressed()
         }
@@ -93,7 +93,7 @@ class BoardActivity : BaseTabLayoutActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                val layoutDrawer = binding.NavigationDrawer
+                val layoutDrawer = binding.navigationDrawer
 
                 if (layoutDrawer.isDrawerOpen(gravity)) {
                     layoutDrawer.closeDrawer(gravity)
@@ -111,7 +111,7 @@ class BoardActivity : BaseTabLayoutActivity() {
         navigator.transFragment(
             supportFragmentManager,
             fragment,
-            binding.NavigationFragmentContainer
+            binding.navigationFragmentContainer
         )
 
 }
