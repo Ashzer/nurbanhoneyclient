@@ -18,10 +18,11 @@ import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentNurbanboardBinding
+import org.devjj.platform.nurbanhoney.features.ui.home.BoardActivity
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class NurbanHoneyFragment : BaseFragment() {
+class BoardFragment : BaseFragment() {
     override fun layoutId() = R.layout.fragment_nurbanboard
 
     @Inject
@@ -29,10 +30,10 @@ class NurbanHoneyFragment : BaseFragment() {
 
     private var _binding: FragmentNurbanboardBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<NurbanHoneyViewModel>()
+    private val viewModel by viewModels<BoardViewModel>()
 
     @Inject
-    lateinit var articleAdapter: NurbanArticleAdapter
+    lateinit var articleAdapter: BoardArticleAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,7 @@ class NurbanHoneyFragment : BaseFragment() {
             observe(articles, ::renderArticles)
             failure(failure, ::failureHandler)
         }
+
     }
 
     private fun renderArticles(articles: List<NurbanHoneyArticle>?) {
@@ -52,17 +54,26 @@ class NurbanHoneyFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        var bundle = this.arguments
+        if (bundle != null) {
+            viewModel.boardId = bundle.getInt(R.string.Board_ID.toString())
+            viewModel.boardName = bundle.getString(R.string.Board_NAME.toString()) ?: ""
+            viewModel.board = bundle.getString(R.string.Board_ADDRESS.toString()) ?: ""
+
+        }
+
         _binding = FragmentNurbanboardBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        (requireActivity() as BoardActivity).setActionBarTitle(viewModel.boardName)
         binding.boardWriteFab.setOnSingleClickListener {
             //navigator.showTextEditor(requireContext())
             CoroutineScope(Dispatchers.IO).async {
-                navigator.showTextEditorWithLoginCheck(requireContext(),viewModel.board)
+                navigator.showTextEditorWithLoginCheck(requireContext(), viewModel.board)
             }
         }
 
@@ -99,6 +110,8 @@ class NurbanHoneyFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         viewModel.controller.initialize()
+        requireActivity().actionBar?.title = viewModel.boardName
+
     }
 
 }

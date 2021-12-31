@@ -15,7 +15,6 @@ class ModifyArticleUseCase
         params.articleId,
         params.thumbnail,
         params.title,
-        params.lossCut,
         params.content
     )
 
@@ -25,7 +24,6 @@ class ModifyArticleUseCase
         val articleId: Int,
         val thumbnail: String,
         val title: String,
-        val lossCut: Long,
         val content: String
     )
 }

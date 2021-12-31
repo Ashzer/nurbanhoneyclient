@@ -55,7 +55,8 @@ class NetworkHandler
             when (response.isSuccessful) {
                 true -> Right(transform((response.body() ?: default)))
                 false -> {
-                    Log.d("error_kind_check__", "${response.code()}")
+                    Log.d("error_check__kind_", "${response.code()}")
+                    Log.d("error_check__kind_", "${response.raw().message}")
                     if (response.code() == 401) {
                         Left(TokenError)
                     }else {

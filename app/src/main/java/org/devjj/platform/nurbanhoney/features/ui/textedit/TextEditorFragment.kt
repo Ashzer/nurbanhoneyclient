@@ -21,14 +21,9 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import org.devjj.platform.nurbanhoney.R
-import org.devjj.platform.nurbanhoney.core.extension.functionVisibility
-import org.devjj.platform.nurbanhoney.core.extension.insertImageListener
-import org.devjj.platform.nurbanhoney.core.extension.observe
-import org.devjj.platform.nurbanhoney.core.extension.setTextEditorListeners
+import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentTextEditorNurbanBinding
-import org.devjj.platform.nurbanhoney.features.network.BoardService
-import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.TextEditorRepository
 import org.devjj.platform.nurbanhoney.features.ui.article.Article
 import java.io.File
 import java.net.URL
@@ -42,26 +37,25 @@ open class TextEditorFragment : BaseFragment() {
     companion object {
         private const val PARAM_ARTICLE = "param_article"
 
-        fun toModify(article: Article) = TextEditorFragment().apply {
-            arguments = bundleOf(PARAM_ARTICLE to article)
+        fun toModify(board: String, article: Article) = TextEditorFragment().apply {
+            arguments =
+                bundleOf(PARAM_ARTICLE to article, R.string.Board_ADDRESS.toString() to board)
+        }
+
+        fun toWrite(board: String) = TextEditorFragment().apply {
+            arguments = bundleOf(R.string.Board_ADDRESS.toString() to board)
         }
     }
 
     private var _binding: FragmentTextEditorNurbanBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
     private lateinit var nurbanToken: String
-    private lateinit var uuid: UUID
-    private lateinit var mEditor: RichEditor
-    private var isModify: Boolean = false
-    private lateinit var article: Article
+    lateinit var uuid: UUID
+    lateinit var mEditor: RichEditor
+    var isModify: Boolean = false
+    lateinit var article: Article
 
-    private val textEditorViewModel by viewModels<TextEditorViewModel>()
-
-    @Inject
-    lateinit var boardService: BoardService
-
-    @Inject
-    lateinit var textEditorRepository: TextEditorRepository
+    val textEditorViewModel by viewModels<TextEditorViewModel>()
 
     @Inject
     lateinit var prefs: SharedPreferences
@@ -100,7 +94,14 @@ open class TextEditorFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (arguments != null) isModify = true
+        if(this.arguments != null) {
+            if (requireArguments().containsKey(R.string.Board_ADDRESS.toString()))
+                textEditorViewModel.board =
+                    requireArguments().getString(R.string.Board_ADDRESS.toString()) ?: "nurban"
+            if (requireArguments().containsKey(PARAM_ARTICLE))
+                isModify = true
+        }
+
 
         nurbanToken = prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString()
 
@@ -108,7 +109,7 @@ open class TextEditorFragment : BaseFragment() {
         binding.textEditorNurbanHeader.textEditorTitleEt.requestFocus()
         val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
-
+        binding.textEditorNurbanLossCutClo.invisible()
         mEditor = binding.textEditorNurbanBody.textEditorContentWv
         mEditor.setEditorFontSize(15)
         mEditor.setEditorFontColor(Color.BLACK)
@@ -130,11 +131,26 @@ open class TextEditorFragment : BaseFragment() {
         }
 
 
-        binding.textEditorNurbanBody.actionHeading1.setOnClickListener { mEditor.setEditorFontSize(20) }
-        binding.textEditorNurbanBody.actionHeading3.setOnClickListener { mEditor.setEditorFontSize(25) }
-        binding.textEditorNurbanBody.actionHeading5.setOnClickListener { mEditor.setEditorFontSize(30) }
+        binding.textEditorNurbanBody.actionHeading1.setOnClickListener {
+            mEditor.setEditorFontSize(
+                20
+            )
+        }
+        binding.textEditorNurbanBody.actionHeading3.setOnClickListener {
+            mEditor.setEditorFontSize(
+                25
+            )
+        }
+        binding.textEditorNurbanBody.actionHeading5.setOnClickListener {
+            mEditor.setEditorFontSize(
+                30
+            )
+        }
 
-        functionVisibility(binding.textEditorNurbanBody.textEditorContentWv, binding.textEditorNurbanBody.textEditorSv)
+        functionVisibility(
+            binding.textEditorNurbanBody.textEditorContentWv,
+            binding.textEditorNurbanBody.textEditorSv
+        )
 
         cropActivityResultLauncher = registerForActivityResult(cropActivityResultContracts) {
             it?.let { uri ->
@@ -181,21 +197,19 @@ open class TextEditorFragment : BaseFragment() {
                 Log.d("match_check__", thumbnailUrl)
                 if (isModify) {
                     textEditorViewModel.modifyArticle(
-                        "nurban",
+                        textEditorViewModel.board,
                         prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
                         article.id,
                         thumbnailUrl,
                         binding.textEditorNurbanHeader.textEditorTitleEt.text.toString(),
-                        (binding.textEditorNurbanLossCutEt.text.toString()).toLong(),
                         mEditor.html.toString()
                     )
                 } else {
                     textEditorViewModel.uploadArticle(
-                        "nurban",
+                        textEditorViewModel.board,
                         prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
                         binding.textEditorNurbanHeader.textEditorTitleEt.text.toString(),
                         uuid.toString(),
-                        binding.textEditorNurbanLossCutEt.text.toString().toLong(),
                         thumbnailUrl,
                         mEditor.html.toString()
                     )

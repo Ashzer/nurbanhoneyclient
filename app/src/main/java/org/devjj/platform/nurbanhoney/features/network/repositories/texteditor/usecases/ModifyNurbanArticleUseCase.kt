@@ -5,26 +5,27 @@ import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.T
 import org.devjj.platform.nurbanhoney.features.ui.textedit.ArticleResponse
 import javax.inject.Inject
 
-class UploadArticleUseCase
+class ModifyNurbanArticleUseCase
 @Inject constructor(
     private val repository: TextEditorRepository
-) : UseCase<ArticleResponse, UploadArticleUseCase.Params>() {
-    override suspend fun run(params: Params) =
-        repository.uploadArticle(
-            params.board,
-            params.token,
-            params.title,
-            params.uuid,
-            params.thumbnail,
-            params.content
-        )
+) : UseCase<ArticleResponse, ModifyNurbanArticleUseCase.Params>() {
+    override suspend fun run(params: Params) = repository.modifyNurbanArticle(
+        params.board,
+        params.token,
+        params.articleId,
+        params.thumbnail,
+        params.title,
+        params.lossCut,
+        params.content
+    )
 
     data class Params(
         val board: String,
         val token: String,
-        val title: String,
-        val uuid: String,
+        val articleId: Int,
         val thumbnail: String,
-        val content: String,
+        val title: String,
+        val lossCut: Long,
+        val content: String
     )
 }

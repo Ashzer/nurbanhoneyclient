@@ -14,7 +14,7 @@ import org.devjj.platform.nurbanhoney.features.ui.textedit.UploadImageEntity
 import javax.inject.Inject
 
 interface TextEditorRepository {
-    fun uploadArticle(
+    fun uploadNurbanArticle(
         board: String,
         token: String,
         title: String,
@@ -24,13 +24,31 @@ interface TextEditorRepository {
         content: String
     ): Either<Failure, ArticleResponse>
 
-    fun modifyArticle(
+    fun uploadArticle(
+        board: String,
+        token: String,
+        title: String,
+        uuid: String,
+        thumbnail: String,
+        content: String
+    ): Either<Failure, ArticleResponse>
+
+    fun modifyNurbanArticle(
         board: String,
         token: String,
         articleId: Int,
         thumbnail: String,
         title: String,
         lossCut: Long,
+        content: String
+    ): Either<Failure, ArticleResponse>
+
+    fun modifyArticle(
+        board: String,
+        token: String,
+        articleId: Int,
+        thumbnail: String,
+        title: String,
         content: String
     ): Either<Failure, ArticleResponse>
 
@@ -55,7 +73,7 @@ interface TextEditorRepository {
         private val networkHandler: NetworkHandler,
         private val boardService: BoardService
     ) : TextEditorRepository {
-        override fun uploadArticle(
+        override fun uploadNurbanArticle(
             board: String,
             token: String,
             title: String,
@@ -66,7 +84,7 @@ interface TextEditorRepository {
         ): Either<Failure, ArticleResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    boardService.uploadRequest(
+                    boardService.uploadNurbanRequest(
                         board,
                         token,
                         title,
@@ -82,7 +100,32 @@ interface TextEditorRepository {
             }
         }
 
-        override fun modifyArticle(
+        override fun uploadArticle(
+            board: String,
+            token: String,
+            title: String,
+            uuid: String,
+            thumbnail: String,
+            content: String
+        ): Either<Failure, ArticleResponse> {
+            return when (networkHandler.isNetworkAvailable()) {
+                true -> networkHandler.request(
+                    boardService.uploadRequest(
+                        board,
+                        token,
+                        title,
+                        uuid,
+                        thumbnail,
+                        content
+                    ),
+                    { it.toArticleResponse() },
+                    SimpleResponseEntity.empty
+                )
+                false -> Either.Left(NetworkConnection)
+            }
+        }
+
+        override fun modifyNurbanArticle(
             board: String,
             token: String,
             articleId: Int,
@@ -93,13 +136,38 @@ interface TextEditorRepository {
         ): Either<Failure, ArticleResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
-                    boardService.modifyRequest(
+                    boardService.modifyNurbanRequest(
                         board,
                         token,
                         articleId,
                         thumbnail,
                         title,
                         lossCut,
+                        content
+                    ),
+                    { it.toArticleResponse() },
+                    SimpleResponseEntity.empty
+                )
+                false -> Either.Left(NetworkConnection)
+            }
+        }
+
+        override fun modifyArticle(
+            board: String,
+            token: String,
+            articleId: Int,
+            thumbnail: String,
+            title: String,
+            content: String
+        ): Either<Failure, ArticleResponse> {
+            return when (networkHandler.isNetworkAvailable()) {
+                true -> networkHandler.request(
+                    boardService.modifyRequest(
+                        board,
+                        token,
+                        articleId,
+                        thumbnail,
+                        title,
                         content
                     ),
                     { it.toArticleResponse() },
