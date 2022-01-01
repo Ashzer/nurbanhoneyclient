@@ -15,8 +15,9 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.devjj.platform.nurbanhoney.BuildConfig
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.features.network.repositories.article.ArticleRepository
-import org.devjj.platform.nurbanhoney.features.ui.login.LoginManager
+import org.devjj.platform.nurbanhoney.features.network.repositories.board.BoardRepository
 import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.TextEditorRepository
+import org.devjj.platform.nurbanhoney.features.ui.login.LoginManager
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -28,7 +29,7 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(@ApplicationContext context: Context) : Retrofit {
+    fun provideRetrofit(@ApplicationContext context: Context): Retrofit {
         return Retrofit.Builder()
             .baseUrl(context.getString(R.string.server_address))
             .client(createClient())
@@ -48,26 +49,32 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun provideAppUpdateManager(application: Application) : AppUpdateManager {
+    fun provideAppUpdateManager(application: Application): AppUpdateManager {
         return AppUpdateManagerFactory.create(application)
     }
 
     @Provides
     @Singleton
-    fun provideSharedPreference(@ApplicationContext context: Context) : SharedPreferences{
-        return context.getSharedPreferences("prefs",Context.MODE_PRIVATE)
+    fun provideSharedPreference(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
     }
 
     @Provides
     @Singleton
-    fun provideLoginManager(dataSource : LoginManager.Network) : LoginManager = dataSource
+    fun provideLoginManager(dataSource: LoginManager.Network): LoginManager = dataSource
 
     @Provides
     @Singleton
-    fun provideBoardRepository(dataSource : TextEditorRepository.Network) : TextEditorRepository = dataSource
+    fun provideTextEditorRepository(dataSource: TextEditorRepository.Network): TextEditorRepository =
+        dataSource
 
     @Provides
     @Singleton
-    fun providerArticleRepository(dataSource : ArticleRepository.Network) : ArticleRepository = dataSource
+    fun provideArticleRepository(dataSource: ArticleRepository.Network): ArticleRepository =
+        dataSource
+
+    @Provides
+    @Singleton
+    fun provideBoardRepository(dataSource: BoardRepository.Network): BoardRepository = dataSource
 
 }

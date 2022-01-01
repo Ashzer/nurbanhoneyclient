@@ -1,6 +1,7 @@
 package org.devjj.platform.nurbanhoney.features.network
 
 import okhttp3.MultipartBody
+import org.devjj.platform.nurbanhoney.features.ui.splash.BoardEntity
 import org.devjj.platform.nurbanhoney.features.ui.textedit.UploadImageEntity
 import retrofit2.Call
 import retrofit2.http.*
@@ -13,6 +14,22 @@ internal interface BoardApi {
         private const val UPLOAD_IMG = "/upload/image"
     }
 
+    @GET("$BASE_BOARD")
+    fun getBoards() : Call<List<BoardEntity>>
+
+
+    @FormUrlEncoded
+    @POST("$BASE_BOARD/{board}$ARTICLE")
+    fun uploadNurbanRequest(
+        @Path("board") board: String,
+        @Header("token") token: String,
+        @Field("title") title: String,
+        @Field("uuid") uuid: String,
+        @Field("lossCut") lossCut: Long,
+        @Field("thumbnail") thumbnail: String,
+        @Field("content") content: String
+    ): Call<SimpleResponseEntity>
+
     @FormUrlEncoded
     @POST("$BASE_BOARD/{board}$ARTICLE")
     fun uploadRequest(
@@ -20,8 +37,19 @@ internal interface BoardApi {
         @Header("token") token: String,
         @Field("title") title: String,
         @Field("uuid") uuid: String,
-        @Field("lossCut") lossCut: Long,
         @Field("thumbnail") thumbnail: String,
+        @Field("content") content: String
+    ): Call<SimpleResponseEntity>
+
+    @FormUrlEncoded
+    @PATCH("$BASE_BOARD/{board}$ARTICLE")
+    fun modifyNurbanRequest(
+        @Path("board") board: String,
+        @Header("token") token: String,
+        @Field("id") articleId: Int,
+        @Field("thumbnail") thumbnail: String,
+        @Field("title") title: String,
+        @Field("lossCut") lossCut: Long,
         @Field("content") content: String
     ): Call<SimpleResponseEntity>
 
@@ -33,7 +61,6 @@ internal interface BoardApi {
         @Field("id") articleId: Int,
         @Field("thumbnail") thumbnail: String,
         @Field("title") title: String,
-        @Field("lossCut") lossCut: Long,
         @Field("content") content: String
     ): Call<SimpleResponseEntity>
 

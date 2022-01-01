@@ -11,8 +11,8 @@ import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
-class NurbanArticleAdapter
-@Inject constructor() : RecyclerView.Adapter<NurbanArticleAdapter.ViewHolder>() {
+class BoardArticleAdapter
+@Inject constructor() : RecyclerView.Adapter<BoardArticleAdapter.ViewHolder>() {
 
     internal var collection: List<NurbanHoneyArticle> by Delegates.observable(emptyList()) { _, _, _ ->
         notifyDataSetChanged()

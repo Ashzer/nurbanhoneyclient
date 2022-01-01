@@ -52,7 +52,7 @@ class LoginFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        kakaoLoginBtnListener(binding.LoginKakaoClo)
+        kakaoLoginBtnListener(binding.loginKakaoClo)
     }
 
     override fun onDestroyView() {

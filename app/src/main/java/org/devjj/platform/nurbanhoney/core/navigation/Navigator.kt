@@ -55,11 +55,6 @@ class Navigator
         }
     }
 
-
-
-
-
-
     fun transFragment(
         supportFragmentManager: FragmentManager,
         frag: BaseFragment,

@@ -40,17 +40,18 @@ class TextEditorActivity : BaseEmptyActivity() {
 
     override fun fragment(): BaseFragment {
         Log.d("bundle_check__",intent.getStringExtra(INTENT_EXTRA_PARAM_BOARD).toString())
-        return if(intent.getStringExtra(INTENT_EXTRA_PARAM_BOARD).toString() == "nurban")
+        var board = intent.getStringExtra(INTENT_EXTRA_PARAM_BOARD).toString()
+        return if(board == "nurban")
             try{
-                TextEditorFragment.toModify(intent.getParcelableExtra(INTENT_EXTRA_PARAM_ARTICLE))
+                TextEditorNurbanFragment.toModify(intent.getParcelableExtra(INTENT_EXTRA_PARAM_ARTICLE))
             }catch(e : Exception){
-                TextEditorFragment()
+                TextEditorNurbanFragment()
             }
         else
             try{
-                TextEditorFragment.toModify(intent.getParcelableExtra(INTENT_EXTRA_PARAM_ARTICLE))
+                TextEditorFragment.toModify(board,intent.getParcelableExtra(INTENT_EXTRA_PARAM_ARTICLE))
             }catch(e : Exception){
-                TextEditorFragment()
+                TextEditorFragment.toWrite(board)
             }
     }
 }

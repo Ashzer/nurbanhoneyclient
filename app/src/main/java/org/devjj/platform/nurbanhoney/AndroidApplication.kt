@@ -14,8 +14,6 @@ class AndroidApplication : Application() {
     @Inject
     lateinit var prefs: SharedPreferences
 
-    @Inject
-    lateinit var navigator: Navigator
     override fun onCreate() {
         super.onCreate()
 
