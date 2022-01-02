@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Board_ID">Board_ID</string>
+    <string name="Board_NAME">Board_NAME</string>
+    <string name="Board_ADDRESS">Board_ADDRESS</string>
+
+</resources>

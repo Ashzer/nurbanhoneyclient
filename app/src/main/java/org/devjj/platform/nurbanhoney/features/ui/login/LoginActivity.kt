@@ -14,6 +14,9 @@ class LoginActivity : BaseEmptyActivity() {
         super.onCreate(savedInstanceState)
         addFragment(savedInstanceState)
     }
-
+    override fun onDestroy() {
+        super.onDestroy()
+        finish()
+    }
     override fun fragment() = LoginFragment()
 }

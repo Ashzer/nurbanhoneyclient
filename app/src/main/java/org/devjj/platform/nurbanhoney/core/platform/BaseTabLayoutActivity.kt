@@ -14,7 +14,7 @@ abstract class BaseTabLayoutActivity : BaseActivity(){
     override fun addFragment(savedInstanceState: Bundle?) =
         savedInstanceState ?: supportFragmentManager.inTransaction {
             add(
-                R.id.NavigationFragmentContainer,fragment()
+                R.id.navigationFragmentContainer,fragment()
             )
         }
 }

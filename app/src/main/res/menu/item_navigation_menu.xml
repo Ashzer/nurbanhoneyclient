@@ -3,7 +3,7 @@
     <item
         android:title="Popular"
         android:enabled="true"
-        android:id="@+id/menu_popular"
+        android:id="@+id/menu_popular_board"
         android:icon="@drawable/ic_menu_like"/>
     <item android:title="Ranking"
         android:enabled="true"
@@ -13,4 +13,9 @@
         android:enabled="true"
         android:id="@+id/menu_profile"
         android:icon="@drawable/ic_menu_profile"/>
+
+    <group android:checkableBehavior="single"
+        android:id="@+id/menu_group_boards">
+
+    </group>
 </menu>

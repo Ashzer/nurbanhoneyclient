@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import okhttp3.MultipartBody
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
+import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.usecases.*
 import java.net.URL
 import javax.inject.Inject
 
@@ -14,13 +15,39 @@ import javax.inject.Inject
 class TextEditorViewModel
 @Inject constructor(
     private val uploadImage: UploadImageUseCase,
-    private val uploadArticle: UploadArticleUseCase
+    private val uploadArticle: UploadArticleUseCase,
+    private val uploadNurbanArticle: UploadNurbanArticleUseCase,
+    private val deleteImages: DeleteImagesUseCase,
+    private val modifyArticle: ModifyArticleUseCase,
+    private val modifyNurbanArticle: ModifyNurbanArticleUseCase
 ) : BaseViewModel() {
     private val _imageURLs: MutableLiveData<List<URL>> = MutableLiveData()
     val imageURLs: LiveData<List<URL>> = _imageURLs
+    private val _articleResponse: MutableLiveData<String> = MutableLiveData()
+    val articleResponse: LiveData<String> = _articleResponse
 
-    fun uploadImage(token: String, uuid: MultipartBody.Part, image: MultipartBody.Part) =
-        uploadImage(UploadImageUseCase.Params(token, uuid, image), viewModelScope) {
+    var board = ""
+
+    fun deleteImages(board: String, token: String, uuid: String) =
+        deleteImages(DeleteImagesUseCase.Params(board, token, uuid), viewModelScope) {
+            it.fold(
+                ::handleFailure,
+                ::handleImageDeletion
+            )
+        }
+
+    private fun handleImageDeletion(response: ImageResponse) {
+        Log.d("text_check__", response.result)
+    }
+
+
+    fun uploadImage(
+        board: String,
+        token: String,
+        uuid: MultipartBody.Part,
+        image: MultipartBody.Part
+    ) =
+        uploadImage(UploadImageUseCase.Params(board, token, uuid, image), viewModelScope) {
             it.fold(
                 ::handleFailure,
                 ::handleImageURL
@@ -28,6 +55,7 @@ class TextEditorViewModel
         }
 
     fun uploadArticle(
+        board: String,
         token: String,
         title: String,
         uuid: String,
@@ -35,8 +63,8 @@ class TextEditorViewModel
         thumbnail: String,
         content: String
     ) =
-        uploadArticle(
-            UploadArticleUseCase.Params(token, title, uuid, lossCut, thumbnail, content),
+        uploadNurbanArticle(
+            UploadNurbanArticleUseCase.Params(board, token, title, uuid, lossCut, thumbnail, content),
             viewModelScope
         ) {
             it.fold(
@@ -45,19 +73,69 @@ class TextEditorViewModel
             )
         }
 
-    fun searchThumbnail(content: String) : String{
-
-        for(index in 0 until (imageURLs.value?.size ?: 0)){
-            var url = imageURLs.value?.get(index).toString()
-            if(content.contains(url))
-                return url
+    fun uploadArticle(
+        board: String,
+        token: String,
+        title: String,
+        uuid: String,
+        thumbnail: String,
+        content: String
+    ) =
+        uploadArticle(
+            UploadArticleUseCase.Params(board, token, title, uuid, thumbnail, content),
+            viewModelScope
+        ) {
+            it.fold(
+                ::handleFailure,
+                ::handleUploading
+            )
         }
 
-        return ""
+    fun modifyArticle(
+        board: String,
+        token: String,
+        articleId: Int,
+        thumbnail: String,
+        title: String,
+        lossCut: Long,
+        content: String
+    ) = modifyNurbanArticle(
+        ModifyNurbanArticleUseCase.Params(board, token, articleId, thumbnail, title, lossCut, content),
+        viewModelScope
+    ) {
+        it.fold(
+            ::handleFailure,
+            ::handleUploading
+        )
     }
-    private fun handleUploading(articleResponse: ArticleResponse) {
+
+    fun modifyArticle(
+        board: String,
+        token: String,
+        articleId: Int,
+        thumbnail: String,
+        title: String,
+        content: String
+    ) = modifyArticle(
+        ModifyArticleUseCase.Params(board, token, articleId, thumbnail, title, content),
+        viewModelScope
+    ) {
+        it.fold(
+            ::handleFailure,
+            ::handleUploading
+        )
+    }
+
+    fun searchThumbnail(content: String) =
+        "(http)[^>]*(?=\" alt)".toRegex().find(content)?.value.run {
+            Log.d("string_check__", this.toString())
+            this.toString()
+        }
+
+    private fun handleUploading(response: ArticleResponse) {
         //Toast.makeText(this , "글 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-        Log.d("check__", articleResponse.toString())
+        Log.d("text_check__", response.result)
+        _articleResponse.postValue(response.result)
     }
 
     private fun handleImageURL(imageUploadResult: ImageUploadResult) {

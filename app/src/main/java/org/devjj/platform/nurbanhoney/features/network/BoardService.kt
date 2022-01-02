@@ -10,30 +10,57 @@ class BoardService
 @Inject constructor(retrofit: Retrofit) : BoardApi {
     private val boardApi by lazy { retrofit.create(BoardApi::class.java) }
 
-    override fun uploadRequest(
+    override fun getBoards() = boardApi.getBoards()
+
+    override fun uploadNurbanRequest(
+        board: String,
         token: String,
         title: String,
         uuid: String,
         lossCut: Long,
         thumbnail: String,
         content: String
-    ) =
-        boardApi.uploadRequest(token, title, uuid, lossCut, thumbnail, content)
+    ) = boardApi.uploadNurbanRequest(board, token, title, uuid, lossCut, thumbnail, content)
+
+    override fun uploadRequest(
+        board: String,
+        token: String,
+        title: String,
+        uuid: String,
+        thumbnail: String,
+        content: String
+    ) = boardApi.uploadRequest(board, token, title, uuid, thumbnail, content)
+
+    override fun modifyNurbanRequest(
+        board: String,
+        token: String,
+        articleId: Int,
+        thumbnail: String,
+        title: String,
+        lossCut: Long,
+        content: String
+    ) = boardApi.modifyNurbanRequest(board, token, articleId, thumbnail, title, lossCut, content)
+
+    override fun modifyRequest(
+        board: String,
+        token: String,
+        articleId: Int,
+        thumbnail: String,
+        title: String,
+        content: String
+    ) = boardApi.modifyRequest(board, token, articleId, thumbnail, title, content)
 
     override fun uploadImage(
+        board: String,
         token: String,
         uuid: MultipartBody.Part,
         image: MultipartBody.Part
-    ) = boardApi.uploadImage(token, uuid, image)
+    ) = boardApi.uploadImage(board, token, uuid, image)
 
-    override fun deleteImage(token: String, uuid: String) = boardApi.deleteImage(token, uuid)
+    override fun deleteImage(board: String, token: String, uuid: String) =
+        boardApi.deleteImage(board, token, uuid)
 
-    override fun getArticles(
-        flag: Int,
-        offset: Int,
-        limit: Int
-    ) = boardApi.getArticles(flag, offset, limit)
 
-    override fun deleteArticle(token: String, articleId: Int, uuid: String) =
-        boardApi.deleteArticle(token, articleId, uuid)
+    override fun deleteArticle(board: String, token: String, articleId: Int, uuid: String) =
+        boardApi.deleteArticle(board, token, articleId, uuid)
 }

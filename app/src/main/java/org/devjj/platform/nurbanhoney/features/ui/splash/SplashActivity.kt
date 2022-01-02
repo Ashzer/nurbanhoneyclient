@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.kakao.sdk.common.util.Utility
 import dagger.hilt.android.AndroidEntryPoint
@@ -12,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.devjj.platform.nurbanhoney.core.extension.observe
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.features.network.VersionCheckService
 import javax.inject.Inject
@@ -34,14 +36,30 @@ class SplashActivity
     @Inject
     lateinit var prefs: SharedPreferences
 
+
+    private val viewModel by viewModels<SplashViewModel>()
+
+    private fun updateBoards(boards: List<Board>?) {
+        if (!boards.isNullOrEmpty()) {
+            boards.forEach {
+                Log.d("boards_check__activity", it.toString())
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        with(viewModel) {
+            observe(boards, ::updateBoards)
+        }
 
         Handler().postDelayed({
             runBlocking { navigator.showHome(this@SplashActivity) }
             finish()
         }, SPLASH_DISPLAY_TIME)
 
+        viewModel.getBoards()
 
         CoroutineScope(Dispatchers.IO).launch {
             //Log.d("version_check__", versionCheckService.appVersion("nurbanhoney").execute().body().toString())
@@ -76,4 +94,9 @@ class SplashActivity
     }
 
     override fun onBackPressed() {}
+
+    override fun onDestroy() {
+        super.onDestroy()
+        finish()
+    }
 }

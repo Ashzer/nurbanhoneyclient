@@ -9,8 +9,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
 import org.devjj.platform.nurbanhoney.core.platform.DataLoadController
+import org.devjj.platform.nurbanhoney.features.network.repositories.article.usecases.*
+import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.usecases.DeleteArticleUseCase
 import org.devjj.platform.nurbanhoney.features.ui.textedit.ArticleResponse
-import org.devjj.platform.nurbanhoney.features.ui.textedit.DeleteArticleUseCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,6 +46,11 @@ class ArticleViewModel
     private val _comments: MutableLiveData<List<Comment>> = MutableLiveData()
     val comments: LiveData<List<Comment>> = _comments
     var updatingCommentId = -1
+    var offset = 0
+    private val limit = 5
+    var board = "nurban"
+
+    fun isAuthor() = article.value?.userId == getUserId()
 
     val controller: DataLoadController<Comment> = DataLoadController(
         initialize = { initComments() },
@@ -63,6 +69,10 @@ class ArticleViewModel
         ).toString()
     }
 
+    private fun getUserId(): Int? {
+        return prefs.getString(R.string.prefs_user_id.toString(), "-1")?.toInt()
+    }
+
     fun getNextComment() {
     }
 
@@ -72,7 +82,7 @@ class ArticleViewModel
 
     /*****************Loading*****************/
     fun getArticle() = getArticle(
-        GetArticleUseCase.Params(getToken(), articleId.value ?: -1), viewModelScope
+        GetArticleUseCase.Params(board, getToken(), articleId.value ?: -1), viewModelScope
     ) {
         it.fold(
             ::handleFailure,
@@ -89,16 +99,17 @@ class ArticleViewModel
     /*****************Loading*****************/
 
     fun deleteArticle() {
-        fun deleteArticle(token: String, articleId: Int, uuid: String) = deleteArticle(
-            DeleteArticleUseCase.Params(token, articleId, uuid), viewModelScope
-        ) {
-            it.fold(
-                ::handleFailure,
-                ::handleDeletion
-            )
-        }
+        fun deleteArticle(board: String, token: String, articleId: Int, uuid: String) =
+            deleteArticle(
+                DeleteArticleUseCase.Params(board, token, articleId, uuid), viewModelScope
+            ) {
+                it.fold(
+                    ::handleFailure,
+                    ::handleDeletion
+                )
+            }
 
-        deleteArticle(getToken(), articleId.value ?: -1, article.value?.uuid.toString())
+        deleteArticle(board, getToken(), articleId.value ?: -1, article.value?.uuid.toString())
     }
 
     private fun handleDeletion(articleResponse: ArticleResponse) {
@@ -107,8 +118,8 @@ class ArticleViewModel
 
     /*****************Ratings*****************/
     fun postLike() {
-        fun postLike(token: String, id: Int) =
-            postLike(LikeUseCase.Params(token, id), viewModelScope) {
+        fun postLike(board: String, token: String, id: Int) =
+            postLike(LikeUseCase.Params(board, token, id), viewModelScope) {
                 it.fold(
                     ::handleFailure,
                     ::handleRating
@@ -116,83 +127,85 @@ class ArticleViewModel
             }
 
         postLike(
+            board,
             getToken(),
             article.value?.id ?: -1
         )
     }
 
     fun unLike() {
-        fun unLike(token: String, id: Int) =
-            unLike(UnLikeUseCase.Params(token, id), viewModelScope) {
+        fun unLike(board: String, token: String, id: Int) =
+            unLike(UnLikeUseCase.Params(board, token, id), viewModelScope) {
                 it.fold(
                     ::handleFailure,
                     ::handleRating
                 )
             }
         unLike(
+            board,
             getToken(),
             article.value?.id ?: -1
         )
     }
 
     fun postDislike() {
-        fun postDislike(token: String, id: Int) =
-            postDislike(DislikeUseCase.Params(token, id), viewModelScope) {
+        fun postDislike(board: String, token: String, id: Int) =
+            postDislike(DislikeUseCase.Params(board, token, id), viewModelScope) {
                 it.fold(
                     ::handleFailure,
                     ::handleRating
                 )
             }
 
-        postDislike(getToken(), article.value?.id ?: -1)
+        postDislike(board, getToken(), article.value?.id ?: -1)
     }
 
     fun unDislike() {
-        fun unDislike(token: String, id: Int) =
-            unDislike(UnDislikeUseCase.Params(token, id), viewModelScope) {
+        fun unDislike(board: String, token: String, id: Int) =
+            unDislike(UnDislikeUseCase.Params(board, token, id), viewModelScope) {
                 it.fold(
                     ::handleFailure,
                     ::handleRating
                 )
             }
 
-        unDislike(getToken(), article.value?.id ?: -1)
+        unDislike(board, getToken(), article.value?.id ?: -1)
     }
 
     private fun handleRating(response: RatingResponse) {
-        Log.d("rating_check__",response.result)
+        Log.d("rating_check__", response.result)
         _ratingResponse.postValue(response.result)
     }
     /*****************Ratings*****************/
 
     /*****************Refresh Rating*****************/
     fun getRatings() {
-        fun getRatings(token: String, articleId: Int) =
-            getRatings(GetRatingsUseCase.Params(token, articleId), viewModelScope) {
+        fun getRatings(board: String, token: String, articleId: Int) =
+            getRatings(GetRatingsUseCase.Params(board, token, articleId), viewModelScope) {
                 it.fold(
                     ::handleFailure,
                     ::handleGetRatings
                 )
             }
-        getRatings(getToken(),articleId?.value ?: -1)
+        getRatings(board, getToken(), articleId?.value ?: -1)
     }
 
     private fun handleGetRatings(ratings: Ratings) {
-        Log.d("rating_check__",ratings.toString())
+        Log.d("rating_check__", ratings.toString())
         _ratings.postValue(ratings)
     }
     /*****************Refresh Rating*****************/
 
     /*****************Post Comment*****************/
     fun postComment(comment: String) {
-        fun postComment(token: String, comment: String, id: Int) =
-            postComment(PostCommentUseCase.Params(token, comment, id), viewModelScope) {
+        fun postComment(board: String, token: String, comment: String, id: Int) =
+            postComment(PostCommentUseCase.Params(board, token, comment, id), viewModelScope) {
                 it.fold(
                     ::handleFailure,
                     ::handlePostComment
                 )
             }
-        postComment(getToken(), comment, article.value!!.id)
+        postComment(board, getToken(), comment, article.value!!.id)
     }
 
     private fun handlePostComment(response: CommentResponse) {
@@ -203,14 +216,14 @@ class ArticleViewModel
     /*****************Post Comment*****************/
 
     fun updateComment(comment: String, id: Int) {
-        fun updateComment(token: String, id: Int, comment: String) =
-            updateComment(UpdateCommentUseCase.Params(token, id, comment), viewModelScope) {
+        fun updateComment(board: String, token: String, id: Int, comment: String) =
+            updateComment(UpdateCommentUseCase.Params(board, token, id, comment), viewModelScope) {
                 it.fold(
                     ::handleFailure,
                     ::handleUpdateComment
                 )
             }
-        updateComment(getToken(), id, comment)
+        updateComment(board, getToken(), id, comment)
         updatingCommentId = id
     }
 
@@ -220,14 +233,14 @@ class ArticleViewModel
     }
 
     fun getComment(commentId: Int) {
-        fun getComment(commentId: Int) =
-            getComment(GetCommentUseCase.Params(commentId), viewModelScope) {
+        fun getComment(board: String, commentId: Int) =
+            getComment(GetCommentUseCase.Params(board, commentId), viewModelScope) {
                 it.fold(
                     ::handleFailure,
                     ::handleGetComment
                 )
             }
-        getComment(commentId)
+        getComment(board, commentId)
     }
 
     private fun handleGetComment(comment: Comment) {
@@ -242,29 +255,40 @@ class ArticleViewModel
     }
 
     fun deleteComment(id: Int) {
-        fun deleteComment(token: String, id: Int, articleId: Int) =
-            deleteComment(DeleteCommentUseCase.Params(token, id, articleId), viewModelScope) {
+        fun deleteComment(board: String, token: String, id: Int, articleId: Int) =
+            deleteComment(
+                DeleteCommentUseCase.Params(board, token, id, articleId),
+                viewModelScope
+            ) {
                 it.fold(
                     ::handleFailure,
                     ::handleCommentDelete
                 )
             }
-        deleteComment(getToken(), id, article.value?.id ?: -1)
+        deleteComment(board, getToken(), id, article.value?.id ?: -1)
     }
 
     private fun handleCommentDelete(response: CommentResponse) {
         _commentsResponse.postValue(response.result)
     }
 
+    private fun getComments(board: String, articleId: Int, offset: Int, limit: Int) =
+        getComments(GetCommentsUseCase.Params(board, articleId, offset, limit), viewModelScope) {
+            it.fold(
+                ::handleFailure,
+                ::handleComments
+            )
+        }
+
     fun getComments() {
-        fun getComments(articleId: Int, offset: Int, limit: Int) =
-            getComments(GetCommentsUseCase.Params(articleId, offset, limit), viewModelScope) {
-                it.fold(
-                    ::handleFailure,
-                    ::handleComments
-                )
-            }
-        getComments(article.value!!.id, 0, 10)
+
+        getComments(board, article.value!!.id, 0, limit)
+        offset += limit
+    }
+
+    fun getNextComments() {
+        getComments(board, article.value!!.id, offset, limit)
+        offset += limit
     }
 
     private fun handleComments(comments: List<Comment>) {
@@ -277,19 +301,21 @@ class ArticleViewModel
     }
 
     fun initComments() {
-        fun initComments(articleId: Int, offset: Int, limit: Int) =
-            getComments(GetCommentsUseCase.Params(articleId, offset, limit), viewModelScope) {
+        fun initComments(board: String, articleId: Int, offset: Int, limit: Int) =
+            getComments(
+                GetCommentsUseCase.Params(board, articleId, offset, limit),
+                viewModelScope
+            ) {
                 it.fold(
                     ::handleFailure,
                     ::handleInitComments
                 )
             }
-        initComments(article.value!!.id, 0, 10)
+        initComments(board, article.value!!.id, 0, 10)
     }
 
     private fun handleInitComments(comments: List<Comment>) {
         _comments.postValue(comments)
     }
-
 
 }

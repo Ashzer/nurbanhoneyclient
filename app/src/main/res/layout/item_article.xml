@@ -7,17 +7,17 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cloThumbnailHolder"
+        android:id="@+id/itemArticleThumbnailHolderClo"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginEnd="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/cloHolders"
+        app:layout_constraintEnd_toStartOf="@id/itemArticleInfoClo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/ivThumbnail"
+            android:id="@+id/itemArticleThumbnailIv"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -28,49 +28,49 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cloHolders"
+        android:id="@+id/itemArticleInfoClo"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/cloThumbnailHolder"
+        app:layout_constraintStart_toEndOf="@id/itemArticleThumbnailHolderClo"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cloTitleHolder"
+            android:id="@+id/itemArticleTitleClo"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
-            app:layout_constraintBottom_toTopOf="@id/cloUserHolder"
+            app:layout_constraintBottom_toTopOf="@id/itemArticleUserClo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/tvTitle"
+                android:id="@+id/itemArticleTitleTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
                 android:text="TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/tvReplies"
+                app:layout_constraintEnd_toStartOf="@+id/itemArticleRepliesTv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvReplies"
+                android:id="@+id/itemArticleRepliesTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tvTitle"
+                app:layout_constraintStart_toEndOf="@+id/itemArticleTitleTv"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cloUserHolder"
+            android:id="@+id/itemArticleUserClo"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="10dp"
@@ -78,36 +78,36 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cloTitleHolder">
+            app:layout_constraintTop_toBottomOf="@id/itemArticleTitleClo">
 
             <ImageView
-                android:id="@+id/ivBadge"
+                android:id="@+id/itemArticleBadgeIv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tvUserName"
+                app:layout_constraintEnd_toStartOf="@id/itemArticleUserNameTv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/h1" />
 
             <TextView
-                android:id="@+id/tvUserName"
+                android:id="@+id/itemArticleUserNameTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nickname"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/lloMedals"
-                app:layout_constraintStart_toEndOf="@+id/ivBadge"
+                app:layout_constraintEnd_toStartOf="@id/itemArticleMedalsLlo"
+                app:layout_constraintStart_toEndOf="@+id/itemArticleBadgeIv"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <LinearLayout
-                android:id="@+id/lloMedals"
+                android:id="@+id/itemArticleMedalsLlo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tvUserName"
+                app:layout_constraintStart_toEndOf="@+id/itemArticleUserNameTv"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,89 +3,111 @@ package org.devjj.platform.nurbanhoney.features.network
 import org.devjj.platform.nurbanhoney.features.ui.article.CommentEntity
 import org.devjj.platform.nurbanhoney.features.ui.article.RatingsEntity
 import org.devjj.platform.nurbanhoney.features.ui.home.ArticleEntity
+import org.devjj.platform.nurbanhoney.features.ui.home.ArticlesRequestEntity
 import retrofit2.Call
 import retrofit2.http.*
 
 internal interface ArticleApi {
     companion object {
-        private const val ARTICLE_LIKE = "nurbanlike"
-        private const val ARTICLE_DISLIKE = "nurbandislike"
-        private const val ARTICLE_COMMENTS = "nurbancomment"
-        private const val ARTICLE_COMMENT = "nurbancomment/detail"
-        private const val NURBAN_ARTICLE = "nurbanboard/detail"
-        private const val ARTICLE_RATING = "nurbanboard/myrating"
+        private const val BASE_BOARD ="/board"
+        private const val ARTICLE = "/article"
+        private const val LIKE = "/like"
+        private const val DISLIKE = "/dislike"
+        private const val COMMENTS = "/comment"
+        private const val COMMENT = "/detail"
+        private const val RATING = "/myrating"
     }
 
-    @GET(NURBAN_ARTICLE)
+    @GET("$BASE_BOARD/{board}")
+    fun getArticles(
+        @Path("board") board: String,
+        @Query("flag") flag: Int = 0,
+        @Query("offset") offset: Int,
+        @Query("limit") limit: Int
+    ): Call<List<ArticlesRequestEntity>>
+
+    //@GET(NURBAN_ARTICLE)
+    @GET("$BASE_BOARD/{board}$ARTICLE")
     fun getArticle(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Query("id") id: Int
     ): Call<ArticleEntity>
 
     @FormUrlEncoded
-    @POST(ARTICLE_LIKE)
+    @POST("$BASE_BOARD/{board}$ARTICLE$LIKE")
     fun postLike(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Field("articleId") id: Int
     ): Call<SimpleResponseEntity>
 
-    @DELETE(ARTICLE_LIKE)
+    @DELETE("$BASE_BOARD/{board}$ARTICLE$LIKE")
     fun cancelLike(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Query("articleId") id: Int
     ): Call<SimpleResponseEntity>
 
     @FormUrlEncoded
-    @POST(ARTICLE_DISLIKE)
+    @POST("$BASE_BOARD/{board}$ARTICLE$DISLIKE")
     fun postDislike(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Field("articleId") id: Int
     ): Call<SimpleResponseEntity>
 
-    @DELETE(ARTICLE_DISLIKE)
+    @DELETE("$BASE_BOARD/{board}$ARTICLE$DISLIKE")
     fun cancelDislike(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Query("articleId") id: Int
     ): Call<SimpleResponseEntity>
 
-    @GET(ARTICLE_RATING)
+    @GET("$BASE_BOARD/{board}$ARTICLE$RATING")
     fun getRatings(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Query("articleId") articleId: Int
     ): Call<RatingsEntity>
 
     @FormUrlEncoded
-    @POST(ARTICLE_COMMENTS)
+    @POST("$BASE_BOARD/{board}$ARTICLE$COMMENTS")
     fun postComment(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Field("content") comment: String,
         @Field("articleId") id: Int
     ): Call<SimpleResponseEntity>
 
-    @GET(ARTICLE_COMMENTS)
+    @GET("$BASE_BOARD/{board}$ARTICLE$COMMENTS")
     fun getComments(
+        @Path("board") board: String,
         @Query("articleId") id: Int,
         @Query("offset") offset: Int,
         @Query("limit") limit: Int
     ): Call<List<CommentEntity>>
 
-    @DELETE(ARTICLE_COMMENTS)
+    @DELETE("$BASE_BOARD/{board}$ARTICLE$COMMENTS")
     fun deleteComment(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Query("id") id: Int,
         @Query("articleId") articleId: Int
     ): Call<SimpleResponseEntity>
 
     @FormUrlEncoded
-    @PATCH(ARTICLE_COMMENTS)
+    @PATCH("$BASE_BOARD/{board}$ARTICLE$COMMENTS")
     fun updateComment(
+        @Path("board") board: String,
         @Header("token") token: String,
         @Field("id") id: Int,
         @Field("content") content: String
     ): Call<SimpleResponseEntity>
 
-    @GET(ARTICLE_COMMENT)
+    @GET("$BASE_BOARD/{board}$ARTICLE$COMMENTS$COMMENT")
     fun getComment(
+        @Path("board") board: String,
         @Query("commentId") commentId: Int
     ): Call<CommentEntity>
 }

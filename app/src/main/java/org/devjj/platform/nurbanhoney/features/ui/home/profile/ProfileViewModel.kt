@@ -8,10 +8,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
-import org.devjj.platform.nurbanhoney.core.platform.DataLoadController
-import org.devjj.platform.nurbanhoney.features.ui.article.*
-import org.devjj.platform.nurbanhoney.features.ui.textedit.ArticleResponse
-import org.devjj.platform.nurbanhoney.features.ui.textedit.DeleteArticleUseCase
 import javax.inject.Inject
 
 @HiltViewModel
