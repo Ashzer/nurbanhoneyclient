@@ -1,6 +1,5 @@
 package org.devjj.platform.nurbanhoney.features.ui.home
 
-import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.Profile
 

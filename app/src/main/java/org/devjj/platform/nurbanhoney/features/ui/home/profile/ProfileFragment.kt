@@ -5,7 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.core.view.marginEnd
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.failure
@@ -40,7 +44,6 @@ class ProfileFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         with(viewModel) {
             observe(profile, ::renderProfile)
@@ -83,12 +86,18 @@ class ProfileFragment : BaseFragment() {
 
     // 보여주는 휘장 셋팅하는 메소드
     private fun settingInsigniaShow(insigniaShow: String?){
+        Log.d("test", "insigniaShow : $insigniaShow")
 
+        /*
+        insigniaShow?.map {
+            addInsigniaImage(binding.llInsigniaShowContent, )
+        }
+         */
     }
 
     // 소유한 휘장 셋팅하는 메소드
     private fun settingInsigniaOwn(insigniaOwn: String?){
-
+        Log.d("test", "insigniaOwn : $insigniaOwn")
     }
 
     // 내가 쓴 글 수 셋팅하는 메소
@@ -101,6 +110,15 @@ class ProfileFragment : BaseFragment() {
     private fun settingMyCommentCount(myCommentCount: Int?){
         val myCommentCountNotNull = myCommentCount ?: 0
         binding.tvMycomment.text = myCommentCountNotNull.toString()
+    }
+
+    // 휘장 이미지 셋팅하는 메소드
+    private fun addInsigniaImage(ll: LinearLayout, url: String){
+        val iv = ImageView(context)
+        iv.loadFromUrl(url, R.drawable.ic_action_no_badge)
+        //iv.maxWidth = 40
+        //iv.maxHeight = 40
+        ll.addView(iv)
     }
 
     // 프로필 데이터를 받아서 갱신하는 메소드

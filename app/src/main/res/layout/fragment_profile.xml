@@ -20,7 +20,7 @@
 
             <!-- 편집하기 버튼 -->
             <TextView
-                android:id="@+id/tv_edit"
+                android:id="@+id/tvEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -33,7 +33,7 @@
 
             <!-- 뱃지, 닉네임, 포인트 레이아웃 -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_dashboard"
+                android:id="@+id/clDashboard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -41,21 +41,21 @@
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_edit">
+                app:layout_constraintTop_toBottomOf="@+id/tvEdit">
 
                 <!-- 뱃지 -->
                 <ImageView
-                    android:id="@+id/iv_badge"
+                    android:id="@+id/ivBadge"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/ll_nickname"/>
+                    app:layout_constraintEnd_toStartOf="@+id/llNickname"/>
 
                 <!-- 닉네임 -->
                 <LinearLayout
-                    android:id="@+id/ll_nickname"
+                    android:id="@+id/llNickname"
                     android:layout_width="0dp"
                     android:layout_height="90dp"
                     android:layout_marginStart="20dp"
@@ -63,7 +63,7 @@
                     android:orientation="vertical"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/iv_badge"
+                    app:layout_constraintStart_toEndOf="@+id/ivBadge"
                     app:layout_constraintEnd_toStartOf="@+id/ll_point">
 
                     <TextView
@@ -84,7 +84,7 @@
 
                 <!-- 포인트 -->
                 <LinearLayout
-                    android:id="@+id/ll_point"
+                    android:id="@+id/llPoint"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_marginStart="20dp"
@@ -92,7 +92,7 @@
                     android:orientation="vertical"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ll_nickname"
+                    app:layout_constraintStart_toEndOf="@+id/llNickname"
                     app:layout_constraintEnd_toEndOf="parent">
 
                     <TextView
@@ -115,7 +115,7 @@
 
             <!-- 설명 레이아웃 -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_description"
+                android:id="@+id/clDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -123,10 +123,10 @@
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cl_dashboard">
+                app:layout_constraintTop_toBottomOf="@+id/clDashboard">
 
                 <TextView
-                    android:id="@+id/tv_description"
+                    android:id="@+id/tvDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -134,18 +134,18 @@
                     android:text="@string/profile_description_str"
                     android:textSize="18sp"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/tv_description_content"
+                    app:layout_constraintBottom_toTopOf="@+id/tvDescriptionContent"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_description_content"
+                    android:id="@+id/tvDescriptionContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:textSize="18sp"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_description"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDescription"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
@@ -154,7 +154,7 @@
 
             <!-- 보여주는 휘장 레이아웃 -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_insignia_show"
+                android:id="@+id/clInsigniaShow"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -162,10 +162,10 @@
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cl_description">
+                app:layout_constraintTop_toBottomOf="@+id/clDescription">
 
                 <TextView
-                    android:id="@+id/tv_insignia_show"
+                    android:id="@+id/tvInsigniaShow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -173,18 +173,18 @@
                     android:text="@string/profile_insignia_show_str"
                     android:textSize="18sp"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/ll_insignia_show_content"
+                    app:layout_constraintBottom_toTopOf="@+id/llInsigniaShowContent"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <LinearLayout
-                    android:id="@+id/ll_insignia_show_content"
+                    android:id="@+id/llInsigniaShowContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:orientation="horizontal"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_insignia_show"
+                    app:layout_constraintTop_toBottomOf="@+id/tvInsigniaShow"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
@@ -193,7 +193,7 @@
 
             <!-- 소유중인 휘장 레이아웃 -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_insignia_own"
+                android:id="@+id/clInsigniaOwn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -201,10 +201,10 @@
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cl_insignia_show">
+                app:layout_constraintTop_toBottomOf="@+id/clInsigniaShow">
 
                 <TextView
-                    android:id="@+id/tv_insignia_own"
+                    android:id="@+id/tvInsigniaOwn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -212,18 +212,18 @@
                     android:text="@string/profile_insignia_own_str"
                     android:textSize="18sp"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/ll_insignia_own_content"
+                    app:layout_constraintBottom_toTopOf="@+id/llInsigniaOwnContent"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <LinearLayout
-                    android:id="@+id/ll_insignia_own_content"
+                    android:id="@+id/llInsigniaOwnContent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:orientation="horizontal"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_insignia_own"
+                    app:layout_constraintTop_toBottomOf="@+id/tvInsigniaOwn"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
@@ -232,7 +232,7 @@
 
             <!-- 내 글, 내 댓글 레이아웃 -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_mypost"
+                android:id="@+id/clMypost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -240,11 +240,11 @@
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cl_insignia_own">
+                app:layout_constraintTop_toBottomOf="@+id/clInsigniaOwn">
 
                 <!-- 내 글 -->
                 <LinearLayout
-                    android:id="@+id/ll_myarticle"
+                    android:id="@+id/llMyarticle"
                     android:layout_width="130dp"
                     android:layout_height="120dp"
                     android:background="@drawable/profile_mypost_background"
@@ -254,7 +254,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/ll_mycomment">
+                    app:layout_constraintEnd_toStartOf="@+id/llMycomment">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -275,7 +275,7 @@
 
                 <!-- 내 댓글 -->
                 <LinearLayout
-                    android:id="@+id/ll_mycomment"
+                    android:id="@+id/llMycomment"
                     android:layout_width="130dp"
                     android:layout_height="120dp"
                     android:gravity="center"
@@ -283,7 +283,7 @@
                     android:orientation="vertical"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ll_myarticle"
+                    app:layout_constraintStart_toEndOf="@+id/llMyarticle"
                     app:layout_constraintEnd_toEndOf="parent">
 
                     <TextView
@@ -294,7 +294,7 @@
                         android:layout_gravity="center"/>
 
                     <TextView
-                        android:id="@+id/tv_mycomment"
+                        android:id="@+id/tvMycomment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
