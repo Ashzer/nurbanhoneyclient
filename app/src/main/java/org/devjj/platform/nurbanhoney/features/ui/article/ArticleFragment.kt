@@ -258,17 +258,4 @@ class ArticleFragment : BaseFragment() {
         viewModel.setArticleId(arguments?.get(PARAM_ARTICLE) as Int)
         super.onResume()
     }
-/*
-    private fun getConfirmation(msg: String, action: () -> Unit) {
-        AlertDialog.Builder(this.requireContext())
-            .setMessage(msg)
-            .setPositiveButton("확인") { _, _ ->
-                action()
-            }
-            .setNegativeButton("취소") { _, _ ->
-                Toast.makeText(this.requireContext(), "취소 되었습니다", Toast.LENGTH_SHORT).show()
-            }
-            .show()
-    }
-*/
 }
