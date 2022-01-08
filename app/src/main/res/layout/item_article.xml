@@ -82,13 +82,13 @@
 
             <ImageView
                 android:id="@+id/itemArticleBadgeIv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/itemArticleUserNameTv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/h1" />
+                 />
 
             <TextView
                 android:id="@+id/itemArticleUserNameTv"

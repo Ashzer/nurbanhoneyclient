@@ -39,7 +39,8 @@
 
         <activity android:name=".features.ui.textedit.TextEditorActivity"
             android:label="TextEditor"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.NurbanHoney.NoActionBar">
         </activity>
 
         <activity android:name=".features.ui.article.ArticleActivity"

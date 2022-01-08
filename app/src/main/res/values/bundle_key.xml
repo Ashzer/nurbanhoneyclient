@@ -3,5 +3,6 @@
     <string name="Board_ID">Board_ID</string>
     <string name="Board_NAME">Board_NAME</string>
     <string name="Board_ADDRESS">Board_ADDRESS</string>
+    <string name="BoardInfo">BoardInformation</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,17 +20,18 @@ import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentNurbanboardBinding
 import org.devjj.platform.nurbanhoney.features.ui.home.BoardActivity
+import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class BoardFragment : BaseFragment() {
+open class BoardFragment : BaseFragment() {
     override fun layoutId() = R.layout.fragment_nurbanboard
 
     @Inject
     lateinit var navigator: Navigator
 
     private var _binding: FragmentNurbanboardBinding? = null
-    private val binding get() = _binding!!
+    protected val binding get() = _binding!!
     private val viewModel by viewModels<BoardViewModel>()
 
     @Inject
@@ -57,10 +59,8 @@ class BoardFragment : BaseFragment() {
 
         var bundle = this.arguments
         if (bundle != null) {
-            viewModel.boardId = bundle.getInt(R.string.Board_ID.toString())
-            viewModel.boardName = bundle.getString(R.string.Board_NAME.toString()) ?: ""
-            viewModel.board = bundle.getString(R.string.Board_ADDRESS.toString()) ?: ""
-
+            viewModel.board = bundle.getParcelable(R.string.BoardInfo.toString()) ?: Board.empty
+            Log.d("bundle_check__",viewModel.board.toString())
         }
 
         _binding = FragmentNurbanboardBinding.inflate(inflater, container, false)
@@ -69,7 +69,7 @@ class BoardFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (requireActivity() as BoardActivity).setActionBarTitle(viewModel.boardName)
+        (requireActivity() as BoardActivity).setActionBarTitle(viewModel.board.name)
         binding.boardWriteFab.setOnSingleClickListener {
             //navigator.showTextEditor(requireContext())
             CoroutineScope(Dispatchers.IO).async {
@@ -110,7 +110,6 @@ class BoardFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         viewModel.controller.initialize()
-        requireActivity().actionBar?.title = viewModel.boardName
 
     }
 

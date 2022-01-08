@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import okhttp3.MultipartBody
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
 import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.usecases.*
+import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 import java.net.URL
 import javax.inject.Inject
 
@@ -26,7 +27,7 @@ class TextEditorViewModel
     private val _articleResponse: MutableLiveData<String> = MutableLiveData()
     val articleResponse: LiveData<String> = _articleResponse
 
-    var board = ""
+    var board = Board.empty
 
     fun deleteImages(board: String, token: String, uuid: String) =
         deleteImages(DeleteImagesUseCase.Params(board, token, uuid), viewModelScope) {

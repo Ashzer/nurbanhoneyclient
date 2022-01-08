@@ -21,6 +21,7 @@ import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentArticleBinding
+import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,7 +30,7 @@ class ArticleFragment : BaseFragment() {
         private const val PARAM_ARTICLE = "param_article"
         private const val PARAM_BOARD = "param_board"
 
-        fun forArticle(board: String?, id: Int?) =
+        fun forArticle(board: Board?, id: Int?) =
             ArticleFragment().apply {
                 arguments = bundleOf(PARAM_BOARD to board, PARAM_ARTICLE to id)
             }
@@ -136,6 +137,7 @@ class ArticleFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.setArticleId(arguments?.get(PARAM_ARTICLE) as Int)
+        viewModel.board = (arguments?.get(PARAM_BOARD) as Board)
 
         binding.articleBody.articleContentWv.setInputEnabled(false)
 
@@ -249,7 +251,7 @@ class ArticleFragment : BaseFragment() {
                 viewModel.getNextComments()
             }
 
-//            Log.d("recyclerview_check__" , (binding.articleCommentsRv.layoutManager as LinearLayoutManager).itemCount.toString())
+//            Log.d("recyclerview_check_c_" , (binding.articleCommentsRv.layoutManager as LinearLayoutManager).itemCount.toString())
 //            Log.d("recyclerview_check__" , (binding.articleCommentsRv.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition().toString())
         }
     }

@@ -19,31 +19,21 @@ import javax.inject.Inject
 class BoardViewModel
 @Inject constructor(
     private val getArticles: GetArticlesUseCase,
-    private val getBoards: GetBoardsUseCase,
     private val prefs: SharedPreferences
-) :
-    BaseViewModel() {
+) : BaseViewModel() {
     private val _articles: MutableLiveData<List<NurbanHoneyArticle>> = MutableLiveData()
     val articles: LiveData<List<NurbanHoneyArticle>> = _articles
     private var offset = 0
-    private val limit = 5
-    var board = ""
-    var boardName = "너반꿀"
-    var boardId = 0
-    private val _boards: MutableLiveData<List<Board>> = MutableLiveData()
-    val boards: LiveData<List<Board>> = _boards
+    private val limit = 10
+
+    //TODO("첫 실행화면을 인기게시판으로 바꾼후에는 lateinit var로 변경")
+    var board: Board = Board(0,"너반꿀","nurban")
 
     val controller = DataLoadController(
         initialize = { initArticles() },
         getNext = { getNext() },
         loadNext = { loadNext() }
     )
-
-    fun setCurrentBoard(id: Int) {
-        boardId = id
-        boardName = boards.value?.get(boardId)?.name ?: ""
-        board = boards.value?.get(boardId)?.address ?: ""
-    }
 
     private fun initArticles() {
         fun initArticles(board: String, flag: Int, offset: Int, limit: Int) =
@@ -54,7 +44,7 @@ class BoardViewModel
                 )
             }
 
-        initArticles(board, flag = 0, 0, limit)
+        initArticles(board.address, flag = 0, 0, limit)
         offset = limit
     }
 
@@ -78,7 +68,7 @@ class BoardViewModel
                     ::handArticles
                 )
             }
-        getArticles(board, flag = 0, offset, limit)
+        getArticles(board.address, flag = 0, offset, limit)
         offset += limit
     }
 
@@ -93,20 +83,8 @@ class BoardViewModel
         )
     }
 
-    fun getBoards() =
-        getBoards(UseCase.None(), viewModelScope) {
-            it.fold(
-                ::handleFailure,
-                ::handleBoards
-            )
-        }
 
-    private fun handleBoards(boards: List<Board>) {
-        _boards.postValue(boards)
-        boards.forEach {
-            Log.d("boards_check__", it.toString())
-        }
 
-    }
+
 
 }

@@ -1,5 +1,6 @@
 package org.devjj.platform.nurbanhoney.features.network.repositories.article
 
+import android.util.Log
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
@@ -53,7 +54,7 @@ interface ArticleRepository {
         limit: Int
     ): Either<Failure, List<NurbanHoneyArticle>>
 
-   class Network
+    class Network
     @Inject constructor(
         private val networkHandler: NetworkHandler,
         private val articleService: ArticleService
@@ -68,7 +69,14 @@ interface ArticleRepository {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
                     articleService.getArticles(board, flag, offset, limit),
-                    { it.map { ArticlesRequestEntity -> ArticlesRequestEntity.toNurbanHoneyArticle() } },
+                    {
+//                        it.forEach { item->
+//                            Log.d("badge_check__","??? ${item.user?.profile?:"empty"}")
+//                        }
+                        it.map { ArticlesRequestEntity ->
+                            ArticlesRequestEntity.toNurbanHoneyArticle()
+                        }
+                    },
                     emptyList()
                 )
                 false -> Either.Left(Failure.NetworkConnection)
