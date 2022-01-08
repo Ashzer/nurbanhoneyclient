@@ -9,13 +9,21 @@ import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.invisible
 import org.devjj.platform.nurbanhoney.core.extension.visible
 import org.devjj.platform.nurbanhoney.features.ui.article.Article
+import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 
 class TextEditorNurbanFragment : TextEditorFragment() {
+
     companion object {
         private const val PARAM_ARTICLE = "param_article"
+        private const val PARAM_BOARD = "param_board"
 
-        fun toModify(article: Article) = TextEditorNurbanFragment().apply {
-            arguments = bundleOf(PARAM_ARTICLE to article)
+        fun toModify(board: Board, article: Article) = TextEditorNurbanFragment().apply {
+            arguments =
+                bundleOf(PARAM_ARTICLE to article, PARAM_BOARD to board)
+        }
+
+        fun toWrite(board: Board) = TextEditorNurbanFragment().apply {
+            arguments = bundleOf(PARAM_BOARD to board)
         }
     }
 
@@ -28,10 +36,10 @@ class TextEditorNurbanFragment : TextEditorFragment() {
         when (item.itemId) {
             R.id.writing_done -> {
 
-                val thumbnailUrl = textEditorViewModel.searchThumbnail(mEditor.html.toString())
+                val thumbnailUrl = viewModel.searchThumbnail(mEditor.html.toString())
                 Log.d("match_check__", thumbnailUrl)
                 if (isModify) {
-                    textEditorViewModel.modifyArticle(
+                    viewModel.modifyArticle(
                         "nurban",
                         prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
                         article.id,
@@ -41,7 +49,7 @@ class TextEditorNurbanFragment : TextEditorFragment() {
                         mEditor.html.toString()
                     )
                 } else {
-                    textEditorViewModel.uploadArticle(
+                    viewModel.uploadArticle(
                         "nurban",
                         prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
                         binding.textEditorNurbanHeader.textEditorTitleEt.text.toString(),

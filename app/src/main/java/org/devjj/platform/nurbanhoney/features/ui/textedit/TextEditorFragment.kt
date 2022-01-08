@@ -8,7 +8,10 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
@@ -25,6 +28,7 @@ import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentTextEditorNurbanBinding
 import org.devjj.platform.nurbanhoney.features.ui.article.Article
+import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 import java.io.File
 import java.net.URL
 import java.util.*
@@ -36,14 +40,15 @@ open class TextEditorFragment : BaseFragment() {
 
     companion object {
         private const val PARAM_ARTICLE = "param_article"
+        private const val PARAM_BOARD = "param_board"
 
-        fun toModify(board: String, article: Article) = TextEditorFragment().apply {
+        fun toModify(board: Board, article: Article) = TextEditorFragment().apply {
             arguments =
-                bundleOf(PARAM_ARTICLE to article, R.string.Board_ADDRESS.toString() to board)
+                bundleOf(PARAM_ARTICLE to article, PARAM_BOARD to board)
         }
 
-        fun toWrite(board: String) = TextEditorFragment().apply {
-            arguments = bundleOf(R.string.Board_ADDRESS.toString() to board)
+        fun toWrite(board: Board) = TextEditorFragment().apply {
+            arguments = bundleOf(PARAM_BOARD to board)
         }
     }
 
@@ -55,7 +60,7 @@ open class TextEditorFragment : BaseFragment() {
     var isModify: Boolean = false
     lateinit var article: Article
 
-    val textEditorViewModel by viewModels<TextEditorViewModel>()
+    val viewModel by viewModels<TextEditorViewModel>()
 
     @Inject
     lateinit var prefs: SharedPreferences
@@ -75,7 +80,7 @@ open class TextEditorFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        with(textEditorViewModel) {
+        with(viewModel) {
             observe(imageURLs, ::renderImage)
             observe(articleResponse, ::uploadHandler)
         }
@@ -94,12 +99,18 @@ open class TextEditorFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(this.arguments != null) {
-            if (requireArguments().containsKey(R.string.Board_ADDRESS.toString()))
-                textEditorViewModel.board =
-                    requireArguments().getString(R.string.Board_ADDRESS.toString()) ?: "nurban"
-            if (requireArguments().containsKey(PARAM_ARTICLE))
+        if (this.arguments != null) {
+            if (requireArguments().containsKey(PARAM_BOARD)) {
+                viewModel.board = (arguments?.getParcelable(PARAM_BOARD) ?: Board.empty)
+                Log.d("texteditor_check__", viewModel.board.toString())
+            }
+
+            if (requireArguments().containsKey(PARAM_ARTICLE)) {
                 isModify = true
+                (requireActivity() as TextEditorActivity).setActionBarTitle("${viewModel.board.name} - 글 수정")
+            }else{
+                (requireActivity() as TextEditorActivity).setActionBarTitle("${viewModel.board.name} - 글 작성")
+            }
         }
 
 
@@ -165,7 +176,7 @@ open class TextEditorFragment : BaseFragment() {
                 //options.inSampleSize = 4
                 // var src = BitmapFactory.decodeFile(uri.toString(),options)
                 Log.d("uri_check__", "$uri  ,  $uuid")
-                textEditorViewModel.uploadImage("nurban", nurbanToken, uuidPart, imageFilePart)
+                viewModel.uploadImage("nurban", nurbanToken, uuidPart, imageFilePart)
             }
         }
         mEditor.insertImageListener(
@@ -173,13 +184,6 @@ open class TextEditorFragment : BaseFragment() {
             requireActivity(),
             cropActivityResultLauncher
         )
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(
-            R.menu.texteditor_menu, menu
-        )
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -191,13 +195,13 @@ open class TextEditorFragment : BaseFragment() {
 //                    "${
 //                        prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString()
 //                    }  ,  ${binding.titleEt.text} , ${mEditor.html} , $uuid ," +
-//                            " ${textEditorViewModel.searchThumbnail(mEditor.html.toString())}"
+//                            " ${viewModel.searchThumbnail(mEditor.html.toString())}"
 //                )
-                val thumbnailUrl = textEditorViewModel.searchThumbnail(mEditor.html.toString())
+                val thumbnailUrl = viewModel.searchThumbnail(mEditor.html.toString())
                 Log.d("match_check__", thumbnailUrl)
                 if (isModify) {
-                    textEditorViewModel.modifyArticle(
-                        textEditorViewModel.board,
+                    viewModel.modifyArticle(
+                        viewModel.board.address,
                         prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
                         article.id,
                         thumbnailUrl,
@@ -205,8 +209,8 @@ open class TextEditorFragment : BaseFragment() {
                         mEditor.html.toString()
                     )
                 } else {
-                    textEditorViewModel.uploadArticle(
-                        textEditorViewModel.board,
+                    viewModel.uploadArticle(
+                        viewModel.board.address,
                         prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
                         binding.textEditorNurbanHeader.textEditorTitleEt.text.toString(),
                         uuid.toString(),
@@ -233,10 +237,10 @@ open class TextEditorFragment : BaseFragment() {
     }
 
     override fun onDestroy() {
-        var uploadResponse = textEditorViewModel.articleResponse.value ?: "no_result"
+        var uploadResponse = viewModel.articleResponse.value ?: "no_result"
 
         if (uploadResponse == "no_result" && !isModify) {
-            textEditorViewModel.deleteImages(
+            viewModel.deleteImages(
                 "nurban",
                 prefs.getString(
                     R.string.prefs_nurban_token_key.toString(),

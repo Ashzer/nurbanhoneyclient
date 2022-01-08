@@ -12,7 +12,7 @@ data class ArticlesRequestEntity(
 ) {
     data class User(
         @SerializedName("userId") val userId: Int,
-        @SerializedName("profile") val profile: String,
+        @SerializedName("badge") val profile: String,
         @SerializedName("nickname") val nickname: String,
         @SerializedName("insignia") val insignia: String?
         //@SerializedName("insignia") val insignia : List<String>

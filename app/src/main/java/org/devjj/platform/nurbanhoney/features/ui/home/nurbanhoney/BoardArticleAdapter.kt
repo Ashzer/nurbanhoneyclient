@@ -1,8 +1,10 @@
 package org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney
 
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_article.view.*
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.inflate
@@ -37,6 +39,8 @@ class BoardArticleAdapter
             itemView.itemArticleTitleTv.text = nurbanHoneyArticle.title
             itemView.itemArticleRepliesTv.text = " [${nurbanHoneyArticle.replies}]"
             itemView.itemArticleBadgeIv.loadFromUrl(nurbanHoneyArticle.badge, R.drawable.ic_action_no_badge)
+
+            Log.d("badge_check__","??? ${nurbanHoneyArticle.badge}")
             itemView.itemArticleUserNameTv.text = nurbanHoneyArticle.author
 
             itemView.setOnSingleClickListener {

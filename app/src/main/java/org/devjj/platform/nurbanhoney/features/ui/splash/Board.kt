@@ -8,6 +8,8 @@ data class Board(val id: Int, val name: String, val address: String) : KParcelab
     companion object{
         @JvmField
         val CREATOR = parcelableCreator(::Board)
+
+        val empty = Board(-1,"Board doesn't exist","")
     }
 
     constructor(parcel : Parcel) : this(

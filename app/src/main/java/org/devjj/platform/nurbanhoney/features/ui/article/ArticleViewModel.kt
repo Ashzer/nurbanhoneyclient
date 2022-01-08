@@ -11,6 +11,7 @@ import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
 import org.devjj.platform.nurbanhoney.core.platform.DataLoadController
 import org.devjj.platform.nurbanhoney.features.network.repositories.article.usecases.*
 import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.usecases.DeleteArticleUseCase
+import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 import org.devjj.platform.nurbanhoney.features.ui.textedit.ArticleResponse
 import javax.inject.Inject
 
@@ -48,7 +49,7 @@ class ArticleViewModel
     var updatingCommentId = -1
     var offset = 0
     private val limit = 5
-    var board = "nurban"
+    lateinit var board: Board
 
     fun isAuthor() = article.value?.userId == getUserId()
 
@@ -82,7 +83,7 @@ class ArticleViewModel
 
     /*****************Loading*****************/
     fun getArticle() = getArticle(
-        GetArticleUseCase.Params(board, getToken(), articleId.value ?: -1), viewModelScope
+        GetArticleUseCase.Params(board.address, getToken(), articleId.value ?: -1), viewModelScope
     ) {
         it.fold(
             ::handleFailure,
@@ -91,7 +92,6 @@ class ArticleViewModel
     }
 
     private fun handleArticle(article: Article) {
-        Log.d("article_check__", article.toString())
         _article.postValue(article)
         _ratings.postValue(Ratings(article.likes, article.dislikes, article.myRating))
     }
@@ -109,7 +109,12 @@ class ArticleViewModel
                 )
             }
 
-        deleteArticle(board, getToken(), articleId.value ?: -1, article.value?.uuid.toString())
+        deleteArticle(
+            board.address,
+            getToken(),
+            articleId.value ?: -1,
+            article.value?.uuid.toString()
+        )
     }
 
     private fun handleDeletion(articleResponse: ArticleResponse) {
@@ -127,7 +132,7 @@ class ArticleViewModel
             }
 
         postLike(
-            board,
+            board.address,
             getToken(),
             article.value?.id ?: -1
         )
@@ -142,7 +147,7 @@ class ArticleViewModel
                 )
             }
         unLike(
-            board,
+            board.address,
             getToken(),
             article.value?.id ?: -1
         )
@@ -157,7 +162,7 @@ class ArticleViewModel
                 )
             }
 
-        postDislike(board, getToken(), article.value?.id ?: -1)
+        postDislike(board.address, getToken(), article.value?.id ?: -1)
     }
 
     fun unDislike() {
@@ -169,7 +174,7 @@ class ArticleViewModel
                 )
             }
 
-        unDislike(board, getToken(), article.value?.id ?: -1)
+        unDislike(board.address, getToken(), article.value?.id ?: -1)
     }
 
     private fun handleRating(response: RatingResponse) {
@@ -187,7 +192,7 @@ class ArticleViewModel
                     ::handleGetRatings
                 )
             }
-        getRatings(board, getToken(), articleId?.value ?: -1)
+        getRatings(board.address, getToken(), articleId?.value ?: -1)
     }
 
     private fun handleGetRatings(ratings: Ratings) {
@@ -205,7 +210,7 @@ class ArticleViewModel
                     ::handlePostComment
                 )
             }
-        postComment(board, getToken(), comment, article.value!!.id)
+        postComment(board.address, getToken(), comment, article.value!!.id)
     }
 
     private fun handlePostComment(response: CommentResponse) {
@@ -223,7 +228,7 @@ class ArticleViewModel
                     ::handleUpdateComment
                 )
             }
-        updateComment(board, getToken(), id, comment)
+        updateComment(board.address, getToken(), id, comment)
         updatingCommentId = id
     }
 
@@ -240,7 +245,7 @@ class ArticleViewModel
                     ::handleGetComment
                 )
             }
-        getComment(board, commentId)
+        getComment(board.address, commentId)
     }
 
     private fun handleGetComment(comment: Comment) {
@@ -265,7 +270,7 @@ class ArticleViewModel
                     ::handleCommentDelete
                 )
             }
-        deleteComment(board, getToken(), id, article.value?.id ?: -1)
+        deleteComment(board.address, getToken(), id, article.value?.id ?: -1)
     }
 
     private fun handleCommentDelete(response: CommentResponse) {
@@ -282,12 +287,12 @@ class ArticleViewModel
 
     fun getComments() {
 
-        getComments(board, article.value!!.id, 0, limit)
+        getComments(board.address, article.value!!.id, 0, limit)
         offset += limit
     }
 
     fun getNextComments() {
-        getComments(board, article.value!!.id, offset, limit)
+        getComments(board.address, article.value!!.id, offset, limit)
         offset += limit
     }
 
@@ -311,7 +316,7 @@ class ArticleViewModel
                     ::handleInitComments
                 )
             }
-        initComments(board, article.value!!.id, 0, 10)
+        initComments(board.address, article.value!!.id, 0, 10)
     }
 
     private fun handleInitComments(comments: List<Comment>) {

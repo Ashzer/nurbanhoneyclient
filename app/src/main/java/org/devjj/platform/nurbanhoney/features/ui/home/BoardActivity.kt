@@ -15,6 +15,7 @@ import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.core.platform.BaseTabLayoutActivity
 import org.devjj.platform.nurbanhoney.databinding.ActivityNavigationBinding
 import org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney.BoardFragment
+import org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney.BoardNoticeFragment
 import org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney.BoardViewModel
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileFragment
 import org.devjj.platform.nurbanhoney.features.ui.home.ranking.RankingFragment
@@ -30,7 +31,7 @@ class BoardActivity : BaseTabLayoutActivity() {
     @Inject
     lateinit var navigator: Navigator
 
-    private val viewModel by viewModels<BoardViewModel>()
+    private val viewModel by viewModels<BoardAViewModel>()
 
     private lateinit var binding: ActivityNavigationBinding
 
@@ -42,7 +43,6 @@ class BoardActivity : BaseTabLayoutActivity() {
     private fun renderBoards(boards : List<Board>?){
         var menu = binding.navigationSideMenu.menu
         var boardList = boards?.map{it.name} ?: listOf()
-
         boardList.forEachIndexed { i, e ->
             menu.add(R.id.menu_group_boards, i, i, e)
         }
@@ -80,19 +80,23 @@ class BoardActivity : BaseTabLayoutActivity() {
         binding.navigationSideMenu.setNavigationItemSelectedListener {
             if (it.groupId == R.id.menu_group_boards) {
                 Log.d("navi_check__bottom", it.toString())
-                viewModel.setCurrentBoard(it.itemId)
                 Log.d("navi_check__", it.groupId.toString())
                 Log.d("navi_check__", it.itemId.toString())
                 var bundle = Bundle()
-                bundle.putInt(R.string.Board_ID.toString(),it.itemId)
-                bundle.putString(R.string.Board_NAME.toString(),viewModel.boardName)
-                bundle.putString(R.string.Board_ADDRESS.toString(),viewModel.board)
+                bundle.putParcelable(R.string.BoardInfo.toString(),viewModel.boards.value?.get(it.itemId))
                 var frag = BoardFragment()
                 frag.arguments=bundle
                 navigate(frag)
             } else {
                 Log.d("navi_check__top", it.itemId.toString())
                 when (it.itemId) {
+                    R.id.menu_notice_board -> {
+                        var bundle = Bundle()
+                        bundle.putParcelable(R.string.BoardInfo.toString(),Board(-1,"공지사항","notice"))
+                        var frag = BoardNoticeFragment()
+                        frag.arguments = bundle
+                        navigate(frag)
+                    }
                     R.id.menu_popular_board -> {}
                     R.id.menu_ranking -> navigate(RankingFragment())
                     R.id.menu_profile -> navigate(ProfileFragment())
@@ -133,7 +137,7 @@ class BoardActivity : BaseTabLayoutActivity() {
         return false
     }
 
-    public fun setActionBarTitle(title: String){
+    fun setActionBarTitle(title: String){
         supportActionBar?.title = title
     }
 

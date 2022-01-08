@@ -12,6 +12,7 @@ import org.devjj.platform.nurbanhoney.features.ui.article.ArticleActivity
 import org.devjj.platform.nurbanhoney.features.ui.home.BoardActivity
 import org.devjj.platform.nurbanhoney.features.ui.login.Authenticator
 import org.devjj.platform.nurbanhoney.features.ui.login.LoginActivity
+import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 import org.devjj.platform.nurbanhoney.features.ui.textedit.TextEditorActivity
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -32,8 +33,8 @@ class Navigator
     fun showHome(context: Context) =
         context.startActivity(BoardActivity.callingIntent(context))
 
-    suspend fun showTextEditorWithLoginCheck(context: Context, board: String) {
-        fun showTextEditor(context: Context, board: String) =
+    suspend fun showTextEditorWithLoginCheck(context: Context, board: Board) {
+        fun showTextEditor(context: Context, board: Board) =
             context.startActivity(TextEditorActivity.callingIntent(context,board))
 
         when (authenticator.userLoggedIn()) {
@@ -42,8 +43,8 @@ class Navigator
         }
     }
 
-    suspend fun showTextEditorToModifyWithLoginCheck(context: Context, board: String, article: Article) {
-        fun showTextEditorToModify(context: Context, board: String, article: Article) {
+    suspend fun showTextEditorToModifyWithLoginCheck(context: Context, board: Board, article: Article) {
+        fun showTextEditorToModify(context: Context, board: Board, article: Article) {
             val intent = TextEditorActivity.callingIntentToModify(context,board, article)
             val activityOptions = ActivityOptionsCompat.makeBasic()
             context.startActivity(intent, activityOptions.toBundle())
@@ -54,6 +55,10 @@ class Navigator
             false -> showLogin(context)
         }
     }
+
+
+    fun showArticle(activity: FragmentActivity, board: Board, id: Int) =
+        activity.startActivity(ArticleActivity.callingIntent(activity, board, id))
 
     fun transFragment(
         supportFragmentManager: FragmentManager,
@@ -67,8 +72,4 @@ class Navigator
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commit()
     }
-
-    fun showArticle(activity: FragmentActivity, board: String, id: Int) =
-        activity.startActivity(ArticleActivity.callingIntent(activity, board, id))
-
 }

@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import com.bumptech.glide.Glide
+import com.bumptech.glide.annotation.GlideModule
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import org.devjj.platform.nurbanhoney.R
 
@@ -26,16 +28,20 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int): View =
     LayoutInflater.from(context).inflate(layoutRes, this, false)
 
 fun ImageView.loadFromUrl(url: String, resourceId: Int) =
-    Glide.with(this.context.applicationContext)
+    Glide.with(this.context)
         .load(url)
         .transition(DrawableTransitionOptions.withCrossFade())
         .placeholder(resourceId)
         .error(resourceId)
+        .diskCacheStrategy(DiskCacheStrategy.NONE)
+        .skipMemoryCache(true)
         .into(this)
 
 fun ImageView.loadFromDrawable(resourceId: Int) =
     Glide.with(this.context.applicationContext)
         .load(resourceId)
+        .diskCacheStrategy(DiskCacheStrategy.NONE)
+        .skipMemoryCache(true)
         .into(this)
 
 fun View.setOnSingleClickListener(debounceTime: Long = 1000L, action: () -> Unit) {

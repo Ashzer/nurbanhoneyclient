@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:title="Notice"
+        android:enabled="true"
+        android:id="@+id/menu_notice_board"
+        android:icon="@drawable/ic_board_notice"/>
+    <item
         android:title="Popular"
         android:enabled="true"
         android:id="@+id/menu_popular_board"
@@ -16,5 +21,4 @@
 
     <group android:checkableBehavior="single"
         android:id="@+id/menu_group_boards"/>
-
 </menu>
