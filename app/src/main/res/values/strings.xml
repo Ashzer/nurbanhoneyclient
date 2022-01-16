@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">NurbanHoney</string>
 
+
     <string name="test_string">test</string>
     <string name="rank">랭킹</string>
     <string name="nurban">너반꿀</string>
