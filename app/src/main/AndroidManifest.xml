@@ -48,6 +48,16 @@
             android:theme="@style/Theme.NurbanHoney.NoActionBar">
         </activity>
 
+        <activity android:name=".features.ui.home.profile.articles.ProfileArticlesActivity"
+            android:label="ProfileArticles"
+            android:theme="@style/Theme.NurbanHoney.NoActionBar">
+        </activity>
+
+        <activity android:name=".features.ui.home.profile.comments.ProfileCommentsActivity"
+            android:label="ProfileComments"
+            android:theme="@style/Theme.NurbanHoney.NoActionBar">
+        </activity>
+
         <activity
             android:name=".features.ui.login.LoginActivity"
             android:label="Login"

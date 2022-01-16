@@ -45,6 +45,7 @@ object Libraries {
     private object Versions {
         const val hilt = BuildPlugins.Versions.hilt
         const val appCompat = "1.2.0"
+        const val androidX = "1.0.0"
         const val constraintLayout = "2.0.4"
         const val recyclerView = "1.1.0"
         const val cardView = "1.0.0"
@@ -57,7 +58,10 @@ object Libraries {
         const val retrofit = "2.9.0"
         const val okHttpLoggingInterceptor = "4.9.0"
         const val playCore = "1.10.2"
-        const val kakaoUser = "2.8.1"
+        const val kakaoLogin = "2.8.1"
+        const val naverLogin = "4.2.6"
+        const val naverAndroidSDK = "4.2.6"
+        const val googleLogin = "20.0.1"
         const val richEditor = "2.0.0"
         const val fragment_ktx = "1.2.5"
         const val image_cropper = "2.8.0"
@@ -68,7 +72,10 @@ object Libraries {
         "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Kotlin.coroutines}"
     const val kotlinCoroutinesAndroid =
         "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Kotlin.coroutines}"
-    const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
+    const val appCompat = "androidx.appcompat:appcompat:${Versions.androidX}"
+    const val legacySupportCoreUtils =  "androidx.legacy:legacy-support-core-utils:${Versions.androidX}"
+    const val browser = "androidx.browser:browser:${Versions.androidX}"
+    const val legacySupport = "androidx.legacy:legacy-support-v4:${Versions.androidX}"
     const val constraintLayout =
         "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
     const val ktxCore = "androidx.core:core-ktx:${Versions.ktx}"
@@ -88,7 +95,10 @@ object Libraries {
     const val okHttpLoggingInterceptor =
         "com.squareup.okhttp3:logging-interceptor:${Versions.okHttpLoggingInterceptor}"
     const val playCore = "com.google.android.play:core:${Versions.playCore}"
-    const val kakaoUser = "com.kakao.sdk:v2-user:${Versions.kakaoUser}"
+    const val kakaoLogin = "com.kakao.sdk:v2-user:${Versions.kakaoLogin}"
+    const val naverLogin = "com.naver.nid:naveridlogin-android-sdk:${Versions.naverLogin}"
+    const val naverAndroidSDK = "libs/naveridlogin_android_sdk_${Versions.naverAndroidSDK}.aar"
+    const val googleLogin = "com.google.android.gms:play-services-auth:${Versions.googleLogin}"
     const val richEditor = "jp.wasabeef:richeditor-android:${Versions.richEditor}"
     const val fragment_ktx = "androidx.fragment:fragment-ktx:${Versions.fragment_ktx}"
     const val image_cropper = "com.theartofdev.edmodo:android-image-cropper:${Versions.image_cropper}"

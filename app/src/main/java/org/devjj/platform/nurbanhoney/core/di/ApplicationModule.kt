@@ -14,7 +14,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.devjj.platform.nurbanhoney.BuildConfig
 import org.devjj.platform.nurbanhoney.R
-import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileRepository
+import org.devjj.platform.nurbanhoney.features.network.repositories.profile.ProfileRepository
 import org.devjj.platform.nurbanhoney.features.network.repositories.article.ArticleRepository
 import org.devjj.platform.nurbanhoney.features.network.repositories.board.BoardRepository
 import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.TextEditorRepository
