@@ -1,5 +1,7 @@
 package org.devjj.platform.nurbanhoney.features.ui.home.profile
 
+import org.devjj.platform.nurbanhoney.core.extension.empty
+
 data class Profile(
     val id: Int,
     val loginType: String,
@@ -12,4 +14,20 @@ data class Profile(
     val myArticleCount: Int,
     val myCommentCount: Int,
     val error: String?,
-)
+) {
+    companion object {
+        var empty = Profile(
+            0,
+            String.empty(),
+            String.empty(),
+            String.empty(),
+            String.empty(),
+            0,
+            String.empty(),
+            String.empty(),
+            0,
+            0,
+            String.empty()
+        )
+    }
+}

@@ -3,6 +3,8 @@ package org.devjj.platform.nurbanhoney.features.network
 import com.google.gson.annotations.SerializedName
 import org.devjj.platform.nurbanhoney.features.ui.article.CommentResponse
 import org.devjj.platform.nurbanhoney.features.ui.article.RatingResponse
+import org.devjj.platform.nurbanhoney.features.ui.home.profile.EditProfileResponse
+import org.devjj.platform.nurbanhoney.features.ui.home.profile.SignOutResponse
 import org.devjj.platform.nurbanhoney.features.ui.textedit.ArticleResponse
 import org.devjj.platform.nurbanhoney.features.ui.textedit.ImageResponse
 
@@ -13,6 +15,8 @@ data class SimpleResponseEntity(
     fun toRatingResponse() = RatingResponse(result)
     fun toArticleResponse() = ArticleResponse(result)
     fun toImageResponse() = ImageResponse(result)
+    fun toEditProfileResponse() = EditProfileResponse(result)
+    fun toSignOutResponse() = SignOutResponse(result)
     companion object {
         val empty = SimpleResponseEntity("")
     }

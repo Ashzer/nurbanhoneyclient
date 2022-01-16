@@ -98,7 +98,7 @@ class ArticleFragment : BaseFragment() {
     private fun renderLikes(ratings: Ratings?) {
         binding.articleBody.articleLikesTv.text = ratings?.likes.toString()
         binding.articleBody.articleDislikesTv.text = ratings?.dislikes.toString()
-        Log.d("rating_check__", ratings?.myRating.toString() ?: "empty")
+        Log.d("rating_check__", ratings?.myRating.toString() )
         if (!ratings?.myRating.isNullOrEmpty()) {
             /*if (ratings?.myRating == "like") {
                 binding.articleLikesIv.drawable.setTint(R.color.colorWhite)
@@ -171,7 +171,7 @@ class ArticleFragment : BaseFragment() {
         }
 
         binding.articleBody.articleDislikesClo.setOnSingleClickListener {
-            Log.d("rating_check__+", viewModel.ratings.value?.myRating.toString() ?: "empty")
+            Log.d("rating_check__+", viewModel.ratings.value?.myRating.toString())
             if (viewModel.ratings.value?.myRating.toString() == "dislike") {
                 viewModel.unDislike()
             } else {

@@ -10,6 +10,8 @@ import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.features.ui.article.Article
 import org.devjj.platform.nurbanhoney.features.ui.article.ArticleActivity
 import org.devjj.platform.nurbanhoney.features.ui.home.BoardActivity
+import org.devjj.platform.nurbanhoney.features.ui.home.profile.articles.ProfileArticlesActivity
+import org.devjj.platform.nurbanhoney.features.ui.home.profile.comments.ProfileCommentsActivity
 import org.devjj.platform.nurbanhoney.features.ui.login.Authenticator
 import org.devjj.platform.nurbanhoney.features.ui.login.LoginActivity
 import org.devjj.platform.nurbanhoney.features.ui.splash.Board
@@ -32,6 +34,12 @@ class Navigator
 
     fun showHome(context: Context) =
         context.startActivity(BoardActivity.callingIntent(context))
+
+    fun showProfileArticle(context: Context) =
+        context.startActivity(ProfileArticlesActivity.callingIntent(context))
+
+    fun showProfileComment(context: Context) =
+        context.startActivity(ProfileCommentsActivity.callingIntent(context))
 
     suspend fun showTextEditorWithLoginCheck(context: Context, board: Board) {
         fun showTextEditor(context: Context, board: Board) =

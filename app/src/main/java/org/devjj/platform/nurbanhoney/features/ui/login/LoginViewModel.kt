@@ -19,8 +19,8 @@ class LoginViewModel
     val nurbanToken : MutableLiveData<NurbanToken> = MutableLiveData()
     val isValid : MutableLiveData<TokenStatus> = MutableLiveData()
 
-    fun getNurbanToken(type : String, kakaoKey : String) =
-        loginRequest(LoginRequestUseCase.Params(type, kakaoKey), viewModelScope){
+    fun getNurbanToken(type : String, key : String) =
+        loginRequest(LoginRequestUseCase.Params(type, key), viewModelScope){
             it.fold(
                 ::handleFailure,
                 ::handleToken

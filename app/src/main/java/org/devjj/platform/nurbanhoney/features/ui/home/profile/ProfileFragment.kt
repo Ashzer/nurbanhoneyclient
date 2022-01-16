@@ -15,6 +15,7 @@ import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.failure
 import org.devjj.platform.nurbanhoney.core.extension.loadFromUrl
 import org.devjj.platform.nurbanhoney.core.extension.observe
+import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentProfileBinding
@@ -147,6 +148,14 @@ class ProfileFragment : BaseFragment() {
         settingMyArticleCount(profile?.myArticleCount)
         // 내가 쓴 댓글 수 셋팅하는 메소
         settingMyCommentCount(profile?.myCommentCount)
+
+        binding.llMyarticle.setOnSingleClickListener {
+            navigator.showProfileArticle(requireContext())
+        }
+
+        binding.llMycomment.setOnSingleClickListener {
+            navigator.showProfileComment(requireContext())
+        }
     }
 
 }

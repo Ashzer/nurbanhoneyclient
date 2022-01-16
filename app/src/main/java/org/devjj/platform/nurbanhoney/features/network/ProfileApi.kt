@@ -18,26 +18,58 @@ internal interface ProfileApi {
         @Header("token") token: String
     ): Call<ProfileEntity>
 
-    /*
+    @GET(PROFILE_MYARTCIEL)
+    fun getMyArticles(
+        @Header("token") token: String,
+        @Query("offset") offset: Int,
+        @Query("limit") limit: Int,
+    ): Call<List<ProfileArticleEntity>>
+
+    @GET(PROFILE_MYCOMMENT)
+    fun getMyComments(
+        @Header("token") token: String,
+        @Query("offset") offset: Int,
+        @Query("limit") limit: Int,
+    ) : Call<List<ProfileCommentEntity>>
+
+    @DELETE(PROFILE_WITHDRAWAL)
+    fun signOut(
+        @Header("token") token: String,
+        @Query("id") id: Int,
+    ): Call<SimpleResponseEntity>
+
+
+    @FormUrlEncoded
+    @PATCH(PROFILE_EDIT)
+    fun editProfile(
+        @Header("token") token: String,
+        @Field("nickname") nickname: String,
+        @Field("description") description: String,
+        @Field("insignia") insignia: List<String>,
+    ) : Call<SimpleResponseEntity>
+    /*POST
     @FormUrlEncoded
     @POST(ARTICLE_LIKE)
     fun postLike(
         @Header("token") token: String,
         @Field("articleId") id: Int
     ): Call<SimpleResponseEntity>
-
+*/
+    /*DELETE
     @DELETE(ARTICLE_LIKE)
     fun cancelLike(
         @Header("token") token: String,
         @Query("articleId") id: Int
     ): Call<SimpleResponseEntity>
-
+*/
+    /*GET
     @GET(ARTICLE_RATING)
     fun getRatings(
         @Header("token") token: String,
         @Query("articleId") articleId: Int
     ): Call<RatingsEntity>
-
+*/
+    /*PATCH
     @FormUrlEncoded
     @PATCH(ARTICLE_COMMENTS)
     fun updateComment(

@@ -1,6 +1,7 @@
 package org.devjj.platform.nurbanhoney.features.ui.home.profile
 
 import org.devjj.platform.nurbanhoney.core.interactor.UseCase
+import org.devjj.platform.nurbanhoney.features.network.repositories.profile.ProfileRepository
 import javax.inject.Inject
 
 class GetProfileUseCase
