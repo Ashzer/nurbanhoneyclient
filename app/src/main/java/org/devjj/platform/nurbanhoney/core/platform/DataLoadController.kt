@@ -26,7 +26,6 @@ class DataLoadController<T> {
         log("getNext")
     }
     fun loadNext() : List<T>{
-
         return nextDataSet
     }
 

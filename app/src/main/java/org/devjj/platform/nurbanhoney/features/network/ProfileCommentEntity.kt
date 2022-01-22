@@ -6,10 +6,10 @@ import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileComment
 
 data class ProfileCommentEntity(
     @SerializedName("id") val id: Int,
-    @SerializedName("flag") val flag: Int,
+    @SerializedName("flag") val flag: String,
     @SerializedName("content") val content: String,
     @SerializedName("articleId") val articleId: Int,
-    @SerializedName("createAt") val createAt: String,
+    @SerializedName("createdAt") val createAt: String,
     @SerializedName("Board") val board: Board,
 ) {
     data class Board(
@@ -18,8 +18,8 @@ data class ProfileCommentEntity(
     )
 
     companion object {
-        val empty = ProfileCommentEntity(-1, -1, String.empty(), -1, String.empty(),Board(-1,""))
+        val empty = ProfileCommentEntity(-1, "", String.empty(), -1, String.empty(), Board(-1, ""))
     }
 
-    fun toProfileComment() = ProfileComment(id, content, articleId, createAt)
+    fun toProfileComment() = ProfileComment(id, content, articleId, createAt, flag, board.title)
 }

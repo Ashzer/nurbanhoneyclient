@@ -10,8 +10,8 @@ data class ProfileEntity(
     @SerializedName("nickname") val nickname: String,
     @SerializedName("description") val description: String?,
     @SerializedName("point") val point: Int,
-    @SerializedName("insigniaShow") val insigniaShow: String?,
-    @SerializedName("insigniaOwn") val insigniaOwn: String?,
+    @SerializedName("insigniaShow") val insigniaShow: List<String>?,
+    @SerializedName("insigniaOwn") val insigniaOwn: List<String>?,
     @SerializedName("myArticleCount") val myArticleCount: Int,
     @SerializedName("myCommentCount") val myCommentCount: Int,
     @SerializedName("error") val error: String?,
@@ -33,6 +33,6 @@ data class ProfileEntity(
 
     companion object {
         val empty = ProfileEntity(-1, "", "", "", "",
-            0, "", "", 0, 0, "")
+            0, listOf(), listOf(), 0, 0, "")
     }
 }

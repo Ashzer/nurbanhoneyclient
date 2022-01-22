@@ -13,6 +13,7 @@ import org.devjj.platform.nurbanhoney.core.extension.observe
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentProfileCommentsBinding
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileComment
+import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -39,7 +40,12 @@ class ProfileCommentsFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         with(viewModel){
             observe(comments, ::renderComments)
+            observe(boards, ::responseGetBoards)
         }
+    }
+
+    fun responseGetBoards(boards : List<Board>?){
+        viewModel.getComments()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,7 +55,7 @@ class ProfileCommentsFragment : BaseFragment() {
         binding.profileCommentsRv.adapter = commentsAdapter
 
 
-        viewModel.getComments()
+        viewModel.getBoards()
     }
 
     private fun renderComments(comments : List<ProfileComment>?){

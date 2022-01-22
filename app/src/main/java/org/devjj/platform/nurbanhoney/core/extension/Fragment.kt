@@ -8,7 +8,7 @@ import org.devjj.platform.nurbanhoney.core.platform.BaseActivity
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 
 inline fun FragmentManager.inTransaction(func : FragmentTransaction.() -> FragmentTransaction) =
-    beginTransaction().func().commit()
+    beginTransaction().func().addToBackStack(null).commit()
 
 val BaseFragment.appContext: Context get() = activity?.applicationContext!!
 

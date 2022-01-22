@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import dagger.hilt.android.AndroidEntryPoint
 import org.devjj.platform.nurbanhoney.core.platform.BaseEmptyActivity
+import org.devjj.platform.nurbanhoney.databinding.ActivityEmptyBinding
 
 @AndroidEntryPoint
 class ProfileArticlesActivity : BaseEmptyActivity(){
     override fun fragment() = ProfileArticlesFragment()
+
 
     companion object{
         fun callingIntent(context: Context) = Intent(context, ProfileArticlesActivity::class.java)
@@ -17,5 +19,6 @@ class ProfileArticlesActivity : BaseEmptyActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         addFragment(savedInstanceState)
+        setToolbarTitle("내 글")
     }
 }

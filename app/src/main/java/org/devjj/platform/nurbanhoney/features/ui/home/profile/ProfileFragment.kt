@@ -1,21 +1,24 @@
 package org.devjj.platform.nurbanhoney.features.ui.home.profile
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.core.view.marginEnd
+import androidx.core.view.marginRight
+import androidx.core.view.marginStart
 import androidx.fragment.app.viewModels
-import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_profile.view.*
 import org.devjj.platform.nurbanhoney.R
-import org.devjj.platform.nurbanhoney.core.extension.failure
-import org.devjj.platform.nurbanhoney.core.extension.loadFromUrl
-import org.devjj.platform.nurbanhoney.core.extension.observe
-import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
+import org.devjj.platform.nurbanhoney.core.controller.removeKeyboard
+import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentProfileBinding
@@ -24,14 +27,17 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ProfileFragment : BaseFragment() {
 
-    @Inject lateinit var navigator: Navigator
-    @Inject lateinit var profileListener: ProfileListener
+    @Inject
+    lateinit var navigator: Navigator
+
+    @Inject
+    lateinit var profileListener: ProfileListener
 
     override fun layoutId() = R.layout.fragment_profile
 
     private val viewModel by viewModels<ProfileViewModel>()
 
-    private var _binding : FragmentProfileBinding? = null
+    private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -39,7 +45,7 @@ class ProfileFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentProfileBinding.inflate(inflater,container,false)
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -62,64 +68,89 @@ class ProfileFragment : BaseFragment() {
     }
 
     // 뱃지를 셋팅하는 메소드
-    private fun settingBadge(badge: String?){
+    private fun settingBadge(badge: String?) {
         val badgeUrl = badge ?: ""
         binding.ivBadge.loadFromUrl(badgeUrl, R.drawable.ic_action_no_badge)
     }
 
     // 닉네임 셋팅하는 메소드
-    private fun settingNickanme(nickname: String?){
+    private fun settingNickanme(nickname: String?) {
         val nicknameNotNull = nickname ?: ""
         binding.tvNickname.text = nicknameNotNull
     }
 
     // 설명 셋팅하는 메소드
-    private fun settingDescription(description: String?){
+    private fun settingDescription(description: String?) {
         val descriptionNotNull = description ?: ""
         binding.tvDescriptionContent.text = descriptionNotNull
     }
 
     // 포인트 셋팅하는 메소드
-    private fun settingPoint(point: Int?){
+    private fun settingPoint(point: Int?) {
         val pointNotNull = point ?: 0
         binding.tvPoint.text = pointNotNull.toString()
     }
 
     // 보여주는 휘장 셋팅하는 메소드
-    private fun settingInsigniaShow(insigniaShow: String?){
+    private fun settingInsigniaShow(insigniaShow: List<String>?) {
         Log.d("test", "insigniaShow : $insigniaShow")
 
-        /*
-        insigniaShow?.map {
-            addInsigniaImage(binding.llInsigniaShowContent, )
+        insigniaShow?.forEach {
+
+//            var iv = ImageView(requireContext())
+//            iv.loadFromUrl(it.toString(), R.drawable.ic_action_no_badge)
+//            binding.llInsigniaOwnContent.addView(iv)
+
+            addInsigniaImage(binding.llInsigniaShowContent,it.toString())
         }
-         */
+//
+//        insigniaShow?.map {
+//            addInsigniaImage(binding.llInsigniaShowContent,it )
+//        }
+
     }
 
     // 소유한 휘장 셋팅하는 메소드
-    private fun settingInsigniaOwn(insigniaOwn: String?){
+    private fun settingInsigniaOwn(insigniaOwn: List<String>?) {
         Log.d("test", "insigniaOwn : $insigniaOwn")
+        insigniaOwn?.forEach {
+
+//            var iv = ImageView(requireContext())
+//            iv.loadFromUrl(it.toString(), R.drawable.ic_action_no_badge)
+//            binding.llInsigniaOwnContent.addView(iv)
+
+            addInsigniaImage(binding.llInsigniaOwnContent,it)
+        }
     }
 
     // 내가 쓴 글 수 셋팅하는 메소
-    private fun settingMyArticleCount(myArticleCount: Int?){
+    private fun settingMyArticleCount(myArticleCount: Int?) {
         val myArticleCountNotNull = myArticleCount ?: 0
         binding.tvMyarticle.text = myArticleCountNotNull.toString()
     }
 
     // 내가 쓴 댓글 수 셋팅하는 메소
-    private fun settingMyCommentCount(myCommentCount: Int?){
+    private fun settingMyCommentCount(myCommentCount: Int?) {
         val myCommentCountNotNull = myCommentCount ?: 0
         binding.tvMycomment.text = myCommentCountNotNull.toString()
     }
 
     // 휘장 이미지 셋팅하는 메소드
-    private fun addInsigniaImage(ll: LinearLayout, url: String){
+    private fun addInsigniaImage(ll: LinearLayout, url: String) {
         val iv = ImageView(context)
         iv.loadFromUrl(url, R.drawable.ic_action_no_badge)
-        //iv.maxWidth = 40
-        //iv.maxHeight = 40
+        iv.maxWidth = 50
+        iv.maxHeight = 50
+        setMargins(iv, 5,0,5,0)
         ll.addView(iv)
+    }
+
+    private fun setMargins(view: View, left: Int, top: Int, right: Int, bottom: Int) {
+        if (view.layoutParams is ViewGroup.MarginLayoutParams) {
+            val p = view.layoutParams as ViewGroup.MarginLayoutParams
+            p.setMargins(left, top, right, bottom)
+            view.requestLayout()
+        }
     }
 
     // 프로필 데이터를 받아서 갱신하는 메소드
@@ -149,13 +180,74 @@ class ProfileFragment : BaseFragment() {
         // 내가 쓴 댓글 수 셋팅하는 메소
         settingMyCommentCount(profile?.myCommentCount)
 
-        binding.llMyarticle.setOnSingleClickListener {
-            navigator.showProfileArticle(requireContext())
-        }
+    }
 
-        binding.llMycomment.setOnSingleClickListener {
-            navigator.showProfileComment(requireContext())
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //작성한 글 보기
+        showMyArticles(binding.llMyarticle)
+        //작성 댓글 보기
+        showMyComment(binding.llMycomment)
+        //프로필 수정 버튼
+        startDescriptionModify(binding.btnModify)
+        //프로필 수정 취소 버튼
+        cancelDescriptionModify(binding.btnModifyCancel)
+        //프로필 수정 완료 버튼
+        completeDescriptionModify(binding.btnModifyComplete)
+    }
+
+    private fun showMyArticles(view: View) = view.setOnSingleClickListener {
+        navigator.showProfileArticle(requireContext())
+    }
+
+    private fun showMyComment(view:View ) = view.setOnSingleClickListener {
+        navigator.showProfileComment(requireContext())
+    }
+
+    private fun startDescriptionModify(view: View) = view.setOnSingleClickListener {
+        binding.btnModify.invisible()
+        binding.btnModifyComplete.visible()
+        binding.btnModifyCancel.visible()
+
+        binding.tvNickname.invisible()
+        binding.tvDescriptionContent.invisible()
+        binding.etNickname.visible()
+        binding.etDescriptionContent.visible()
+
+        binding.etNickname.setText(binding.tvNickname.text)
+        binding.etDescriptionContent.setText(binding.tvDescriptionContent.text)
+    }
+
+    private fun cancelDescriptionModify(view: View) = view.setOnSingleClickListener {
+        binding.btnModifyComplete.invisible()
+        binding.btnModifyCancel.invisible()
+        binding.btnModify.visible()
+
+        binding.tvNickname.visible()
+        binding.tvDescriptionContent.visible()
+        binding.etNickname.invisible()
+        binding.etDescriptionContent.invisible()
+
+        removeKeyboard(requireActivity(), view)
+    }
+
+    private fun completeDescriptionModify(view: View) = view.setOnSingleClickListener {
+        binding.btnModifyComplete.invisible()
+        binding.btnModifyCancel.invisible()
+        binding.btnModify.visible()
+
+        binding.tvNickname.visible()
+        binding.tvDescriptionContent.visible()
+        binding.etNickname.invisible()
+        binding.etDescriptionContent.invisible()
+
+        viewModel.editProfile(
+            binding.etNickname.text.toString(),
+            binding.etDescriptionContent.text.toString(),
+            listOf("")
+        )
+        removeKeyboard(requireActivity(), view)
     }
 
 }

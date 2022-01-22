@@ -13,6 +13,7 @@ import org.devjj.platform.nurbanhoney.core.extension.observe
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentProfileArticlesBinding
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileArticle
+import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -39,7 +40,12 @@ class ProfileArticlesFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         with(viewModel){
             observe(articles, ::renderArticles)
+            observe(boards, ::responseGetBoards)
         }
+    }
+
+    private fun responseGetBoards(boards : List<Board>?){
+        viewModel.getArticles()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,7 +54,7 @@ class ProfileArticlesFragment : BaseFragment() {
         binding.profileArticlesRv.layoutManager = LinearLayoutManager(requireContext())
         binding.profileArticlesRv.adapter = articlesAdapter
 
-        viewModel.getArticles()
+        viewModel.getBoards()
     }
 
     private fun renderArticles(articles : List<ProfileArticle>?){
