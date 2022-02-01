@@ -16,9 +16,8 @@ import org.devjj.platform.nurbanhoney.core.exception.Failure
 abstract class BaseFragment : Fragment() {
     abstract fun layoutId(): Int
 
-    open fun onBackPressed() {
-
-    }
+//    open fun onBackPressed() {
+//    }
     internal fun notify(@StringRes message: Int) =
         Snackbar.make(this.requireView().rootView, message, Snackbar.LENGTH_SHORT).show()
 

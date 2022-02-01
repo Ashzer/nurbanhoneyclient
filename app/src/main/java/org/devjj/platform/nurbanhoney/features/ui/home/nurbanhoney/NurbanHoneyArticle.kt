@@ -5,6 +5,7 @@ data class NurbanHoneyArticle(
     val thumbnail: String,
     val title: String,
     val replies: Int,
+    val boardAddress : String?,
     val badge: String,
     val author: String,
     val medals: String

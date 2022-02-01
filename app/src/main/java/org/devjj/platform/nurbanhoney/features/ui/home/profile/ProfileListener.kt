@@ -13,9 +13,6 @@ class ProfileListener
                       fragment: ProfileFragment
     ) {
         // 백키 눌렀을 때 이벤트 메소드
-        binding.tvEdit.setOnClickListener {
-            activity.finish()
-        }
 
         //
 

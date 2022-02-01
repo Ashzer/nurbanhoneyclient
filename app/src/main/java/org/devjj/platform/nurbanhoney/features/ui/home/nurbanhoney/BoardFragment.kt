@@ -32,7 +32,7 @@ open class BoardFragment : BaseFragment() {
 
     private var _binding: FragmentNurbanboardBinding? = null
     protected val binding get() = _binding!!
-    private val viewModel by viewModels<BoardViewModel>()
+    val viewModel by viewModels<BoardViewModel>()
 
     @Inject
     lateinit var articleAdapter: BoardArticleAdapter
@@ -69,6 +69,12 @@ open class BoardFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.prefsNurbanTokenKey = getString(R.string.prefs_nurban_token_key)
+        viewModel.prefsUserIdKey = getString(R.string.prefs_user_id)
+
+        viewModel.getBoards()
+
         (requireActivity() as BoardActivity).setActionBarTitle(viewModel.board.name)
         binding.boardWriteFab.setOnSingleClickListener {
             //navigator.showTextEditor(requireContext())
@@ -77,12 +83,6 @@ open class BoardFragment : BaseFragment() {
             }
         }
 
-        articleAdapter.clickListener = { id ->
-            navigator.showArticle(requireActivity(), viewModel.board, id)
-        }
-
-        val set: MutableSet<NurbanHoneyArticle> = mutableSetOf()
-        set.add(NurbanHoneyArticle(0, "", "", 0, "", "", ""))
 
         binding.boardListRv.layoutManager = LinearLayoutManager(requireContext())
         binding.boardListRv.adapter = articleAdapter
@@ -105,6 +105,12 @@ open class BoardFragment : BaseFragment() {
 
             }
         })
+        articleAdapter.clickListener = boardArticleClickListener()
+
+    }
+
+    protected open fun boardArticleClickListener() : (Int,String?) -> Unit = { id,_ ->
+        navigator.showArticle(requireActivity(),viewModel.board, id)
     }
 
     override fun onResume() {

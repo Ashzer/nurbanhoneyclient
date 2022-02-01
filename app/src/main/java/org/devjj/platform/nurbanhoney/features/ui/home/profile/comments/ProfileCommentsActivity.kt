@@ -18,5 +18,7 @@ class ProfileCommentsActivity : BaseEmptyActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         addFragment(savedInstanceState)
+
+        setToolbarTitle("내 댓글")
     }
 }

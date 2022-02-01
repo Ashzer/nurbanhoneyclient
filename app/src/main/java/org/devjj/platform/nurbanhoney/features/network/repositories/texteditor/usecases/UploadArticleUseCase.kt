@@ -24,7 +24,7 @@ class UploadArticleUseCase
         val token: String,
         val title: String,
         val uuid: String,
-        val thumbnail: String,
+        val thumbnail: String?,
         val content: String,
     )
 }

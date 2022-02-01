@@ -1,11 +1,13 @@
 package org.devjj.platform.nurbanhoney.core.navigation
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.features.ui.article.Article
 import org.devjj.platform.nurbanhoney.features.ui.article.ArticleActivity
@@ -21,12 +23,14 @@ import javax.inject.Singleton
 
 @Singleton
 class Navigator
-@Inject constructor(private val authenticator: Authenticator) {
+@Inject constructor(private val authenticator: Authenticator,
+private val prefs : SharedPreferences) {
+
     private fun showLogin(context: Context) =
         context.startActivity(LoginActivity.callingIntent(context))
 
     suspend fun showMain(context: Context) {
-        when (authenticator.userLoggedIn()) {
+        when (authenticator.userLoggedIn(prefs.getString(context.getString(R.string.prefs_nurban_token_key),"")?:"")) {
             true -> showHome(context)
             false -> showLogin(context)
         }
@@ -45,7 +49,7 @@ class Navigator
         fun showTextEditor(context: Context, board: Board) =
             context.startActivity(TextEditorActivity.callingIntent(context,board))
 
-        when (authenticator.userLoggedIn()) {
+        when (authenticator.userLoggedIn(prefs.getString(context.getString(R.string.prefs_nurban_token_key),"")?:"")) {
             true -> showTextEditor(context,board)
             false -> showLogin(context)
         }
@@ -58,7 +62,7 @@ class Navigator
             context.startActivity(intent, activityOptions.toBundle())
         }
 
-        when (authenticator.userLoggedIn()) {
+        when (authenticator.userLoggedIn(prefs.getString(context.getString(R.string.prefs_nurban_token_key),"")?:"")) {
             true -> showTextEditorToModify(context, board,article)
             false -> showLogin(context)
         }

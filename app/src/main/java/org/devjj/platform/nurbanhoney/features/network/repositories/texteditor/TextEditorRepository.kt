@@ -29,7 +29,7 @@ interface TextEditorRepository {
         token: String,
         title: String,
         uuid: String,
-        thumbnail: String,
+        thumbnail: String?,
         content: String
     ): Either<Failure, ArticleResponse>
 
@@ -47,7 +47,7 @@ interface TextEditorRepository {
         board: String,
         token: String,
         articleId: Int,
-        thumbnail: String,
+        thumbnail: String?,
         title: String,
         content: String
     ): Either<Failure, ArticleResponse>
@@ -105,7 +105,7 @@ interface TextEditorRepository {
             token: String,
             title: String,
             uuid: String,
-            thumbnail: String,
+            thumbnail: String?,
             content: String
         ): Either<Failure, ArticleResponse> {
             return when (networkHandler.isNetworkAvailable()) {
@@ -156,7 +156,7 @@ interface TextEditorRepository {
             board: String,
             token: String,
             articleId: Int,
-            thumbnail: String,
+            thumbnail: String?,
             title: String,
             content: String
         ): Either<Failure, ArticleResponse> {

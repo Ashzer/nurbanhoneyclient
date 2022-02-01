@@ -11,15 +11,11 @@ import javax.inject.Singleton
 @Singleton
 class Authenticator
 @Inject constructor(
-    private val loginService: LoginService,
-    val prefs: SharedPreferences
+    private val loginService: LoginService
 ) {
-    suspend fun userLoggedIn(): Boolean = CoroutineScope(Dispatchers.IO).async {
+    suspend fun userLoggedIn(nurbanToken : String): Boolean = CoroutineScope(Dispatchers.IO).async {
         return@async loginService.validationCheck(
-            prefs.getString(
-                R.string.prefs_nurban_token_key.toString(),
-                ""
-            ).orEmpty()
+            nurbanToken
         ).execute().body()?.isValid ?: false
     }.await()
 /*

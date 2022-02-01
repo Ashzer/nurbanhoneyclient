@@ -28,6 +28,10 @@ class ProfileCommentsAdapter
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(comment: ProfileComment){
             itemView.itemProfileCommentTv.text = comment.content
+            itemView.itemProfileBoardTv.text= comment.flag
+            itemView.itemProfileTitleTv.text = comment.title
+            itemView.itemProfileDateTv.text=
+                "${comment.createAt.split("T")[0]} ${comment.createAt.split("T")[1].substring(0,8)}"
         }
     }
 }

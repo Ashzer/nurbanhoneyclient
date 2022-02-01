@@ -31,6 +31,5 @@ class SplashViewModel
         boards.forEach {
             Log.d("boards_check__", it.toString())
         }
-
     }
 }

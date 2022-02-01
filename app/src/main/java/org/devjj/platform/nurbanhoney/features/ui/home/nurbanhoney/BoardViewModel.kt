@@ -19,10 +19,14 @@ import javax.inject.Inject
 class BoardViewModel
 @Inject constructor(
     private val getArticles: GetArticlesUseCase,
-    private val prefs: SharedPreferences
+    private val prefs: SharedPreferences,
+    private val getBoards: GetBoardsUseCase
 ) : BaseViewModel() {
     private val _articles: MutableLiveData<List<NurbanHoneyArticle>> = MutableLiveData()
     val articles: LiveData<List<NurbanHoneyArticle>> = _articles
+    private val _boards: MutableLiveData<List<Board>> = MutableLiveData()
+    val boards: LiveData<List<Board>> = _boards
+
     private var offset = 0
     private val limit = 10
 
@@ -50,6 +54,13 @@ class BoardViewModel
 
     private fun handleInitArticles(articles: List<NurbanHoneyArticle>) {
         _articles.postValue(articles)
+
+        articles.forEach {
+            Log.d(
+                "popular_check__",
+                it.boardAddress?:"not popular"
+            )
+        }
     }
 
     fun getNext() {
@@ -79,12 +90,32 @@ class BoardViewModel
 
         Log.d(
             "prefs_check__",
-            prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString()
+            prefs.getString(prefsNurbanTokenKey, "").toString()
         )
     }
 
 
+    fun getBoards() =
+        getBoards(org.devjj.platform.nurbanhoney.core.interactor.UseCase.None(), viewModelScope) {
+            it.fold(
+                ::handleFailure,
+                ::handleBoards
+            )
+        }
 
+    private fun handleBoards(boards: List<Board>) {
+        _boards.postValue(boards)
+        boards.forEach {
+            Log.d("boards_check__", it.toString())
+        }
+    }
 
-
+    fun getBoard(address: String): Board{
+        boards.value?.forEach {
+            if(it.address == address){
+                return it
+            }
+        }
+        return Board.empty
+    }
 }

@@ -4,12 +4,9 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_article.view.*
 import org.devjj.platform.nurbanhoney.R
-import org.devjj.platform.nurbanhoney.core.extension.inflate
-import org.devjj.platform.nurbanhoney.core.extension.loadFromUrl
-import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
+import org.devjj.platform.nurbanhoney.core.extension.*
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -20,7 +17,7 @@ class BoardArticleAdapter
         notifyDataSetChanged()
     }
 
-    internal var clickListener: (Int) -> Unit = { _ -> }
+    internal var clickListener: (Int,String?) -> Unit = { _,_ -> }
 
     override fun getItemCount() = collection.size
 
@@ -31,20 +28,39 @@ class BoardArticleAdapter
         viewHolder.bind(collection[position], clickListener)
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(nurbanHoneyArticle: NurbanHoneyArticle, clickListener: (Int) -> Unit) {
-            itemView.itemArticleThumbnailIv.loadFromUrl(
-                nurbanHoneyArticle.thumbnail,
-                R.drawable.ic_action_no_thumbnail
-            )
+        fun bind(nurbanHoneyArticle: NurbanHoneyArticle, clickListener: (Int,String?) -> Unit) {
+
+            Log.d("thumbnail_check__", "??? ${nurbanHoneyArticle.thumbnail}")
+            if (nurbanHoneyArticle.thumbnail != "null" && nurbanHoneyArticle.thumbnail != null && nurbanHoneyArticle.thumbnail != "") {
+                itemView.itemArticleThumbnailIv.loadFromUrl(
+                    nurbanHoneyArticle.thumbnail,
+                    R.drawable.ic_action_no_thumbnail
+                )
+            } else {
+                itemView.itemArticleThumbnailIv.loadFromDrawable(
+                    R.drawable.ic_action_no_thumbnail
+                )
+            }
             itemView.itemArticleTitleTv.text = nurbanHoneyArticle.title
             itemView.itemArticleRepliesTv.text = " [${nurbanHoneyArticle.replies}]"
-            itemView.itemArticleBadgeIv.loadFromUrl(nurbanHoneyArticle.badge, R.drawable.ic_action_no_badge)
+            itemView.itemArticleBadgeIv.loadFromUrl(
+                nurbanHoneyArticle.badge,
+                R.drawable.ic_action_no_badge
+            )
 
-            Log.d("badge_check__","??? ${nurbanHoneyArticle.badge}")
+            Log.d("badge_check__", "??? ${nurbanHoneyArticle.badge}")
             itemView.itemArticleUserNameTv.text = nurbanHoneyArticle.author
 
+            //게시판 이름 표시
+            if(nurbanHoneyArticle.boardAddress.isNullOrBlank()) {
+                itemView.itemArticleBoardTv.invisible()
+            }else{
+                itemView.itemArticleBoardTv.visible()
+                itemView.itemArticleBoardTv.text = nurbanHoneyArticle.boardAddress
+            }
+
             itemView.setOnSingleClickListener {
-                clickListener(nurbanHoneyArticle.id)
+                clickListener(nurbanHoneyArticle.id, nurbanHoneyArticle.boardAddress)
             }
         }
     }

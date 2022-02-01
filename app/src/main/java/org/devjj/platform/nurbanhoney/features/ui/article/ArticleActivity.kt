@@ -12,8 +12,6 @@ import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 @AndroidEntryPoint
 class ArticleActivity : BaseEmptyActivity() {
 
-    private lateinit var binding : ActivityEmptyBinding
-
     companion object{
         private const val INTENT_EXTRA_PARAM_ARTICLE = "INTENT_PARAM_ARTICLE"
         private const val INTENT_EXTRA_PARAM_BOARD = "INTENT_PARAM_BOARD"
@@ -32,13 +30,10 @@ class ArticleActivity : BaseEmptyActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityEmptyBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
         addFragment(savedInstanceState)
 
         var board = intent.getParcelableExtra(INTENT_EXTRA_PARAM_BOARD) as Board
-        setSupportActionBar(binding.emptyToolbar)
-        supportActionBar?.title = board.name
+
+        setToolbarTitle(board.name)
     }
 }

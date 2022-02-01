@@ -27,6 +27,7 @@ fun View.invisible() {
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int): View =
     LayoutInflater.from(context).inflate(layoutRes, this, false)
 
+
 fun ImageView.loadFromUrl(url: String, resourceId: Int) =
     Glide.with(this.context)
         .load(url)
@@ -37,6 +38,17 @@ fun ImageView.loadFromUrl(url: String, resourceId: Int) =
         .skipMemoryCache(true)
         .into(this)
 
+fun ImageView.loadFromUrlWithSize(url: String, resourceId: Int, width: Int, height : Int) =
+    Glide.with(this.context)
+        .load(url)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .placeholder(resourceId)
+        .error(resourceId)
+        .diskCacheStrategy(DiskCacheStrategy.NONE)
+        .skipMemoryCache(true)
+        .override(width, height)
+        .into(this)
+
 fun ImageView.loadFromDrawable(resourceId: Int) =
     Glide.with(this.context.applicationContext)
         .load(resourceId)
@@ -44,7 +56,7 @@ fun ImageView.loadFromDrawable(resourceId: Int) =
         .skipMemoryCache(true)
         .into(this)
 
-fun View.setOnSingleClickListener(debounceTime: Long = 1000L, action: () -> Unit) {
+fun View.setOnSingleClickListener(debounceTime: Long = 500L, action: () -> Unit) {
     this.setOnClickListener(object : View.OnClickListener {
         private var lastClickTime: Long = 0
 
