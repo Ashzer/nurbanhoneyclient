@@ -8,6 +8,7 @@ data class ArticlesRequestEntity(
     @SerializedName("thumbnail") val thumbnail: String?,
     @SerializedName("title") val title: String,
     @SerializedName("commentCount") val commentCount: Int,
+    @SerializedName("address") val boardAddress : String?,
     @SerializedName("User") val user: User?
 ) {
     data class User(
@@ -23,6 +24,7 @@ data class ArticlesRequestEntity(
         thumbnail ?: "",
         title,
         commentCount,
+        boardAddress,
         user?.profile ?: "",
         user?.nickname ?: "Empty Nickname",
         user?.insignia ?: "No insignia"

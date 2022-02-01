@@ -41,7 +41,7 @@ class TextEditorNurbanFragment : TextEditorFragment() {
                 if (isModify) {
                     viewModel.modifyArticle(
                         "nurban",
-                        prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
+                        nurbanToken,
                         article.id,
                         thumbnailUrl,
                         binding.textEditorNurbanHeader.textEditorTitleEt.text.toString(),
@@ -51,7 +51,7 @@ class TextEditorNurbanFragment : TextEditorFragment() {
                 } else {
                     viewModel.uploadArticle(
                         "nurban",
-                        prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
+                        nurbanToken,
                         binding.textEditorNurbanHeader.textEditorTitleEt.text.toString(),
                         uuid.toString(),
                         binding.textEditorNurbanLossCutEt.text.toString().toLong(),

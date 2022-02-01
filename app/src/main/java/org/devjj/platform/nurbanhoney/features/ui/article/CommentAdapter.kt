@@ -12,8 +12,9 @@ import kotlin.properties.Delegates
 
 class CommentAdapter
 @Inject constructor(
-    private val prefs: SharedPreferences,
 ) : RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
+
+    var userId by Delegates.notNull<Int>()
 
     internal var collection: List<Comment> by Delegates.observable(emptyList()) { _, _, _ ->
         //notifyItemInserted(old.size)
@@ -35,7 +36,7 @@ class CommentAdapter
             updateClickListener,
             modifyClickListener,
             cancelClickListener,
-            prefs
+            userId
         )
 
     override fun getItemCount() = collection.size
@@ -47,11 +48,10 @@ class CommentAdapter
             updateClickListener: (View, String, Int) -> Unit,
             modifyClickListener: (View) -> Unit,
             cancelClickListener: (View) -> Unit,
-            prefs: SharedPreferences
+            userId: Int
         ) {
 
-            if (prefs.getString(R.string.prefs_user_id.toString(), "-1")
-                    ?.toInt() ?: -1 != comment.userId
+            if (userId != comment.userId
             ) {
                 itemView.itemCommentModifyBtnClo.invisible()
                 itemView.itemCommentDeleteBtnClo.invisible()

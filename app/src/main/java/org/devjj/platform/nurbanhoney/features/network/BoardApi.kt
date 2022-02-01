@@ -37,7 +37,7 @@ internal interface BoardApi {
         @Header("token") token: String,
         @Field("title") title: String,
         @Field("uuid") uuid: String,
-        @Field("thumbnail") thumbnail: String,
+        @Field("thumbnail") thumbnail: String?,
         @Field("content") content: String
     ): Call<SimpleResponseEntity>
 
@@ -59,7 +59,7 @@ internal interface BoardApi {
         @Path("board") board: String,
         @Header("token") token: String,
         @Field("id") articleId: Int,
-        @Field("thumbnail") thumbnail: String,
+        @Field("thumbnail") thumbnail: String?,
         @Field("title") title: String,
         @Field("content") content: String
     ): Call<SimpleResponseEntity>

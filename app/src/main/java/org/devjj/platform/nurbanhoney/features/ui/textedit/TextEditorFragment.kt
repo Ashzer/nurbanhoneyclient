@@ -54,7 +54,7 @@ open class TextEditorFragment : BaseFragment() {
 
     private var _binding: FragmentTextEditorNurbanBinding? = null
     val binding get() = _binding!!
-    private lateinit var nurbanToken: String
+    lateinit var nurbanToken: String
     lateinit var uuid: UUID
     lateinit var mEditor: RichEditor
     var isModify: Boolean = false
@@ -99,6 +99,9 @@ open class TextEditorFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.prefsNurbanTokenKey = getString(R.string.prefs_nurban_token_key)
+        viewModel.prefsUserIdKey = getString(R.string.prefs_user_id)
+
         if (this.arguments != null) {
             if (requireArguments().containsKey(PARAM_BOARD)) {
                 viewModel.board = (arguments?.getParcelable(PARAM_BOARD) ?: Board.empty)
@@ -108,13 +111,13 @@ open class TextEditorFragment : BaseFragment() {
             if (requireArguments().containsKey(PARAM_ARTICLE)) {
                 isModify = true
                 (requireActivity() as TextEditorActivity).setActionBarTitle("${viewModel.board.name} - 글 수정")
-            }else{
+            } else {
                 (requireActivity() as TextEditorActivity).setActionBarTitle("${viewModel.board.name} - 글 작성")
             }
         }
 
 
-        nurbanToken = prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString()
+        nurbanToken = prefs.getString(viewModel.prefsNurbanTokenKey,"") ?: ""
 
 
         binding.textEditorNurbanHeader.textEditorTitleEt.requestFocus()
@@ -197,12 +200,13 @@ open class TextEditorFragment : BaseFragment() {
 //                    }  ,  ${binding.titleEt.text} , ${mEditor.html} , $uuid ," +
 //                            " ${viewModel.searchThumbnail(mEditor.html.toString())}"
 //                )
-                val thumbnailUrl = viewModel.searchThumbnail(mEditor.html.toString())
+                var thumbnailUrl: String? = viewModel.searchThumbnail(mEditor.html.toString())
+                //if(thumbnailUrl == "") thumbnailUrl = null
                 Log.d("match_check__", thumbnailUrl)
                 if (isModify) {
                     viewModel.modifyArticle(
                         viewModel.board.address,
-                        prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
+                        nurbanToken,
                         article.id,
                         thumbnailUrl,
                         binding.textEditorNurbanHeader.textEditorTitleEt.text.toString(),
@@ -211,7 +215,7 @@ open class TextEditorFragment : BaseFragment() {
                 } else {
                     viewModel.uploadArticle(
                         viewModel.board.address,
-                        prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString(),
+                        nurbanToken,
                         binding.textEditorNurbanHeader.textEditorTitleEt.text.toString(),
                         uuid.toString(),
                         thumbnailUrl,
@@ -241,11 +245,7 @@ open class TextEditorFragment : BaseFragment() {
 
         if (uploadResponse == "no_result" && !isModify) {
             viewModel.deleteImages(
-                "nurban",
-                prefs.getString(
-                    R.string.prefs_nurban_token_key.toString(),
-                    ""
-                ).toString(), uuid.toString()
+                "nurban", nurbanToken, uuid.toString()
             )
         }
         super.onDestroy()

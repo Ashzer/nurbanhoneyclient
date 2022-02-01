@@ -38,12 +38,13 @@ class LoginFragment : BaseFragment() {
     @Inject
     lateinit var navigator: Navigator
 
-    private val loginViewModel by viewModels<LoginViewModel>()
+    private val viewModel by viewModels<LoginViewModel>()
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
     lateinit var mOAuthLoginModule : OAuthLogin
     private val RC_SIGN_IN = 9001
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,7 +56,7 @@ class LoginFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        with(loginViewModel) {
+        with(viewModel) {
             observe(nurbanToken, ::tokenHandler)
             observe(isValid, ::loggedIn)
             failure(failure, ::handleFailure)
@@ -65,6 +66,9 @@ class LoginFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.prefsNurbanTokenKey = getString(R.string.prefs_nurban_token_key)
+        viewModel.prefsUserIdKey = getString(R.string.prefs_user_id)
 
         //카카오 로그인
         kakaoLoginBtnListener(binding.loginKakaoClo)
@@ -83,7 +87,7 @@ class LoginFragment : BaseFragment() {
     private fun tokenHandler(nurbanToken: NurbanToken?) {
         notify(R.string.test_string)
         if (nurbanToken != null) {
-            loginViewModel.isTokenValid(nurbanToken.token)
+            viewModel.isTokenValid(nurbanToken.token)
         }
     }
 
@@ -114,7 +118,7 @@ class LoginFragment : BaseFragment() {
                 Log.d("login_check__", "${error.localizedMessage}")
                 error.localizedMessage
             } else if (token != null) {
-                loginViewModel.getNurbanToken("kakao", token.accessToken)
+                viewModel.getNurbanToken("kakao", token.accessToken)
             }
         }
     }
@@ -144,7 +148,7 @@ class LoginFragment : BaseFragment() {
                 Log.i("LoginData","expiresAt : "+ expiresAt);
                 Log.i("LoginData","tokenType : "+ tokenType);
 
-                loginViewModel.getNurbanToken("naver", accessToken)
+                viewModel.getNurbanToken("naver", accessToken)
             } else {
                 val errorCode: String = mOAuthLoginModule.getLastErrorCode(requireContext()).code
                 val errorDesc = mOAuthLoginModule.getLastErrorDesc(requireContext())

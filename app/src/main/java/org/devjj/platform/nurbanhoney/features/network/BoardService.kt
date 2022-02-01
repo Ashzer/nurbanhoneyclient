@@ -27,7 +27,7 @@ class BoardService
         token: String,
         title: String,
         uuid: String,
-        thumbnail: String,
+        thumbnail: String?,
         content: String
     ) = boardApi.uploadRequest(board, token, title, uuid, thumbnail, content)
 
@@ -45,7 +45,7 @@ class BoardService
         board: String,
         token: String,
         articleId: Int,
-        thumbnail: String,
+        thumbnail: String?,
         title: String,
         content: String
     ) = boardApi.modifyRequest(board, token, articleId, thumbnail, title, content)

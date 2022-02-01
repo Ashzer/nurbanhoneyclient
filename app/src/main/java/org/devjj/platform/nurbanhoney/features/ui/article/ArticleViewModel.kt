@@ -65,13 +65,13 @@ class ArticleViewModel
 
     private fun getToken(): String {
         return prefs.getString(
-            R.string.prefs_nurban_token_key.toString(),
+            prefsNurbanTokenKey,
             ""
         ).toString()
     }
 
     private fun getUserId(): Int? {
-        return prefs.getString(R.string.prefs_user_id.toString(), "-1")?.toInt()
+        return prefs.getString(prefsUserIdKey, "-1")?.toInt()
     }
 
     fun getNextComment() {

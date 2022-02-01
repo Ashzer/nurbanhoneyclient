@@ -27,7 +27,7 @@ class ProfileArticlesViewModel
     val boards: LiveData<List<Board>> = _boards
 
     private fun getToken() = prefs.getString(
-        R.string.prefs_nurban_token_key.toString(),
+        prefsNurbanTokenKey,
         ""
     ).toString()
 
@@ -45,7 +45,7 @@ class ProfileArticlesViewModel
 
    private fun handleArticles(articles : List<ProfileArticle>?){
        var list = _articles.value?.toMutableList() ?: mutableListOf()
-       articles?.toMutableList()?.map { it.flag = getBoard(it.flag) }
+       articles?.toMutableList()?.map { it.flag = getBoardName(it.flag) }
        list.addAll(articles?.toList().orEmpty())
         _articles.postValue(articles)
 
@@ -69,12 +69,21 @@ class ProfileArticlesViewModel
         }
     }
 
-    fun getBoard(address: String): String{
+    fun getBoardName(address: String): String{
         boards.value?.forEach {
             if(it.address == address){
                 return it.name
             }
         }
         return address
+    }
+
+    fun getBoard(address: String): Board{
+        boards.value?.forEach {
+            if(it.address == address){
+                return it
+            }
+        }
+        return Board.empty
     }
 }

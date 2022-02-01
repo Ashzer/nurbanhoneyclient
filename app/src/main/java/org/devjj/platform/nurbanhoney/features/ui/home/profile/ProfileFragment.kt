@@ -1,21 +1,17 @@
 package org.devjj.platform.nurbanhoney.features.ui.home.profile
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.core.view.marginRight
-import androidx.core.view.marginStart
+import androidx.core.content.ContextCompat
+import androidx.core.view.*
 import androidx.fragment.app.viewModels
+import androidx.gridlayout.widget.GridLayout
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_profile.view.*
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.controller.removeKeyboard
 import org.devjj.platform.nurbanhoney.core.extension.*
@@ -74,7 +70,7 @@ class ProfileFragment : BaseFragment() {
     }
 
     // 닉네임 셋팅하는 메소드
-    private fun settingNickanme(nickname: String?) {
+    private fun settingNickname(nickname: String?) {
         val nicknameNotNull = nickname ?: ""
         binding.tvNickname.text = nicknameNotNull
     }
@@ -96,30 +92,28 @@ class ProfileFragment : BaseFragment() {
         Log.d("test", "insigniaShow : $insigniaShow")
 
         insigniaShow?.forEach {
-
-//            var iv = ImageView(requireContext())
-//            iv.loadFromUrl(it.toString(), R.drawable.ic_action_no_badge)
-//            binding.llInsigniaOwnContent.addView(iv)
-
-            addInsigniaImage(binding.llInsigniaShowContent,it.toString())
+            addInsigniaImage(it)
         }
-//
-//        insigniaShow?.map {
-//            addInsigniaImage(binding.llInsigniaShowContent,it )
-//        }
 
     }
 
     // 소유한 휘장 셋팅하는 메소드
     private fun settingInsigniaOwn(insigniaOwn: List<String>?) {
         Log.d("test", "insigniaOwn : $insigniaOwn")
+
         insigniaOwn?.forEach {
+            //addInsigniaImage(binding.llInsigniaOwnContent, it)
 
-//            var iv = ImageView(requireContext())
-//            iv.loadFromUrl(it.toString(), R.drawable.ic_action_no_badge)
-//            binding.llInsigniaOwnContent.addView(iv)
-
-            addInsigniaImage(binding.llInsigniaOwnContent,it)
+            val iv = addInsigniaImage(it)
+            iv.setOnClickListener {
+                if (iv.paddingRight == 5) {
+                    setMargins(iv, 15, 15, 15, 15)
+                    iv.setPadding(0)
+                } else {
+                    iv.setPadding(5)
+                    setMargins(iv, 10, 10, 10, 10)
+                }
+            }
         }
     }
 
@@ -136,21 +130,28 @@ class ProfileFragment : BaseFragment() {
     }
 
     // 휘장 이미지 셋팅하는 메소드
-    private fun addInsigniaImage(ll: LinearLayout, url: String) {
+    private fun addInsigniaImage(url: String) :ImageView{
         val iv = ImageView(context)
         iv.loadFromUrl(url, R.drawable.ic_action_no_badge)
-        iv.maxWidth = 50
-        iv.maxHeight = 50
-        setMargins(iv, 5,0,5,0)
-        ll.addView(iv)
+        setMargins(iv, 10, 10, 10, 10)
+        iv.background = ContextCompat.getDrawable(requireContext(), R.drawable.edges_rectangle)
+        iv.setPadding(5)
+        binding.insigniaOwnGlo.addView(iv)
+
+        return iv
     }
 
     private fun setMargins(view: View, left: Int, top: Int, right: Int, bottom: Int) {
-        if (view.layoutParams is ViewGroup.MarginLayoutParams) {
-            val p = view.layoutParams as ViewGroup.MarginLayoutParams
-            p.setMargins(left, top, right, bottom)
-            view.requestLayout()
-        }
+
+        var gl = GridLayout.LayoutParams()
+        gl.setMargins(left, top, right, bottom)
+        view.layoutParams = gl
+//
+//        if (view.layoutParams is ViewGroup.MarginLayoutParams) {
+//            val p = view.layoutParams as ViewGroup.MarginLayoutParams
+//            p.setMargins(left, top, right, bottom)
+//            view.requestLayout()
+//        }
     }
 
     // 프로필 데이터를 받아서 갱신하는 메소드
@@ -166,7 +167,7 @@ class ProfileFragment : BaseFragment() {
         // 뱃지를 셋팅하는 메소드
         settingBadge(profile?.badge)
         // 닉네임 셋팅하는 메소드
-        settingNickanme(profile?.nickname)
+        settingNickname(profile?.nickname)
         // 설명 셋팅하는 메소드
         settingDescription(profile?.description)
         // 포인트 셋팅하는 메소드
@@ -174,6 +175,7 @@ class ProfileFragment : BaseFragment() {
         // 보여주는 휘장 셋팅하는 메소드
         settingInsigniaShow(profile?.insigniaShow)
         // 소유한 휘장 셋팅하는 메소드
+        binding.insigniaOwnGlo.removeAllViews()
         settingInsigniaOwn(profile?.insigniaOwn)
         // 내가 쓴 글 수 셋팅하는 메소
         settingMyArticleCount(profile?.myArticleCount)
@@ -184,6 +186,9 @@ class ProfileFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.prefsNurbanTokenKey = getString(R.string.prefs_nurban_token_key)
+        viewModel.prefsUserIdKey = getString(R.string.prefs_user_id)
 
         //작성한 글 보기
         showMyArticles(binding.llMyarticle)
@@ -201,7 +206,7 @@ class ProfileFragment : BaseFragment() {
         navigator.showProfileArticle(requireContext())
     }
 
-    private fun showMyComment(view:View ) = view.setOnSingleClickListener {
+    private fun showMyComment(view: View) = view.setOnSingleClickListener {
         navigator.showProfileComment(requireContext())
     }
 
@@ -242,10 +247,18 @@ class ProfileFragment : BaseFragment() {
         binding.etNickname.invisible()
         binding.etDescriptionContent.invisible()
 
+        var insigniaShow : MutableList<String> = mutableListOf()
+        binding.insigniaOwnGlo.forEachIndexed { i,_->
+            Log.d("insignia_check__", i.toString())
+            if( (binding.insigniaOwnGlo[i] as ImageView).paddingRight == 5){
+                insigniaShow.add(viewModel.insigniaOwn.value?.get(i) ?: "")
+            }
+        }
+
         viewModel.editProfile(
             binding.etNickname.text.toString(),
             binding.etDescriptionContent.text.toString(),
-            listOf("")
+            insigniaShow
         )
         removeKeyboard(requireActivity(), view)
     }

@@ -2,12 +2,14 @@ package org.devjj.platform.nurbanhoney.features.ui.login
 
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
 import javax.inject.Inject
+import kotlin.coroutines.coroutineContext
 
 @HiltViewModel
 class LoginViewModel
@@ -42,8 +44,8 @@ class LoginViewModel
         Log.d("UseCase_login_check__" , nurbanToken.value?.error ?: "")
         if(!nurbanToken.equals(null)){
             var editor = prefs.edit()
-            editor.putString(R.string.prefs_nurban_token_key.toString(), nurbanToken.value?.token.toString())
-            editor.putString(R.string.prefs_user_id.toString(), nurbanToken.value?.userId.toString())
+            editor.putString(prefsNurbanTokenKey, nurbanToken.value?.token.toString())
+            editor.putString(prefsUserIdKey, nurbanToken.value?.userId.toString())
             editor.apply()
         }
     }
@@ -52,7 +54,4 @@ class LoginViewModel
         isValid.value = token
     }
 
-    fun getToken(): String{
-        return nurbanToken.value?.token ?: ""
-    }
 }

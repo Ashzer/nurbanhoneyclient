@@ -79,7 +79,7 @@ class TextEditorViewModel
         token: String,
         title: String,
         uuid: String,
-        thumbnail: String,
+        thumbnail: String?,
         content: String
     ) =
         uploadArticle(
@@ -114,7 +114,7 @@ class TextEditorViewModel
         board: String,
         token: String,
         articleId: Int,
-        thumbnail: String,
+        thumbnail: String?,
         title: String,
         content: String
     ) = modifyArticle(

@@ -1,5 +1,6 @@
 package org.devjj.platform.nurbanhoney.features.ui.article
 
+import android.content.SharedPreferences
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
@@ -47,6 +48,9 @@ class ArticleFragment : BaseFragment() {
     @Inject
     lateinit var commentAdapter: CommentAdapter
 
+    @Inject
+    lateinit var prefs : SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -73,6 +77,11 @@ class ArticleFragment : BaseFragment() {
     override fun onResume() {
         viewModel.setArticleId(arguments?.get(PARAM_ARTICLE) as Int)
         super.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().finish()
     }
 
     private fun setArticleId(id: Int?) {
@@ -140,12 +149,20 @@ class ArticleFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.prefsNurbanTokenKey = getString(R.string.prefs_nurban_token_key)
+        viewModel.prefsUserIdKey = getString(R.string.prefs_user_id)
+
         viewModel.setArticleId(arguments?.get(PARAM_ARTICLE) as Int)
         viewModel.board = (arguments?.get(PARAM_BOARD) as Board)
 
         binding.articleBody.articleContentWv.setInputEnabled(false)
         binding.articleBody.articleCommentsRv.layoutManager = LinearLayoutManager(requireContext())
         binding.articleBody.articleCommentsRv.adapter = commentAdapter
+
+        commentAdapter.userId = prefs.getString(getString(R.string.prefs_user_id),"-1")?.toInt() ?: -1
+
+
 
         //글 수정 버튼
         articleModifyBtnListener(binding.articleHeader.articleInfoModifyClo)

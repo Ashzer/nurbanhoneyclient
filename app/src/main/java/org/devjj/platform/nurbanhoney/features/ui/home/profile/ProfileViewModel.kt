@@ -22,9 +22,12 @@ class ProfileViewModel
     private val _profile: MutableLiveData<Profile> = MutableLiveData()
     val profile: LiveData<Profile> = _profile
 
+    private val _insigniaOwn : MutableLiveData<List<String>> = MutableLiveData()
+    val insigniaOwn : LiveData<List<String>> = _insigniaOwn
+
     private fun getToken(): String {
         return prefs.getString(
-            R.string.prefs_nurban_token_key.toString(),
+            prefsNurbanTokenKey,
             ""
         ).toString()
     }
@@ -58,6 +61,7 @@ class ProfileViewModel
     private fun handleProfile(profile: Profile) {
         Log.d("profile_check__", profile.toString())
         _profile.postValue(profile)
+        _insigniaOwn.postValue(profile.insigniaOwn)
 
     }
 

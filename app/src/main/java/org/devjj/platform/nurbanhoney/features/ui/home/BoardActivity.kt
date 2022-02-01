@@ -16,6 +16,7 @@ import org.devjj.platform.nurbanhoney.core.platform.BaseTabLayoutActivity
 import org.devjj.platform.nurbanhoney.databinding.ActivityNavigationBinding
 import org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney.BoardFragment
 import org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney.BoardNoticeFragment
+import org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney.BoardPopularFragment
 import org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney.BoardViewModel
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileFragment
 import org.devjj.platform.nurbanhoney.features.ui.home.ranking.RankingFragment
@@ -97,7 +98,14 @@ class BoardActivity : BaseTabLayoutActivity() {
                         frag.arguments = bundle
                         navigate(frag)
                     }
-                    R.id.menu_popular_board -> {}
+                    R.id.menu_popular_board -> {
+                        var bundle = Bundle()
+                        bundle.putParcelable(R.string.BoardInfo.toString(),Board(-1,"인기글","popular"))
+                        var frag = BoardPopularFragment()
+                        frag.arguments = bundle
+                        navigate(frag)
+
+                    }
                     R.id.menu_ranking -> navigate(RankingFragment())
                     R.id.menu_profile -> navigate(ProfileFragment())
                 }

@@ -28,7 +28,7 @@ class ProfileCommentsViewModel
 
 
     private fun getToken() = prefs.getString(
-        R.string.prefs_nurban_token_key.toString(),
+        prefsNurbanTokenKey,
         ""
     ).toString()
 

@@ -76,9 +76,9 @@
             android:layout_marginBottom="10dp"
             android:foregroundGravity="left"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/itemArticleTitleClo">
+            app:layout_constraintTop_toBottomOf="@id/itemArticleTitleClo"
+            app:layout_constraintEnd_toStartOf="@id/itemArticleBoardClo">
 
             <ImageView
                 android:id="@+id/itemArticleBadgeIv"
@@ -87,8 +87,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/itemArticleUserNameTv"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                 />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/itemArticleUserNameTv"
@@ -110,6 +109,27 @@
                 app:layout_constraintStart_toEndOf="@+id/itemArticleUserNameTv"
                 app:layout_constraintTop_toTopOf="parent" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/itemArticleBoardClo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/itemArticleUserClo"
+            app:layout_constraintTop_toBottomOf="@id/itemArticleTitleClo">
+
+            <TextView
+                android:id="@+id/itemArticleBoardTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
