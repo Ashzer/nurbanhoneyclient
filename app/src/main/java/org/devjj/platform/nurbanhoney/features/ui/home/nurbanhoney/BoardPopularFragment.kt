@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import org.devjj.platform.nurbanhoney.core.extension.invisible
+import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 
 class BoardPopularFragment : BoardFragment() {
 
@@ -14,8 +15,8 @@ class BoardPopularFragment : BoardFragment() {
 
     }
 
-    override fun boardArticleClickListener() : (Int,String?) -> Unit = { id,address ->
-        var board = viewModel.getBoard(address?:"")
+    override fun boardArticleClickListener() : (Int, Board) -> Unit = { id, board ->
+
         Log.d("popular_check__", board.toString())
         navigator.showArticle(requireActivity(),board, id)
     }

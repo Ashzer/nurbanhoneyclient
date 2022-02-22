@@ -1,5 +1,6 @@
 package org.devjj.platform.nurbanhoney.core.extension
 
+import android.content.Context
 import android.graphics.PorterDuff
 import android.os.SystemClock
 import android.util.Log
@@ -50,7 +51,7 @@ fun ImageView.loadFromUrlWithSize(url: String, resourceId: Int, width: Int, heig
         .into(this)
 
 fun ImageView.loadFromDrawable(resourceId: Int) =
-    Glide.with(this.context.applicationContext)
+    Glide.with(this.context)
         .load(resourceId)
         .diskCacheStrategy(DiskCacheStrategy.NONE)
         .skipMemoryCache(true)

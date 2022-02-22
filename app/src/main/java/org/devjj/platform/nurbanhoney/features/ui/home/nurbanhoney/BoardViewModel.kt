@@ -54,13 +54,6 @@ class BoardViewModel
 
     private fun handleInitArticles(articles: List<NurbanHoneyArticle>) {
         _articles.postValue(articles)
-
-        articles.forEach {
-            Log.d(
-                "popular_check__",
-                it.boardAddress?:"not popular"
-            )
-        }
     }
 
     fun getNext() {

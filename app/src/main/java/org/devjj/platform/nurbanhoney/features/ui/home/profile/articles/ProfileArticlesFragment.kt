@@ -44,12 +44,7 @@ class ProfileArticlesFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         with(viewModel) {
             observe(articles, ::renderArticles)
-            observe(boards, ::responseGetBoards)
         }
-    }
-
-    private fun responseGetBoards(boards: List<Board>?) {
-        viewModel.getArticles()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,12 +55,8 @@ class ProfileArticlesFragment : BaseFragment() {
 
         binding.profileArticlesRv.layoutManager = LinearLayoutManager(requireContext())
         binding.profileArticlesRv.adapter = articlesAdapter
-
-        viewModel.getBoards()
-
-
-        articlesAdapter.clickListener = { id, boardName ->
-            var board = viewModel.getBoard(boardName)
+        viewModel.getArticles()
+        articlesAdapter.clickListener = { id, board ->
             navigator.showArticle(requireActivity(),board,id)
         }
 

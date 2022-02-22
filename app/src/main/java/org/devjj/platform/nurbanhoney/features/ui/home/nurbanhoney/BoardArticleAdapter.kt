@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_article.view.*
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.*
+import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -17,7 +18,7 @@ class BoardArticleAdapter
         notifyDataSetChanged()
     }
 
-    internal var clickListener: (Int,String?) -> Unit = { _,_ -> }
+    internal var clickListener: (Int, Board) -> Unit = { _, _ -> }
 
     override fun getItemCount() = collection.size
 
@@ -28,7 +29,7 @@ class BoardArticleAdapter
         viewHolder.bind(collection[position], clickListener)
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(nurbanHoneyArticle: NurbanHoneyArticle, clickListener: (Int,String?) -> Unit) {
+        fun bind(nurbanHoneyArticle: NurbanHoneyArticle, clickListener: (Int, Board) -> Unit) {
 
             Log.d("thumbnail_check__", "??? ${nurbanHoneyArticle.thumbnail}")
             if (nurbanHoneyArticle.thumbnail != "null" && nurbanHoneyArticle.thumbnail != null && nurbanHoneyArticle.thumbnail != "") {
@@ -52,15 +53,16 @@ class BoardArticleAdapter
             itemView.itemArticleUserNameTv.text = nurbanHoneyArticle.author
 
             //게시판 이름 표시
-            if(nurbanHoneyArticle.boardAddress.isNullOrBlank()) {
-                itemView.itemArticleBoardTv.invisible()
-            }else{
+//            if(nurbanHoneyArticle.board.isNullOrBlank()) {
+//                itemView.itemArticleBoardTv.invisible()
+//            }else{
                 itemView.itemArticleBoardTv.visible()
-                itemView.itemArticleBoardTv.text = nurbanHoneyArticle.boardAddress
-            }
+                itemView.itemArticleBoardTv.text = nurbanHoneyArticle.board.name
+
+            //}
 
             itemView.setOnSingleClickListener {
-                clickListener(nurbanHoneyArticle.id, nurbanHoneyArticle.boardAddress)
+                clickListener(nurbanHoneyArticle.id, nurbanHoneyArticle.board)
             }
         }
     }

@@ -22,4 +22,9 @@ class RankingFragment : BaseFragment() {
         _binding = FragmentRankingBinding.inflate(inflater, container, false)
         return binding.root
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

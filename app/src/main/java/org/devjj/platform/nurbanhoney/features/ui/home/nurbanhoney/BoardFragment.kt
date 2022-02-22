@@ -46,6 +46,12 @@ open class BoardFragment : BaseFragment() {
 
     }
 
+    override fun onDestroyView() {
+        binding.boardListRv.adapter=null
+        _binding = null
+        super.onDestroyView()
+    }
+
     private fun renderArticles(articles: List<NurbanHoneyArticle>?) {
         articleAdapter.collection = articles.orEmpty()
     }
@@ -87,7 +93,7 @@ open class BoardFragment : BaseFragment() {
         binding.boardListRv.layoutManager = LinearLayoutManager(requireContext())
         binding.boardListRv.adapter = articleAdapter
 
-        //viewModel.controller.initialize()
+        viewModel.controller.initialize()
 
         binding.boardListRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -109,13 +115,13 @@ open class BoardFragment : BaseFragment() {
 
     }
 
-    protected open fun boardArticleClickListener() : (Int,String?) -> Unit = { id,_ ->
+    protected open fun boardArticleClickListener() : (Int, Board) -> Unit = { id,_ ->
         navigator.showArticle(requireActivity(),viewModel.board, id)
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.controller.initialize()
+        //viewModel.controller.initialize()
 
     }
 

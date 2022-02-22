@@ -2,13 +2,15 @@ package org.devjj.platform.nurbanhoney.features.ui.home
 
 import com.google.gson.annotations.SerializedName
 import org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney.NurbanHoneyArticle
+import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 
 data class ArticlesRequestEntity(
     @SerializedName("id") val id: Int,
     @SerializedName("thumbnail") val thumbnail: String?,
     @SerializedName("title") val title: String,
+    @SerializedName("count") val count : Int?,
     @SerializedName("commentCount") val commentCount: Int,
-    @SerializedName("address") val boardAddress : String?,
+    @SerializedName("board") val board : Board?,
     @SerializedName("User") val user: User?
 ) {
     data class User(
@@ -24,7 +26,7 @@ data class ArticlesRequestEntity(
         thumbnail ?: "",
         title,
         commentCount,
-        boardAddress,
+        board ?: Board.empty,
         user?.profile ?: "",
         user?.nickname ?: "Empty Nickname",
         user?.insignia ?: "No insignia"

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.observe
+import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentProfileCommentsBinding
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileComment
@@ -26,6 +27,8 @@ class ProfileCommentsFragment : BaseFragment() {
 
     @Inject
     lateinit var commentsAdapter: ProfileCommentsAdapter
+    @Inject
+    lateinit var navigator : Navigator
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,13 +43,9 @@ class ProfileCommentsFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         with(viewModel){
             observe(comments, ::renderComments)
-            observe(boards, ::responseGetBoards)
         }
     }
 
-    fun responseGetBoards(boards : List<Board>?){
-        viewModel.getComments()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,9 +55,10 @@ class ProfileCommentsFragment : BaseFragment() {
 
         binding.profileCommentsRv.layoutManager = LinearLayoutManager(requireContext())
         binding.profileCommentsRv.adapter = commentsAdapter
-
-
-        viewModel.getBoards()
+        commentsAdapter.clickListener = { id, board ->
+            navigator.showArticle(requireActivity(),board,id)
+        }
+        viewModel.getComments()
     }
 
     private fun renderComments(comments : List<ProfileComment>?){

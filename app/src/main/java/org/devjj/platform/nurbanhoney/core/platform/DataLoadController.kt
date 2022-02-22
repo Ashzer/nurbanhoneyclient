@@ -16,16 +16,21 @@ class DataLoadController<T> {
         log("constructor")
     }
 
-    fun initialize(){
+    fun initialize() {
         _initialize()
         log("initData")
+    }
+
+    fun isQueueEnough(): Boolean {
+        return true
     }
 
     fun getNext(currentList: List<T>?) {
         _getNext()
         log("getNext")
     }
-    fun loadNext() : List<T>{
+
+    fun loadNext(): List<T> {
         return nextDataSet
     }
 

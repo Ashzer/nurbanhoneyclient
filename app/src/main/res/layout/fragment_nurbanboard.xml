@@ -19,20 +19,16 @@
         app:srcCompat="@android:drawable/ic_menu_add"
         android:labelFor="@id/boardWriteFab"
         />
-    <ScrollView
-        android:id="@+id/boardListSv"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/boardListRv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:labelFor="@id/boardListSv"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/boardListRv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

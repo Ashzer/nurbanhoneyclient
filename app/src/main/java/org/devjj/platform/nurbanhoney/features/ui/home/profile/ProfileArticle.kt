@@ -1,8 +1,10 @@
 package org.devjj.platform.nurbanhoney.features.ui.home.profile
 
+import org.devjj.platform.nurbanhoney.features.ui.splash.Board
+
 data class ProfileArticle(
     val id : Int,
-    var flag : String,
+    var board : Board,
     val thumbnail : String,
     val title : String,
     val commentCount : Int,

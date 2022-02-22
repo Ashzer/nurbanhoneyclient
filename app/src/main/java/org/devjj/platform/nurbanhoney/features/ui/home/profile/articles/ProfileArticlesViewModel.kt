@@ -23,8 +23,6 @@ class ProfileArticlesViewModel
 ) : BaseViewModel() {
     private val _articles : MutableLiveData<List<ProfileArticle>> = MutableLiveData()
     val articles : LiveData<List<ProfileArticle>> = _articles
-    private val _boards: MutableLiveData<List<Board>> = MutableLiveData()
-    val boards: LiveData<List<Board>> = _boards
 
     private fun getToken() = prefs.getString(
         prefsNurbanTokenKey,
@@ -45,7 +43,6 @@ class ProfileArticlesViewModel
 
    private fun handleArticles(articles : List<ProfileArticle>?){
        var list = _articles.value?.toMutableList() ?: mutableListOf()
-       articles?.toMutableList()?.map { it.flag = getBoardName(it.flag) }
        list.addAll(articles?.toList().orEmpty())
         _articles.postValue(articles)
 
@@ -54,36 +51,4 @@ class ProfileArticlesViewModel
        }
    }
 
-    fun getBoards() =
-        getBoards(org.devjj.platform.nurbanhoney.core.interactor.UseCase.None(), viewModelScope) {
-            it.fold(
-                ::handleFailure,
-                ::handleBoards
-            )
-        }
-
-    private fun handleBoards(boards: List<Board>) {
-        _boards.postValue(boards)
-        boards.forEach {
-            Log.d("boards_check__", it.toString())
-        }
-    }
-
-    fun getBoardName(address: String): String{
-        boards.value?.forEach {
-            if(it.address == address){
-                return it.name
-            }
-        }
-        return address
-    }
-
-    fun getBoard(address: String): Board{
-        boards.value?.forEach {
-            if(it.address == address){
-                return it
-            }
-        }
-        return Board.empty
-    }
 }

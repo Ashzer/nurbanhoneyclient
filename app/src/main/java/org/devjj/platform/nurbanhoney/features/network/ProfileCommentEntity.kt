@@ -3,23 +3,23 @@ package org.devjj.platform.nurbanhoney.features.network
 import com.google.gson.annotations.SerializedName
 import org.devjj.platform.nurbanhoney.core.extension.empty
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileComment
+import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 
 data class ProfileCommentEntity(
     @SerializedName("id") val id: Int,
-    @SerializedName("flag") val flag: String,
+    @SerializedName("board") val board: Board,
     @SerializedName("content") val content: String,
-    @SerializedName("articleId") val articleId: Int,
     @SerializedName("createdAt") val createAt: String,
-    @SerializedName("Board") val board: Board,
+    @SerializedName("Board") val articleInfo: ArticleInfo,
 ) {
-    data class Board(
+    data class ArticleInfo(
         @SerializedName("articleId") val articleId: Int,
         @SerializedName("title") val title: String,
     )
 
     companion object {
-        val empty = ProfileCommentEntity(-1, "", String.empty(), -1, String.empty(), Board(-1, ""))
+        val empty = ProfileCommentEntity(-1, Board.empty, String.empty(), String.empty(), ArticleInfo(-1,String.empty()))
     }
 
-    fun toProfileComment() = ProfileComment(id, content, articleId, createAt, flag, board.title)
+    fun toProfileComment() = ProfileComment(id, content, articleInfo.articleId, createAt, board, articleInfo.title)
 }

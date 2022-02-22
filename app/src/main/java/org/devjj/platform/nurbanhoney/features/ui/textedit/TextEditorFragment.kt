@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -25,6 +27,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.*
+import org.devjj.platform.nurbanhoney.core.imageprocessing.BitmapRequestBody
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentTextEditorNurbanBinding
 import org.devjj.platform.nurbanhoney.features.ui.article.Article
@@ -168,18 +171,7 @@ open class TextEditorFragment : BaseFragment() {
 
         cropActivityResultLauncher = registerForActivityResult(cropActivityResultContracts) {
             it?.let { uri ->
-
-                val file = File(uri.path)
-
-                val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
-                val imageFilePart =
-                    MultipartBody.Part.createFormData("image", file.name, requestFile)
-                val uuidPart = MultipartBody.Part.createFormData("uuid", uuid.toString())
-                //val options = BitmapFactory.Options()
-                //options.inSampleSize = 4
-                // var src = BitmapFactory.decodeFile(uri.toString(),options)
-                Log.d("uri_check__", "$uri  ,  $uuid")
-                viewModel.uploadImage("nurban", nurbanToken, uuidPart, imageFilePart)
+                uploadImage(uri)
             }
         }
         mEditor.insertImageListener(
@@ -187,6 +179,21 @@ open class TextEditorFragment : BaseFragment() {
             requireActivity(),
             cropActivityResultLauncher
         )
+    }
+
+    private fun uploadImage(uri : Uri){
+
+        val imageFilePart = getMultipartBodyFromBitmap(uri)
+        val uuidPart = MultipartBody.Part.createFormData("uuid", uuid.toString())
+        viewModel.uploadImage("nurban", nurbanToken, uuidPart, imageFilePart)
+    }
+
+    private fun getMultipartBodyFromBitmap(uri : Uri) : MultipartBody.Part{
+        val file = File(uri.path)
+        var options = BitmapFactory.Options()
+        options.inSampleSize = 2
+        var src = BitmapFactory.decodeFile(file.absolutePath,options)
+        return MultipartBody.Part.createFormData("image", file.name, BitmapRequestBody(src))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -115,10 +115,10 @@ class LoginFragment : BaseFragment() {
     private fun kakaoLoginBtnListener(view: View) = view.setOnSingleClickListener {
         UserApiClient.instance.loginWithKakaoTalk(requireContext()) { token, error ->
             if (error != null) {
-                Log.d("login_check__", "${error.localizedMessage}")
-                error.localizedMessage
+                Log.d("login_check__", "카카오 로그인 실패 ${error.localizedMessage}")
             } else if (token != null) {
                 viewModel.getNurbanToken("kakao", token.accessToken)
+                Log.d("login_check__", "카카오 로그인 성공 ${token.accessToken}")
             }
         }
     }
