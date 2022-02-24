@@ -3,7 +3,6 @@ package org.devjj.platform.nurbanhoney.features.network.repositories.rank
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
-import org.devjj.platform.nurbanhoney.features.network.RankService
 import org.devjj.platform.nurbanhoney.features.ui.home.ranking.Rank
 import org.devjj.platform.nurbanhoney.features.ui.home.ranking.RankSimple
 import javax.inject.Inject

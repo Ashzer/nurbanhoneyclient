@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.devjj.platform.nurbanhoney.core.extension.observe
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
+import org.devjj.platform.nurbanhoney.features.Board
 import org.devjj.platform.nurbanhoney.features.network.VersionCheckService
 import javax.inject.Inject
 
@@ -39,27 +40,14 @@ class SplashActivity
 
     private val viewModel by viewModels<SplashViewModel>()
 
-    private fun updateBoards(boards: List<Board>?) {
-        if (!boards.isNullOrEmpty()) {
-            boards.forEach {
-                Log.d("boards_check__activity", it.toString())
-            }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        with(viewModel) {
-            observe(boards, ::updateBoards)
-        }
 
         Handler().postDelayed({
             runBlocking { navigator.showHome(this@SplashActivity) }
             finish()
         }, SPLASH_DISPLAY_TIME)
-
-        viewModel.getBoards()
 
         CoroutineScope(Dispatchers.IO).launch {
             //Log.d("version_check__", versionCheckService.appVersion("nurbanhoney").execute().body().toString())
@@ -81,10 +69,6 @@ class SplashActivity
                 Log.d("version_check__", "error occurred")
             }
         }
-        val prefsEditor = prefs.edit()
-        prefsEditor.putInt("test", 122)
-        prefsEditor.apply()
-        Log.d("prefs_check__", prefs.getInt("test", 0).toString())
         Log.d("kakao_key_check__", Utility.getKeyHash(this))
     }
 

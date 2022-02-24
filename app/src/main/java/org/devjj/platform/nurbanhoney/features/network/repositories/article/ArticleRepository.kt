@@ -1,14 +1,14 @@
 package org.devjj.platform.nurbanhoney.features.network.repositories.article
 
-import android.util.Log
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
-import org.devjj.platform.nurbanhoney.features.network.ArticleService
-import org.devjj.platform.nurbanhoney.features.network.SimpleResponseEntity
-import org.devjj.platform.nurbanhoney.features.ui.article.*
-import org.devjj.platform.nurbanhoney.features.ui.home.ArticleEntity
-import org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney.NurbanHoneyArticle
+import org.devjj.platform.nurbanhoney.features.network.entities.CommentEntity
+import org.devjj.platform.nurbanhoney.features.network.entities.RatingsEntity
+import org.devjj.platform.nurbanhoney.features.network.entities.SimpleResponseEntity
+import org.devjj.platform.nurbanhoney.features.network.entities.ArticleEntity
+import org.devjj.platform.nurbanhoney.features.ui.article.model.*
+import org.devjj.platform.nurbanhoney.features.ui.home.boards.model.ArticleItem
 import javax.inject.Inject
 
 interface ArticleRepository {
@@ -52,7 +52,7 @@ interface ArticleRepository {
         flag: Int,
         offset: Int,
         limit: Int
-    ): Either<Failure, List<NurbanHoneyArticle>>
+    ): Either<Failure, List<ArticleItem>>
 
     class Network
     @Inject constructor(
@@ -65,7 +65,7 @@ interface ArticleRepository {
             flag: Int,
             offset: Int,
             limit: Int
-        ): Either<Failure, List<NurbanHoneyArticle>> {
+        ): Either<Failure, List<ArticleItem>> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> networkHandler.request(
                     articleService.getArticles(board, flag, offset, limit),

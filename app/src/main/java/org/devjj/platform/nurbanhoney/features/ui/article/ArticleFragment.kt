@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +22,10 @@ import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentArticleBinding
-import org.devjj.platform.nurbanhoney.features.ui.splash.Board
+import org.devjj.platform.nurbanhoney.features.ui.article.model.Article
+import org.devjj.platform.nurbanhoney.features.ui.article.model.Comment
+import org.devjj.platform.nurbanhoney.features.ui.article.model.Ratings
+import org.devjj.platform.nurbanhoney.features.Board
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -35,8 +39,6 @@ class ArticleFragment : BaseFragment() {
                 arguments = bundleOf(PARAM_BOARD to board, PARAM_ARTICLE to id)
             }
     }
-
-    override fun layoutId() = R.layout.fragment_article
 
     private val viewModel by viewModels<ArticleViewModel>()
     private var _binding: FragmentArticleBinding? = null
@@ -109,22 +111,50 @@ class ArticleFragment : BaseFragment() {
     }
 
     private fun renderLikes(ratings: Ratings?) {
-        binding.articleBody.articleLikesTv.text = ratings?.likes.toString()
-        binding.articleBody.articleDislikesTv.text = ratings?.dislikes.toString()
-        Log.d("rating_check__", ratings?.myRating.toString())
-        if (!ratings?.myRating.isNullOrEmpty()) {
-            /*if (ratings?.myRating == "like") {
-                binding.articleLikesIv.drawable.setTint(R.color.colorWhite)
-                binding.articleLikesIv.setColorFilter(R.color.colorWhite)
+        setLikesDislikes(ratings)
+        if (hasMyRating(ratings)) {
+            if (ratings?.myRating == "like") {
+                likeSelected()
             } else {
-                binding.articleDislikesIv.drawable.setTint(R.color.colorWhite)
-                binding.articleDislikesIv.setColorFilter(R.color.colorWhite)
-            }*/
+                dislikeSelected()
+            }
+        }else{
+            nothingSelected()
         }
     }
 
+    private fun setLikesDislikes(ratings: Ratings?){
+        binding.articleHeader.articleLikesTv.text = ratings?.likes.toString()
+        binding.articleHeader.articleDislikesTv.text = ratings?.dislikes.toString()
+    }
+
+    private fun hasMyRating(ratings: Ratings?) = !ratings?.myRating.isNullOrEmpty()
+
+    private fun likeSelected(){
+        binding.articleHeader.articleLikesIv.setColor(R.color.white)
+        binding.articleHeader.articleLikesIv.setBackgroundDrawable(R.drawable.likes_border)
+        binding.articleHeader.articleLikesIv.setBackgroundColorId(R.color.colorAccent)
+        binding.articleHeader.articleDislikesIv.setColor(R.color.colorAccent)
+        binding.articleHeader.articleDislikesIv.background = null
+    }
+
+    private fun dislikeSelected(){
+        binding.articleHeader.articleLikesIv.setColor(R.color.colorAccent)
+        binding.articleHeader.articleLikesIv.background =null
+        binding.articleHeader.articleDislikesIv.setColor(R.color.white)
+        binding.articleHeader.articleDislikesIv.setBackgroundDrawable(R.drawable.likes_border)
+        binding.articleHeader.articleDislikesIv.setBackgroundColorId(R.color.colorAccent)
+    }
+
+    private fun nothingSelected(){
+        binding.articleHeader.articleLikesIv.setColor(R.color.colorAccent)
+        binding.articleHeader.articleLikesIv.background =null
+        binding.articleHeader.articleDislikesIv.setColor(R.color.colorAccent)
+        binding.articleHeader.articleDislikesIv.background = null
+    }
+
     private fun renderArticle(article: Article?) {
-        binding.articleBody.articleContentWv.html = article?.content.toString()
+        binding.articleHeader.articleContentWv.html = article?.content.toString()
         binding.articleHeader.articleTitleTv.text = article?.title
         binding.articleHeader.articleInquiriesTv.text = article?.inquiries.toString()
 
@@ -134,11 +164,11 @@ class ArticleFragment : BaseFragment() {
             R.drawable.ic_action_no_badge
         )
 
-        binding.articleBody.articleLikesIv.loadFromDrawable(R.drawable.ic_action_like) //.loadFromUrl(article?.badge.toString(), R.drawable.ic_action_no_badge)
-        binding.articleBody.articleLikesTv.text = article?.likes.toString()
-        binding.articleBody.articleDislikesIv.loadFromDrawable(R.drawable.ic_action_dislike)
-        binding.articleBody.articleDislikesTv.text = article?.dislikes.toString()
-        binding.articleBody.articleShareIv.loadFromDrawable(R.drawable.ic_action_share)
+        binding.articleHeader.articleLikesIv.loadFromDrawable(R.drawable.ic_action_like) //.loadFromUrl(article?.badge.toString(), R.drawable.ic_action_no_badge)
+        binding.articleHeader.articleLikesTv.text = article?.likes.toString()
+        binding.articleHeader.articleDislikesIv.loadFromDrawable(R.drawable.ic_action_dislike)
+        binding.articleHeader.articleDislikesTv.text = article?.dislikes.toString()
+        binding.articleHeader.articleShareIv.loadFromDrawable(R.drawable.ic_action_share)
 
         viewModel.getComments()
         if (!viewModel.isAuthor()) {
@@ -156,7 +186,7 @@ class ArticleFragment : BaseFragment() {
         viewModel.setArticleId(arguments?.get(PARAM_ARTICLE) as Int)
         viewModel.board = (arguments?.get(PARAM_BOARD) as Board)
 
-        binding.articleBody.articleContentWv.setInputEnabled(false)
+        binding.articleHeader.articleContentWv.setInputEnabled(false)
         binding.articleBody.articleCommentsRv.layoutManager = LinearLayoutManager(requireContext())
         binding.articleBody.articleCommentsRv.adapter = commentAdapter
 
@@ -169,9 +199,9 @@ class ArticleFragment : BaseFragment() {
         //글 삭제 버튼
         articleDeleteBtnListener(binding.articleHeader.articleInfoDeleteClo)
         //좋아요 버튼
-        likePressedListener(binding.articleBody.articleLikesClo)
+        likePressedListener(binding.articleHeader.articleLikesClo)
         //싫어요 버튼
-        dislikePressedListener(binding.articleBody.articleDislikesClo)
+        dislikePressedListener(binding.articleHeader.articleDislikesClo)
         //댓글 영역 보이기/숨김
         commentAreaVisibilityListener(binding.articleTail.articleCommentVisibilityClo)
         //댓글 등록 버튼
@@ -186,6 +216,7 @@ class ArticleFragment : BaseFragment() {
         commentAdapter.deleteClickListener = commentDeleteBtnListener()
         //댓글 추가 로드
         loadCommentsOnScrollViewListener(binding.articleContainerSv)
+
     }
 
     private fun commentModifyAreaSetVisibleListener(): (View) -> Unit = {
@@ -275,9 +306,10 @@ class ArticleFragment : BaseFragment() {
     private fun loadCommentsOnScrollViewListener(view: View) =
         view.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             view.getHitRect(Rect())
-            Log.d("scroll_check__", " $scrollX , $scrollY , $oldScrollX , $oldScrollY ")
+            //Log.d("scroll_check__", " $scrollX , $scrollY , $oldScrollX , $oldScrollY ")
             if (!v.canScrollVertically(1)) {
                 viewModel.getNextComments()
             }
+            //Log.d("rvVisible_check__",((binding.articleContainerSv.articleCommentsRv.layoutManager) as LinearLayoutManager).findLastVisibleItemPosition().toString())
         }
 }

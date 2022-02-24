@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
 import androidx.fragment.app.viewModels
@@ -29,7 +28,7 @@ class ProfileFragment : BaseFragment() {
     @Inject
     lateinit var profileListener: ProfileListener
 
-    override fun layoutId() = R.layout.fragment_profile
+    //override fun layoutId() = R.layout.fragment_profile
 
     private val viewModel by viewModels<ProfileViewModel>()
 

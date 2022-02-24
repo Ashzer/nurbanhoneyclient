@@ -1,13 +1,11 @@
 package org.devjj.platform.nurbanhoney.features.ui.home.profile
 
 import android.content.SharedPreferences
-import android.provider.ContactsContract
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
 import org.devjj.platform.nurbanhoney.features.network.repositories.profile.usecases.EditProfileUseCase
 import javax.inject.Inject

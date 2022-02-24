@@ -9,14 +9,14 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
-import org.devjj.platform.nurbanhoney.features.ui.article.Article
+import org.devjj.platform.nurbanhoney.features.ui.article.model.Article
 import org.devjj.platform.nurbanhoney.features.ui.article.ArticleActivity
 import org.devjj.platform.nurbanhoney.features.ui.home.BoardActivity
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.articles.ProfileArticlesActivity
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.comments.ProfileCommentsActivity
 import org.devjj.platform.nurbanhoney.features.ui.login.Authenticator
 import org.devjj.platform.nurbanhoney.features.ui.login.LoginActivity
-import org.devjj.platform.nurbanhoney.features.ui.splash.Board
+import org.devjj.platform.nurbanhoney.features.Board
 import org.devjj.platform.nurbanhoney.features.ui.textedit.TextEditorActivity
 import javax.inject.Inject
 import javax.inject.Singleton

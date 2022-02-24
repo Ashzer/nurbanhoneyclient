@@ -6,10 +6,9 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.os.bundleOf
 import org.devjj.platform.nurbanhoney.R
-import org.devjj.platform.nurbanhoney.core.extension.invisible
 import org.devjj.platform.nurbanhoney.core.extension.visible
-import org.devjj.platform.nurbanhoney.features.ui.article.Article
-import org.devjj.platform.nurbanhoney.features.ui.splash.Board
+import org.devjj.platform.nurbanhoney.features.ui.article.model.Article
+import org.devjj.platform.nurbanhoney.features.Board
 
 class TextEditorNurbanFragment : TextEditorFragment() {
 

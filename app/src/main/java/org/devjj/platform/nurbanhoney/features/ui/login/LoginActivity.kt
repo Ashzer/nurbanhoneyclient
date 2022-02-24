@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.nhn.android.naverlogin.OAuthLogin
 import com.nhn.android.naverlogin.OAuthLoginHandler
 import org.devjj.platform.nurbanhoney.R
@@ -20,9 +21,10 @@ class LoginActivity : BaseEmptyActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         addFragment(savedInstanceState)
-
-
     }
+
+
+
     override fun onDestroy() {
         super.onDestroy()
         finish()

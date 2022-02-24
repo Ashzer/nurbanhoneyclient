@@ -28,6 +28,7 @@ abstract class BaseEmptyActivity : BaseActivity() {
             replace(
                 R.id.emptyFragmentContainer, fragment()
             )
+            addToBackStack(null)
         }
 
 }

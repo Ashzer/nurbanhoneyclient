@@ -1,17 +1,30 @@
 package org.devjj.platform.nurbanhoney.core.platform
 
 import android.os.Bundle
-import android.widget.Toast
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
-import org.devjj.platform.nurbanhoney.R
-import org.devjj.platform.nurbanhoney.core.extension.inTransaction
 
 @AndroidEntryPoint
 abstract class BaseActivity : AppCompatActivity() {
-    abstract fun addFragment(savedInstanceState: Bundle?) : Any
-    abstract fun fragment() : BaseFragment
+    abstract fun addFragment(savedInstanceState: Bundle?): Any
+    abstract fun fragment(): BaseFragment
 
     private var backPressedTime = 0L
 
+    override fun onBackPressed() {
+        when (supportFragmentManager.backStackEntryCount) {
+            1 -> {
+                this.finish()
+            }
+            0 -> {
+                super.onBackPressed()
+                Log.d("onBackPressed_check","performed super.onBackPressed. supportFragmentManager.backStackEntryCount = ${supportFragmentManager.backStackEntryCount}")
+            }
+            else -> {
+                supportFragmentManager.popBackStack()
+                Log.d("onBackPressed_check","performed supportFragmentManager.popBackStack(). supportFragmentManager.backStackEntryCount = ${supportFragmentManager.backStackEntryCount}")
+            }
+        }
+    }
 }

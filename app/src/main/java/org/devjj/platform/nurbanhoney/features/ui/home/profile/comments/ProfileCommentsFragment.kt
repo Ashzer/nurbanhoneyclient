@@ -14,12 +14,11 @@ import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentProfileCommentsBinding
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileComment
-import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProfileCommentsFragment : BaseFragment() {
-    override fun layoutId() = R.layout.fragment_profile_comments
+    //override fun layoutId() = R.layout.fragment_profile_comments
 
     private var _binding: FragmentProfileCommentsBinding? = null
     private val binding get() = _binding!!

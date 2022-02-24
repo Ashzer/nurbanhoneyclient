@@ -1,6 +1,7 @@
 package org.devjj.platform.nurbanhoney.core.extension
 
 import android.content.Context
+import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.os.SystemClock
 import android.util.Log
@@ -9,6 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -71,3 +75,13 @@ fun View.setOnSingleClickListener(debounceTime: Long = 500L, action: () -> Unit)
     })
 }
 
+
+fun ImageView.setColor(color : Int) = this.setColorFilter(ContextCompat.getColor(context,color))
+fun ImageView.setBackgroundDrawable(drawable : Int) {
+    this.background = ContextCompat.getDrawable(context,drawable)
+}
+fun ImageView.setBackgroundColorId(color:Int){
+    this.setBackgroundColor(ContextCompat.getColor(context,color))
+}
+
+fun RecyclerView.getLinearLayoutManager() = this.layoutManager as LinearLayoutManager

@@ -6,12 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
 import org.devjj.platform.nurbanhoney.features.network.repositories.board.usecases.GetBoardsUseCase
 import org.devjj.platform.nurbanhoney.features.network.repositories.profile.usecases.GetProfileArticlesUseCase
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileArticle
-import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,7 +17,6 @@ class ProfileArticlesViewModel
 @Inject constructor(
     private val prefs: SharedPreferences,
     val getArticles: GetProfileArticlesUseCase,
-    private val getBoards: GetBoardsUseCase,
 ) : BaseViewModel() {
     private val _articles : MutableLiveData<List<ProfileArticle>> = MutableLiveData()
     val articles : LiveData<List<ProfileArticle>> = _articles

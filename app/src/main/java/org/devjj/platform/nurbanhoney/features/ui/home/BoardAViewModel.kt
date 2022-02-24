@@ -8,7 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import org.devjj.platform.nurbanhoney.core.interactor.UseCase
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
 import org.devjj.platform.nurbanhoney.features.network.repositories.board.usecases.GetBoardsUseCase
-import org.devjj.platform.nurbanhoney.features.ui.splash.Board
+import org.devjj.platform.nurbanhoney.features.Board
 import javax.inject.Inject
 
 @HiltViewModel

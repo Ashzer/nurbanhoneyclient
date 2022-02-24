@@ -5,14 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import dagger.hilt.android.AndroidEntryPoint
 import org.devjj.platform.nurbanhoney.core.platform.BaseEmptyActivity
-import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 
 @AndroidEntryPoint
 class ProfileCommentsActivity : BaseEmptyActivity(){
     override fun fragment() = ProfileCommentsFragment()
 
     companion object{
-        fun callingIntent(context: Context) = Intent(context,ProfileCommentsActivity::class.java)
+        fun callingIntent(context: Context) = Intent(context, ProfileCommentsActivity::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

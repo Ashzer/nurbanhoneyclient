@@ -12,20 +12,19 @@ import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.observe
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
-import org.devjj.platform.nurbanhoney.core.platform.BaseTabLayoutActivity
+import org.devjj.platform.nurbanhoney.core.platform.BaseNavigationActivity
 import org.devjj.platform.nurbanhoney.databinding.ActivityNavigationBinding
-import org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney.BoardFragment
-import org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney.BoardNoticeFragment
-import org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney.BoardPopularFragment
-import org.devjj.platform.nurbanhoney.features.ui.home.nurbanhoney.BoardViewModel
+import org.devjj.platform.nurbanhoney.features.ui.home.boards.subboards.BoardNoticeFragment
+import org.devjj.platform.nurbanhoney.features.ui.home.boards.subboards.BoardPopularFragment
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileFragment
 import org.devjj.platform.nurbanhoney.features.ui.home.ranking.RankingFragment
-import org.devjj.platform.nurbanhoney.features.ui.splash.Board
+import org.devjj.platform.nurbanhoney.features.Board
+import org.devjj.platform.nurbanhoney.features.ui.home.boards.BoardFragment
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class BoardActivity : BaseTabLayoutActivity() {
+class BoardActivity : BaseNavigationActivity() {
     override fun fragment() = BoardFragment()
     private val gravity = GravityCompat.START
 
@@ -93,14 +92,18 @@ class BoardActivity : BaseTabLayoutActivity() {
                 when (it.itemId) {
                     R.id.menu_notice_board -> {
                         var bundle = Bundle()
-                        bundle.putParcelable(R.string.BoardInfo.toString(),Board(-1,"공지사항","notice"))
+                        bundle.putParcelable(R.string.BoardInfo.toString(),
+                            Board(-1,"공지사항","notice")
+                        )
                         var frag = BoardNoticeFragment()
                         frag.arguments = bundle
                         navigate(frag)
                     }
                     R.id.menu_popular_board -> {
                         var bundle = Bundle()
-                        bundle.putParcelable(R.string.BoardInfo.toString(),Board(-1,"인기글","popular"))
+                        bundle.putParcelable(R.string.BoardInfo.toString(),
+                            Board(-1,"인기글","popular")
+                        )
                         var frag = BoardPopularFragment()
                         frag.arguments = bundle
                         navigate(frag)

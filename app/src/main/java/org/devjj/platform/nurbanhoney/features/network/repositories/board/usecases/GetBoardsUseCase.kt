@@ -2,7 +2,7 @@ package org.devjj.platform.nurbanhoney.features.network.repositories.board.useca
 
 import org.devjj.platform.nurbanhoney.core.interactor.UseCase
 import org.devjj.platform.nurbanhoney.features.network.repositories.board.BoardRepository
-import org.devjj.platform.nurbanhoney.features.ui.splash.Board
+import org.devjj.platform.nurbanhoney.features.Board
 import javax.inject.Inject
 
 class GetBoardsUseCase

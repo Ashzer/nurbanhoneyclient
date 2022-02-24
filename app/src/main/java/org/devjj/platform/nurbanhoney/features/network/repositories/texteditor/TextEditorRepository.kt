@@ -5,12 +5,12 @@ import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.exception.Failure.NetworkConnection
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
-import org.devjj.platform.nurbanhoney.features.network.BoardService
-import org.devjj.platform.nurbanhoney.features.network.SimpleResponseEntity
+import org.devjj.platform.nurbanhoney.features.network.repositories.board.BoardService
+import org.devjj.platform.nurbanhoney.features.network.entities.SimpleResponseEntity
 import org.devjj.platform.nurbanhoney.features.ui.textedit.ArticleResponse
 import org.devjj.platform.nurbanhoney.features.ui.textedit.ImageResponse
 import org.devjj.platform.nurbanhoney.features.ui.textedit.ImageUploadResult
-import org.devjj.platform.nurbanhoney.features.ui.textedit.UploadImageEntity
+import org.devjj.platform.nurbanhoney.features.network.entities.UploadImageEntity
 import javax.inject.Inject
 
 interface TextEditorRepository {

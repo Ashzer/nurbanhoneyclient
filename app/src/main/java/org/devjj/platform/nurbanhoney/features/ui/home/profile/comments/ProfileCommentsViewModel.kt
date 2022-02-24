@@ -1,17 +1,15 @@
 package org.devjj.platform.nurbanhoney.features.ui.home.profile.comments
 
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
 import org.devjj.platform.nurbanhoney.features.network.repositories.board.usecases.GetBoardsUseCase
 import org.devjj.platform.nurbanhoney.features.network.repositories.profile.usecases.GetProfileCommentsUseCase
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileComment
-import org.devjj.platform.nurbanhoney.features.ui.splash.Board
+import org.devjj.platform.nurbanhoney.features.Board
 import javax.inject.Inject
 
 @HiltViewModel

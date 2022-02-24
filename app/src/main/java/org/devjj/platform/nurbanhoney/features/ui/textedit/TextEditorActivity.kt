@@ -3,15 +3,14 @@ package org.devjj.platform.nurbanhoney.features.ui.textedit
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_empty.*
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseEmptyActivity
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
-import org.devjj.platform.nurbanhoney.features.ui.article.Article
-import org.devjj.platform.nurbanhoney.features.ui.splash.Board
+import org.devjj.platform.nurbanhoney.features.ui.article.model.Article
+import org.devjj.platform.nurbanhoney.features.Board
 
 @AndroidEntryPoint
 class TextEditorActivity : BaseEmptyActivity() {

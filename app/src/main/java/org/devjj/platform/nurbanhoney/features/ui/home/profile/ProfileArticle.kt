@@ -1,6 +1,6 @@
 package org.devjj.platform.nurbanhoney.features.ui.home.profile
 
-import org.devjj.platform.nurbanhoney.features.ui.splash.Board
+import org.devjj.platform.nurbanhoney.features.Board
 
 data class ProfileArticle(
     val id : Int,

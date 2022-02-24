@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import dagger.hilt.android.AndroidEntryPoint
 import org.devjj.platform.nurbanhoney.core.platform.BaseEmptyActivity
-import org.devjj.platform.nurbanhoney.databinding.ActivityEmptyBinding
 
 @AndroidEntryPoint
 class ProfileArticlesActivity : BaseEmptyActivity(){

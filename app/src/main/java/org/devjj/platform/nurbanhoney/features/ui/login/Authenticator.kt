@@ -1,10 +1,7 @@
 package org.devjj.platform.nurbanhoney.features.ui.login
 
-import android.content.SharedPreferences
-import android.util.Log
 import kotlinx.coroutines.*
-import org.devjj.platform.nurbanhoney.R
-import org.devjj.platform.nurbanhoney.features.network.LoginService
+import org.devjj.platform.nurbanhoney.features.network.repositories.login.LoginService
 import javax.inject.Inject
 import javax.inject.Singleton
 

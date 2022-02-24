@@ -3,9 +3,8 @@ package org.devjj.platform.nurbanhoney.features.network.repositories.profile
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
-import org.devjj.platform.nurbanhoney.features.network.ProfileService
-import org.devjj.platform.nurbanhoney.features.network.SimpleResponseEntity
-import org.devjj.platform.nurbanhoney.features.ui.home.ProfileEntity
+import org.devjj.platform.nurbanhoney.features.network.entities.ProfileEntity
+import org.devjj.platform.nurbanhoney.features.network.entities.SimpleResponseEntity
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.*
 import javax.inject.Inject
 

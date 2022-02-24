@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.NurbanHoney"
+        android:theme="@style/Theme.NurbanHoney.NoActionBar"
         android:usesCleartextTraffic="true"
         >
         <meta-data
@@ -24,7 +24,8 @@
         <activity
             android:name=".features.ui.splash.SplashActivity"
             android:theme="@style/SplashTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" >
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -33,41 +34,36 @@
 
         <activity
             android:name=".features.ui.home.BoardActivity"
-            android:label="Home"
-            android:theme="@style/Theme.NurbanHoney.NoActionBar">
+            android:label="Board">
         </activity>
 
         <activity android:name=".features.ui.textedit.TextEditorActivity"
             android:label="TextEditor"
             android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.NurbanHoney.NoActionBar">
+            android:noHistory="true">
         </activity>
 
         <activity android:name=".features.ui.article.ArticleActivity"
-            android:label="Article"
-            android:theme="@style/Theme.NurbanHoney.NoActionBar">
+            android:label="Article">
         </activity>
 
         <activity android:name=".features.ui.home.profile.articles.ProfileArticlesActivity"
-            android:label="ProfileArticles"
-            android:theme="@style/Theme.NurbanHoney.NoActionBar">
+            android:label="ProfileArticles">
         </activity>
 
         <activity android:name=".features.ui.home.profile.comments.ProfileCommentsActivity"
-            android:label="ProfileComments"
-            android:theme="@style/Theme.NurbanHoney.NoActionBar">
+            android:label="ProfileComments">
         </activity>
 
         <activity
             android:name=".features.ui.login.LoginActivity"
             android:label="Login"
-            android:theme="@style/Theme.AppCompat.NoActionBar" >
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                  <category android:name="android.intent.category.DEFAULT" />
                  <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
                     android:host="oauth"
                     android:scheme="@string/kakao_app_oauth_key" />

@@ -1,6 +1,5 @@
 package org.devjj.platform.nurbanhoney.features.ui.login
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,11 +9,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
 import com.kakao.sdk.user.UserApiClient
+import com.nhn.android.naverlogin.OAuthLogin
+import com.nhn.android.naverlogin.OAuthLoginHandler
 import dagger.hilt.android.AndroidEntryPoint
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.exception.Failure
@@ -28,21 +27,17 @@ import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentLoginBinding
 import javax.inject.Inject
-import com.nhn.android.naverlogin.OAuthLogin
-import com.nhn.android.naverlogin.OAuthLoginHandler
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment() {
-    override fun layoutId() = R.layout.fragment_login
-
-    @Inject
+     @Inject
     lateinit var navigator: Navigator
 
     private val viewModel by viewModels<LoginViewModel>()
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var mOAuthLoginModule : OAuthLogin
+    lateinit var mOAuthLoginModule: OAuthLogin
     private val RC_SIGN_IN = 9001
 
     override fun onCreateView(
@@ -80,8 +75,8 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 
     private fun tokenHandler(nurbanToken: NurbanToken?) {
@@ -123,7 +118,7 @@ class LoginFragment : BaseFragment() {
         }
     }
 
-    private fun naverLoginBtnListener(view : View) = view.setOnSingleClickListener {
+    private fun naverLoginBtnListener(view: View) = view.setOnSingleClickListener {
 
         mOAuthLoginModule = OAuthLogin.getInstance()
         mOAuthLoginModule.init(
@@ -133,20 +128,20 @@ class LoginFragment : BaseFragment() {
             getString(R.string.naver_client_name)
         )
 
-        mOAuthLoginModule.startOauthLoginActivity(requireActivity(),mOAuthLoginHandler)
+        mOAuthLoginModule.startOauthLoginActivity(requireActivity(), mOAuthLoginHandler)
     }
 
-    private val mOAuthLoginHandler = object : OAuthLoginHandler(){
+    private val mOAuthLoginHandler = object : OAuthLoginHandler() {
         override fun run(success: Boolean) {
             if (success) {
                 val accessToken: String = mOAuthLoginModule.getAccessToken(requireContext())
                 val refreshToken: String = mOAuthLoginModule.getRefreshToken(requireContext())
                 val expiresAt: Long = mOAuthLoginModule.getExpiresAt(requireContext())
                 val tokenType: String = mOAuthLoginModule.getTokenType(requireContext())
-                Log.i("LoginData","accessToken : "+ accessToken);
-                Log.i("LoginData","refreshToken : "+ refreshToken);
-                Log.i("LoginData","expiresAt : "+ expiresAt);
-                Log.i("LoginData","tokenType : "+ tokenType);
+                Log.i("LoginData", "accessToken : " + accessToken);
+                Log.i("LoginData", "refreshToken : " + refreshToken);
+                Log.i("LoginData", "expiresAt : " + expiresAt);
+                Log.i("LoginData", "tokenType : " + tokenType);
 
                 viewModel.getNurbanToken("naver", accessToken)
             } else {
@@ -161,12 +156,12 @@ class LoginFragment : BaseFragment() {
         }
     }
 
-    private fun googleLoginBtnListener(view : View) = view.setOnSingleClickListener {
+    private fun googleLoginBtnListener(view: View) = view.setOnSingleClickListener {
 
         var signInIntent = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .build().let {
-                GoogleSignIn.getClient(requireActivity(),it)
+                GoogleSignIn.getClient(requireActivity(), it)
             }.signInIntent
 
         startActivityForResult(signInIntent, RC_SIGN_IN)
@@ -175,23 +170,23 @@ class LoginFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == RC_SIGN_IN){
+        if (requestCode == RC_SIGN_IN) {
             try {
-                var task = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException::class.java)
+                var task = GoogleSignIn.getSignedInAccountFromIntent(data)
+                    .getResult(ApiException::class.java)
 
-                Log.d("google_check__",task.toString())
-            }catch (e : ApiException){
-                Log.d("google_check__","signInResult:failed code=" + e.statusCode)
+                Log.d("google_check__", task.toString())
+            } catch (e: ApiException) {
+                Log.d("google_check__", "signInResult:failed code=" + e.statusCode)
             }
 
         }
     }
 
 
-
     override fun onDestroy() {
         super.onDestroy()
-        requireActivity().finishAfterTransition()
+        //requireActivity().finishAfterTransition()
     }
 }
 

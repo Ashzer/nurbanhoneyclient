@@ -4,10 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import dagger.hilt.android.AndroidEntryPoint
-import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseEmptyActivity
-import org.devjj.platform.nurbanhoney.databinding.ActivityEmptyBinding
-import org.devjj.platform.nurbanhoney.features.ui.splash.Board
+import org.devjj.platform.nurbanhoney.features.Board
 
 @AndroidEntryPoint
 class ArticleActivity : BaseEmptyActivity() {

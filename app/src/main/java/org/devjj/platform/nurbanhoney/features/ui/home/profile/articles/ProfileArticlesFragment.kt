@@ -14,12 +14,11 @@ import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentProfileArticlesBinding
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileArticle
-import org.devjj.platform.nurbanhoney.features.ui.splash.Board
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProfileArticlesFragment : BaseFragment() {
-    override fun layoutId() = R.layout.fragment_profile_articles
+    //override fun layoutId() = R.layout.fragment_profile_articles
 
     @Inject
     lateinit var navigator: Navigator

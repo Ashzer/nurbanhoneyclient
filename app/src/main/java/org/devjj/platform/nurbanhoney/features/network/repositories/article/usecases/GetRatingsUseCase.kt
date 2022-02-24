@@ -2,7 +2,7 @@ package org.devjj.platform.nurbanhoney.features.network.repositories.article.use
 
 import org.devjj.platform.nurbanhoney.core.interactor.UseCase
 import org.devjj.platform.nurbanhoney.features.network.repositories.article.ArticleRepository
-import org.devjj.platform.nurbanhoney.features.ui.article.Ratings
+import org.devjj.platform.nurbanhoney.features.ui.article.model.Ratings
 import javax.inject.Inject
 
 class GetRatingsUseCase

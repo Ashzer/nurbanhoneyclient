@@ -3,9 +3,7 @@ package org.devjj.platform.nurbanhoney.features.network.repositories.board
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
-import org.devjj.platform.nurbanhoney.features.network.BoardService
-import org.devjj.platform.nurbanhoney.features.ui.splash.Board
-import org.devjj.platform.nurbanhoney.features.ui.splash.BoardEntity
+import org.devjj.platform.nurbanhoney.features.Board
 import javax.inject.Inject
 
 interface BoardRepository {

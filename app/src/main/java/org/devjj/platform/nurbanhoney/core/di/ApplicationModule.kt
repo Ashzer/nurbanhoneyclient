@@ -18,7 +18,7 @@ import org.devjj.platform.nurbanhoney.features.network.repositories.profile.Prof
 import org.devjj.platform.nurbanhoney.features.network.repositories.article.ArticleRepository
 import org.devjj.platform.nurbanhoney.features.network.repositories.board.BoardRepository
 import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.TextEditorRepository
-import org.devjj.platform.nurbanhoney.features.ui.login.LoginManager
+import org.devjj.platform.nurbanhoney.features.network.repositories.login.LoginManager
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton

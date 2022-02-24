@@ -14,7 +14,7 @@ import org.devjj.platform.nurbanhoney.core.exception.Failure
 
 @AndroidEntryPoint
 abstract class BaseFragment : Fragment() {
-    abstract fun layoutId(): Int
+   // abstract fun layoutId(): Int
 
 //    open fun onBackPressed() {
 //    }

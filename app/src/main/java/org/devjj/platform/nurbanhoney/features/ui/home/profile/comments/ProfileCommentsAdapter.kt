@@ -8,8 +8,7 @@ import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.inflate
 import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileComment
-import org.devjj.platform.nurbanhoney.features.ui.home.profile.articles.ProfileArticlesAdapter
-import org.devjj.platform.nurbanhoney.features.ui.splash.Board
+import org.devjj.platform.nurbanhoney.features.Board
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -31,7 +30,7 @@ class ProfileCommentsAdapter
     override fun getItemCount() = collection.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(comment: ProfileComment,clickListener: (Int, Board) -> Unit){
+        fun bind(comment: ProfileComment, clickListener: (Int, Board) -> Unit){
             itemView.itemProfileCommentTv.text = comment.content
             itemView.itemProfileBoardTv.text= comment.board.name
             itemView.itemProfileTitleTv.text = comment.title

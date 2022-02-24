@@ -1,12 +1,12 @@
 package org.devjj.platform.nurbanhoney.features.ui.article
 
-import android.content.SharedPreferences
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_comment.view.*
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.*
+import org.devjj.platform.nurbanhoney.features.ui.article.model.Comment
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -16,10 +16,11 @@ class CommentAdapter
 
     var userId by Delegates.notNull<Int>()
 
-    internal var collection: List<Comment> by Delegates.observable(emptyList()) { _, _, _ ->
-        //notifyItemInserted(old.size)
-        notifyDataSetChanged()
+    internal var collection: List<Comment> by Delegates.observable(emptyList()) { property, oldValue, newValue ->
+        notifyItemRangeChanged(oldValue.size, newValue.size - oldValue.size)
     }
+
+
 
     internal var deleteClickListener: (Int) -> Unit = { _ -> }
     internal var updateClickListener: (View, String, Int) -> Unit = { _, _, _ -> }

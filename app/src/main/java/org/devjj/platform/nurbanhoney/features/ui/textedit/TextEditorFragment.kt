@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
@@ -22,16 +21,14 @@ import androidx.fragment.app.viewModels
 import com.theartofdev.edmodo.cropper.CropImage
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.richeditor.RichEditor
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.imageprocessing.BitmapRequestBody
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentTextEditorNurbanBinding
-import org.devjj.platform.nurbanhoney.features.ui.article.Article
-import org.devjj.platform.nurbanhoney.features.ui.splash.Board
+import org.devjj.platform.nurbanhoney.features.ui.article.model.Article
+import org.devjj.platform.nurbanhoney.features.Board
 import java.io.File
 import java.net.URL
 import java.util.*
@@ -39,7 +36,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 open class TextEditorFragment : BaseFragment() {
-    override fun layoutId() = R.layout.fragment_text_editor_nurban
+    //override fun layoutId() = R.layout.fragment_text_editor_nurban
 
     companion object {
         private const val PARAM_ARTICLE = "param_article"

@@ -9,7 +9,7 @@ import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentRankingBinding
 
 class RankingFragment : BaseFragment() {
-    override fun layoutId() = R.layout.fragment_ranking
+    //override fun layoutId() = R.layout.fragment_ranking
 
     private var _binding: FragmentRankingBinding? = null
     private val binding get() = _binding!!
