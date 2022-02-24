@@ -118,7 +118,8 @@ open class BoardFragment : BaseFragment() {
                 val position = layoutManager.findLastVisibleItemPosition()
                 val count = (recyclerView.adapter?.itemCount ?: 0)
 
-                if ((count < position + 10) && oldCount != count) {
+                val threshold = 10
+                if ((count < position + threshold) && oldCount != count) {
                     Log.d("scroll_check__", binding.boardListRv.canScrollVertically(1).toString())
                     viewModel.getArticles()
                     oldCount = count

@@ -1,16 +1,15 @@
 package org.devjj.platform.nurbanhoney.features.ui.article
 
 import android.content.SharedPreferences
-import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,10 +21,10 @@ import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentArticleBinding
+import org.devjj.platform.nurbanhoney.features.Board
 import org.devjj.platform.nurbanhoney.features.ui.article.model.Article
 import org.devjj.platform.nurbanhoney.features.ui.article.model.Comment
 import org.devjj.platform.nurbanhoney.features.ui.article.model.Ratings
-import org.devjj.platform.nurbanhoney.features.Board
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -51,7 +50,7 @@ class ArticleFragment : BaseFragment() {
     lateinit var commentAdapter: CommentAdapter
 
     @Inject
-    lateinit var prefs : SharedPreferences
+    lateinit var prefs: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,19 +70,19 @@ class ArticleFragment : BaseFragment() {
             observe(ratings, ::renderLikes)
             observe(commentResponse, ::responseComment)
             observe(commentsResponse, ::responseComments)
-            observe(comments, ::initComments)
+            observe(newComments, ::initComments)
             failure(failure, ::failureHandler)
         }
     }
 
     override fun onResume() {
-        viewModel.setArticleId(arguments?.get(PARAM_ARTICLE) as Int)
+        //viewModel.setArticleId(arguments?.get(PARAM_ARTICLE) as Int)
         super.onResume()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        requireActivity().finish()
+        //requireActivity().finish()
     }
 
     private fun setArticleId(id: Int?) {
@@ -99,81 +98,57 @@ class ArticleFragment : BaseFragment() {
     private fun responseComments(result: String?) {
         //viewModel.initComments()
         Log.d("Controller_check__", "comment initialized")
-        viewModel.controller.initialize()
+        viewModel.initComments()
     }
 
     private fun responseComment(result: String?) {
-        viewModel.getComment(viewModel.updatingCommentId)
+     //   viewModel.getComment(viewModel.updatingCommentId)
     }
+    var oldCount = 0
+    private fun initComments(comments: List<Comment>?) {
+        if (!comments.isNullOrEmpty()) {
+            var adder = comments.filter { !commentAdapter.collection.contains(it) }
+            if(adder.isNotEmpty()){
+                commentAdapter.insertTail(comments)
+            }else{
+                viewModel.getComments()
+                Log.d("comment_check", "이게 왜?")
+            }
+        }
+        //Log.d("comment_check__", commentAdapter.collection.toString())
 
-    private fun initComments(comment: List<Comment>?) {
-        commentAdapter.collection = comment.orEmpty()
+
+
+        binding.articleCommentsRv.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.getLinearLayoutManager()
+                val position = layoutManager.findLastVisibleItemPosition()
+                val count = recyclerView.adapter?.itemCount ?: 0
+                val threshold = 10
+                if((count < position+ threshold )&& oldCount != count ){
+                    viewModel.getComments()
+                    oldCount = count
+                }
+            }
+        })
     }
 
     private fun renderLikes(ratings: Ratings?) {
-        setLikesDislikes(ratings)
-        if (hasMyRating(ratings)) {
-            if (ratings?.myRating == "like") {
-                likeSelected()
-            } else {
-                dislikeSelected()
-            }
-        }else{
-            nothingSelected()
+        if(ratings != null) {
+            commentAdapter.updateRatings(ratings)
         }
     }
 
-    private fun setLikesDislikes(ratings: Ratings?){
-        binding.articleHeader.articleLikesTv.text = ratings?.likes.toString()
-        binding.articleHeader.articleDislikesTv.text = ratings?.dislikes.toString()
-    }
-
-    private fun hasMyRating(ratings: Ratings?) = !ratings?.myRating.isNullOrEmpty()
-
-    private fun likeSelected(){
-        binding.articleHeader.articleLikesIv.setColor(R.color.white)
-        binding.articleHeader.articleLikesIv.setBackgroundDrawable(R.drawable.likes_border)
-        binding.articleHeader.articleLikesIv.setBackgroundColorId(R.color.colorAccent)
-        binding.articleHeader.articleDislikesIv.setColor(R.color.colorAccent)
-        binding.articleHeader.articleDislikesIv.background = null
-    }
-
-    private fun dislikeSelected(){
-        binding.articleHeader.articleLikesIv.setColor(R.color.colorAccent)
-        binding.articleHeader.articleLikesIv.background =null
-        binding.articleHeader.articleDislikesIv.setColor(R.color.white)
-        binding.articleHeader.articleDislikesIv.setBackgroundDrawable(R.drawable.likes_border)
-        binding.articleHeader.articleDislikesIv.setBackgroundColorId(R.color.colorAccent)
-    }
-
-    private fun nothingSelected(){
-        binding.articleHeader.articleLikesIv.setColor(R.color.colorAccent)
-        binding.articleHeader.articleLikesIv.background =null
-        binding.articleHeader.articleDislikesIv.setColor(R.color.colorAccent)
-        binding.articleHeader.articleDislikesIv.background = null
-    }
-
     private fun renderArticle(article: Article?) {
-        binding.articleHeader.articleContentWv.html = article?.content.toString()
-        binding.articleHeader.articleTitleTv.text = article?.title
-        binding.articleHeader.articleInquiriesTv.text = article?.inquiries.toString()
+        if (article != null)
+            commentAdapter.setAdapterHeader(article, Ratings(article.likes,article.dislikes,article.myRating))
 
-        binding.articleHeader.articleInfoNicknameTv.text = article?.nickname
-        binding.articleHeader.articleInfoBadgeIv.loadFromUrl(
-            article?.badge.toString(),
-            R.drawable.ic_action_no_badge
-        )
-
-        binding.articleHeader.articleLikesIv.loadFromDrawable(R.drawable.ic_action_like) //.loadFromUrl(article?.badge.toString(), R.drawable.ic_action_no_badge)
-        binding.articleHeader.articleLikesTv.text = article?.likes.toString()
-        binding.articleHeader.articleDislikesIv.loadFromDrawable(R.drawable.ic_action_dislike)
-        binding.articleHeader.articleDislikesTv.text = article?.dislikes.toString()
-        binding.articleHeader.articleShareIv.loadFromDrawable(R.drawable.ic_action_share)
 
         viewModel.getComments()
         if (!viewModel.isAuthor()) {
-            binding.articleHeader.articleInfoModifyClo.invisible()
-            binding.articleHeader.articleInfoDeleteClo.invisible()
+//            binding.articleHeader.articleInfoModifyClo.invisible()
+//            binding.articleHeader.articleInfoDeleteClo.invisible()
         }
     }
 
@@ -186,22 +161,23 @@ class ArticleFragment : BaseFragment() {
         viewModel.setArticleId(arguments?.get(PARAM_ARTICLE) as Int)
         viewModel.board = (arguments?.get(PARAM_BOARD) as Board)
 
-        binding.articleHeader.articleContentWv.setInputEnabled(false)
-        binding.articleBody.articleCommentsRv.layoutManager = LinearLayoutManager(requireContext())
-        binding.articleBody.articleCommentsRv.adapter = commentAdapter
+        binding.articleCommentsRv.layoutManager = LinearLayoutManager(requireContext())
+        binding.articleCommentsRv.adapter = commentAdapter
 
-        commentAdapter.userId = prefs.getString(getString(R.string.prefs_user_id),"-1")?.toInt() ?: -1
-
+        commentAdapter.userId =
+            prefs.getString(getString(R.string.prefs_user_id), "-1")?.toInt() ?: -1
 
 
         //글 수정 버튼
-        articleModifyBtnListener(binding.articleHeader.articleInfoModifyClo)
+        commentAdapter.modifyArticleClickListener = articleModifyBtnListener()
         //글 삭제 버튼
-        articleDeleteBtnListener(binding.articleHeader.articleInfoDeleteClo)
+        commentAdapter.deleteArticleClickListener = articleDeleteBtnListener()
         //좋아요 버튼
-        likePressedListener(binding.articleHeader.articleLikesClo)
+        commentAdapter.likeArticleClickListener = likePressedListener()
         //싫어요 버튼
-        dislikePressedListener(binding.articleHeader.articleDislikesClo)
+        commentAdapter.dislikeArticleClickListener = dislikePressedListener()
+
+
         //댓글 영역 보이기/숨김
         commentAreaVisibilityListener(binding.articleTail.articleCommentVisibilityClo)
         //댓글 등록 버튼
@@ -215,7 +191,9 @@ class ArticleFragment : BaseFragment() {
         //댓글 삭제 버튼
         commentAdapter.deleteClickListener = commentDeleteBtnListener()
         //댓글 추가 로드
-        loadCommentsOnScrollViewListener(binding.articleContainerSv)
+        //loadCommentsOnScrollViewListener(binding.articleContainerSv)
+
+
 
     }
 
@@ -244,40 +222,48 @@ class ArticleFragment : BaseFragment() {
         getConfirmation(requireContext(), "댓글을 삭제하시겠습니까?") { viewModel.deleteComment(id) }
     }
 
-    private fun articleDeleteBtnListener(view: View) = view.setOnSingleClickListener {
-        getConfirmation(requireContext(), "글을 삭제하시겠습니까?") {
-            viewModel.deleteArticle()
-        }
-    }
-
-    private fun articleModifyBtnListener(view: View) = view.setOnSingleClickListener {
-        getConfirmation(requireContext(), "글을 수정하시겠습니까?") {
-            CoroutineScope(Dispatchers.IO).launch {
-                navigator.showTextEditorToModifyWithLoginCheck(
-                    requireContext(),
-                    viewModel.board,
-                    viewModel.article.value!!
-                )
+    private fun articleDeleteBtnListener(): (View) -> Unit = {
+        it.setOnSingleClickListener {
+            getConfirmation(requireContext(), "글을 삭제하시겠습니까?") {
+                viewModel.deleteArticle()
             }
-            //navigator.showTextEditorToModify(requireContext(),viewModel.article.value!!)
         }
     }
 
-    private fun likePressedListener(view: View) = view.setOnSingleClickListener {
-        Log.d("rating_check__+", viewModel.ratings.value?.myRating.toString())
-        if (viewModel.ratings.value?.myRating.toString() == "like") {
-            viewModel.unLike()
-        } else {
-            viewModel.postLike()
+    private fun articleModifyBtnListener(): (View) -> Unit = {
+        it.setOnSingleClickListener {
+            getConfirmation(requireContext(), "글을 수정하시겠습니까?") {
+                CoroutineScope(Dispatchers.IO).launch {
+                    navigator.showTextEditorToModifyWithLoginCheck(
+                        requireContext(),
+                        viewModel.board,
+                        viewModel.article.value!!
+                    )
+                }
+                //navigator.showTextEditorToModify(requireContext(),viewModel.article.value!!)
+            }
         }
     }
 
-    private fun dislikePressedListener(view: View) = view.setOnSingleClickListener {
-        Log.d("rating_check__+", viewModel.ratings.value?.myRating.toString())
-        if (viewModel.ratings.value?.myRating.toString() == "dislike") {
-            viewModel.unDislike()
-        } else {
-            viewModel.postDislike()
+    private fun likePressedListener(): (View) -> Unit = {
+        it.setOnSingleClickListener {
+            Log.d("rating_check__+", viewModel.ratings.value?.myRating.toString())
+            if (viewModel.ratings.value?.myRating.toString() == "like") {
+                viewModel.unLike()
+            } else {
+                viewModel.postLike()
+            }
+        }
+    }
+
+    private fun dislikePressedListener(): (View) -> Unit = {
+        it.setOnSingleClickListener {
+            Log.d("rating_check__+", viewModel.ratings.value?.myRating.toString())
+            if (viewModel.ratings.value?.myRating.toString() == "dislike") {
+                viewModel.unDislike()
+            } else {
+                viewModel.postDislike()
+            }
         }
     }
 
@@ -302,14 +288,4 @@ class ArticleFragment : BaseFragment() {
             binding.articleTail.articleCommentEt.text.clear()
         }
     }
-
-    private fun loadCommentsOnScrollViewListener(view: View) =
-        view.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            view.getHitRect(Rect())
-            //Log.d("scroll_check__", " $scrollX , $scrollY , $oldScrollX , $oldScrollY ")
-            if (!v.canScrollVertically(1)) {
-                viewModel.getNextComments()
-            }
-            //Log.d("rvVisible_check__",((binding.articleContainerSv.articleCommentsRv.layoutManager) as LinearLayoutManager).findLastVisibleItemPosition().toString())
-        }
 }

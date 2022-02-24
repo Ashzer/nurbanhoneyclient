@@ -5,35 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/articleContainerSv"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/articleCommentsRv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/article_tail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical">
-
-            <include
-                android:id="@+id/articleHeader"
-                layout="@layout/article_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <include
-                android:id="@+id/articleBody"
-                layout="@layout/article_body"
-                android:layout_width="match_parent"
-                android:layout_height="0dp" />
-
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/article_tail"/>
 
     <include
         android:id="@+id/article_tail"
@@ -43,6 +22,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/articleContainerSv" />
+        app:layout_constraintTop_toBottomOf="@+id/articleCommentsRv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

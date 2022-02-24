@@ -1,6 +1,7 @@
 package org.devjj.platform.nurbanhoney.features.ui.article.model
 
 import android.os.Parcel
+import org.devjj.platform.nurbanhoney.core.extension.empty
 import org.devjj.platform.nurbanhoney.core.platform.KParcelable
 import org.devjj.platform.nurbanhoney.core.platform.parcelableCreator
 
@@ -20,12 +21,13 @@ data class Article(
     val badge: String,
     val nickname: String,
     val insignia: String,
-    val myRating: String
+    val myRating: String,
 ) : KParcelable {
 
     companion object {
         @JvmField
         val CREATOR = parcelableCreator(::Article)
+        val empty = Article(-1,String.empty(),String.empty(),String.empty(),-1,String.empty(),0,0,0,0,String.empty(),0,String.empty(),String.empty(),String.empty(),String.empty())
     }
 
     constructor(parcel: Parcel) : this(
@@ -44,7 +46,7 @@ data class Article(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.readString()!!
+        parcel.readString()!!,
     )
 
     override fun writeToParcel(dest: Parcel, flags: Int) {

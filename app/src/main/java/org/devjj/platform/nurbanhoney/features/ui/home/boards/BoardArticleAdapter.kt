@@ -14,7 +14,7 @@ import javax.inject.Inject
 import kotlin.properties.Delegates
 
 class BoardArticleAdapter
-@Inject constructor() : RecyclerView.Adapter<BoardArticleAdapter.ViewHolder>() {
+@Inject constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var collection: MutableList<ArticleItem> = mutableListOf()
 
@@ -31,8 +31,8 @@ class BoardArticleAdapter
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(parent.inflate(R.layout.item_article))
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) =
-        viewHolder.bind(collection[position], clickListener)
+    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) =
+        (viewHolder as ViewHolder).bind(collection[position], clickListener)
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(articleItem: ArticleItem, clickListener: (Int, Board) -> Unit) {

@@ -7,11 +7,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
-import org.devjj.platform.nurbanhoney.core.platform.DataLoadController
+import org.devjj.platform.nurbanhoney.features.Board
 import org.devjj.platform.nurbanhoney.features.network.repositories.article.usecases.*
 import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.usecases.DeleteArticleUseCase
 import org.devjj.platform.nurbanhoney.features.ui.article.model.*
-import org.devjj.platform.nurbanhoney.features.Board
 import org.devjj.platform.nurbanhoney.features.ui.textedit.ArticleResponse
 import javax.inject.Inject
 
@@ -44,6 +43,8 @@ class ArticleViewModel
     val commentResponse: LiveData<String> = _commentResponse
     private val _commentsResponse: MutableLiveData<String> = MutableLiveData()
     val commentsResponse: LiveData<String> = _commentsResponse
+    private val _newComments: MutableLiveData<List<Comment>> = MutableLiveData()
+    val newComments: LiveData<List<Comment>> = _newComments
     private val _comments: MutableLiveData<List<Comment>> = MutableLiveData()
     val comments: LiveData<List<Comment>> = _comments
     var updatingCommentId = -1
@@ -52,12 +53,6 @@ class ArticleViewModel
     lateinit var board: Board
 
     fun isAuthor() = article.value?.userId == getUserId()
-
-    val controller: DataLoadController<Comment> = DataLoadController(
-        initialize = { initComments() },
-        getNext = { getNextComment() },
-        loadNext = { loadNextComment() }
-    )
 
     fun setArticleId(id: Int) {
         _articleId.postValue(id)
@@ -74,12 +69,6 @@ class ArticleViewModel
         return prefs.getString(prefsUserIdKey, "-1")?.toInt()
     }
 
-    fun getNextComment() {
-    }
-
-    fun loadNextComment(): List<Comment> {
-        return emptyList()
-    }
 
     /*****************Loading*****************/
     fun getArticle() = getArticle(
@@ -214,8 +203,7 @@ class ArticleViewModel
     }
 
     private fun handlePostComment(response: CommentResponse) {
-        //initComments()
-        controller.initialize()
+        initComments()
     }
 
     /*****************Post Comment*****************/
@@ -233,31 +221,32 @@ class ArticleViewModel
     }
 
     private fun handleUpdateComment(response: CommentResponse) {
-        Log.d("Comment_check__", response.toString())
+        //Log.d("Comment_check__", response.toString())
         _commentResponse.postValue(response.result)
     }
 
-    fun getComment(commentId: Int) {
-        fun getComment(board: String, commentId: Int) =
-            getComment(GetCommentUseCase.Params(board, commentId), viewModelScope) {
-                it.fold(
-                    ::handleFailure,
-                    ::handleGetComment
-                )
-            }
-        getComment(board.address, commentId)
-    }
-
-    private fun handleGetComment(comment: Comment) {
-        var newComments = _comments.value?.toMutableList() ?: mutableListOf()
-        for (i in 0 until newComments.size) {
-            if (newComments[i].id == comment.id) {
-                newComments[i] = comment
-                break
-            }
-        }
-        _comments.postValue(newComments)
-    }
+    //Todo: 확인
+//    fun getComment(commentId: Int) {
+//        fun getComment(board: String, commentId: Int) =
+//            getComment(GetCommentUseCase.Params(board, commentId), viewModelScope) {
+//                it.fold(
+//                    ::handleFailure,
+//                    ::handleGetComment
+//                )
+//            }
+//        getComment(board.address, commentId)
+//    }
+//
+//    private fun handleGetComment(comment: Comment) {
+//        var newComments = _newComments.value?.toMutableList() ?: mutableListOf()
+//        for (i in 0 until newComments.size) {
+//            if (newComments[i].id == comment.id) {
+//                newComments[i] = comment
+//                break
+//            }
+//        }
+//        _newComments.postValue(newComments)
+//    }
 
     fun deleteComment(id: Int) {
         fun deleteComment(board: String, token: String, id: Int, articleId: Int) =
@@ -285,24 +274,20 @@ class ArticleViewModel
             )
         }
 
+
     fun getComments() {
-
-        getComments(board.address, article.value!!.id, 0, limit)
-        offset += limit
-    }
-
-    fun getNextComments() {
         getComments(board.address, article.value!!.id, offset, limit)
         offset += limit
     }
 
     private fun handleComments(comments: List<Comment>) {
-        comments.forEach {
-            Log.d("Comment_check__", it.toString())
-        }
-        var newComments = _comments.value?.toMutableList() ?: mutableListOf()
-        newComments?.addAll(comments)
-        _comments.postValue(newComments)
+//        comments.forEach {
+//            Log.d("Comment_check__", it.toString())
+//        }
+        var totalComments = _comments.value?.toMutableList() ?: mutableListOf()
+        totalComments?.addAll(comments)
+        _comments.postValue(totalComments)
+        _newComments.postValue(comments)
     }
 
     fun initComments() {
@@ -316,10 +301,12 @@ class ArticleViewModel
                     ::handleInitComments
                 )
             }
-        initComments(board.address, article.value!!.id, 0, 10)
+        initComments(board.address, article.value!!.id, 0, limit*2)
+        offset += limit*2
     }
 
     private fun handleInitComments(comments: List<Comment>) {
+        _newComments.postValue(comments)
         _comments.postValue(comments)
     }
 

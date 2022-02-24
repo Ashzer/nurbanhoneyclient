@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
-import org.devjj.platform.nurbanhoney.core.platform.DataLoadController
 import org.devjj.platform.nurbanhoney.features.network.repositories.article.usecases.GetArticlesUseCase
 import org.devjj.platform.nurbanhoney.features.network.repositories.board.usecases.GetBoardsUseCase
 import org.devjj.platform.nurbanhoney.features.Board
