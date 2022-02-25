@@ -281,9 +281,10 @@ class ArticleViewModel
     }
 
     private fun handleComments(comments: List<Comment>) {
-//        comments.forEach {
-//            Log.d("Comment_check__", it.toString())
-//        }
+        comments.forEach {
+            Log.d("Comments_check__", it.comment.toString())
+        }
+        Log.d("Comments_check__","=================================================")
         var totalComments = _comments.value?.toMutableList() ?: mutableListOf()
         totalComments?.addAll(comments)
         _comments.postValue(totalComments)

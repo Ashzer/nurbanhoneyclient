@@ -10,7 +10,7 @@ data class ProfileCommentEntity(
     @SerializedName("board") val board: Board,
     @SerializedName("content") val content: String,
     @SerializedName("createdAt") val createAt: String,
-    @SerializedName("Board") val articleInfo: ArticleInfo,
+    @SerializedName("Location") val articleInfo: ArticleInfo,
 ) {
     data class ArticleInfo(
         @SerializedName("articleId") val articleId: Int,

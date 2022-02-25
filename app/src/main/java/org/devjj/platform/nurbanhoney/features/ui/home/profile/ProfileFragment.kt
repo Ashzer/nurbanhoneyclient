@@ -146,16 +146,9 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun setMargins(view: View, left: Int, top: Int, right: Int, bottom: Int) {
-
         var gl = GridLayout.LayoutParams()
         gl.setMargins(left, top, right, bottom)
         view.layoutParams = gl
-//
-//        if (view.layoutParams is ViewGroup.MarginLayoutParams) {
-//            val p = view.layoutParams as ViewGroup.MarginLayoutParams
-//            p.setMargins(left, top, right, bottom)
-//            view.requestLayout()
-//        }
     }
 
     // 프로필 데이터를 받아서 갱신하는 메소드

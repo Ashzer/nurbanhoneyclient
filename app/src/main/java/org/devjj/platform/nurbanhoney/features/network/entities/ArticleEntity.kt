@@ -18,7 +18,7 @@ data class ArticleEntity(
     @SerializedName("userId") val userId : Int?,
     @SerializedName("badge") val badge: String?,
     @SerializedName("nickname") val nickname: String?,
-    @SerializedName("insignia") val insignia: String?,
+    @SerializedName("insignia") val insignia: List<String>?,
     @SerializedName("myRating") val myRating: String?,
 ) {
 
@@ -38,11 +38,11 @@ data class ArticleEntity(
             userId?:-1,
             badge ?: "",
             nickname?:"who?",
-            insignia ?: "",
+            insignia?: listOf(),
             myRating ?: "",
         )
 
     companion object {
-        val empty = ArticleEntity(-1, "", "","", 0, "", 0, 0, 0, 0, "", 0,"", "", "", "")
+        val empty = ArticleEntity(-1, "", "","", 0, "", 0, 0, 0, 0, "", 0,"", "", listOf(), "")
     }
 }

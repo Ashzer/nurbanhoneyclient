@@ -2,9 +2,14 @@ package org.devjj.platform.nurbanhoney.features.ui.article
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.core.content.ContextCompat
+import androidx.core.view.size
+import androidx.gridlayout.widget.GridLayout
 import androidx.recyclerview.widget.RecyclerView
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.*
+import org.devjj.platform.nurbanhoney.core.imageprocessing.ImageViewHandler
 import org.devjj.platform.nurbanhoney.databinding.ArticleHeaderBinding
 import org.devjj.platform.nurbanhoney.features.ui.article.model.Article
 import org.devjj.platform.nurbanhoney.features.ui.article.model.ArticleViewType
@@ -15,6 +20,7 @@ import kotlin.properties.Delegates
 
 class CommentAdapter
 @Inject constructor(
+    val imageViewHandler: ImageViewHandler
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var userId by Delegates.notNull<Int>()
@@ -46,8 +52,6 @@ class CommentAdapter
     internal var modifyClickListener: (View) -> Unit = { _ -> }
     internal var cancelClickListener: (View) -> Unit = { _ -> }
 
-    internal var modifyArticleClickListener: (View) -> Unit = {}
-    internal var deleteArticleClickListener: (View) -> Unit = {}
     internal var likeArticleClickListener: (View) -> Unit = {}
     internal var dislikeArticleClickListener: (View) -> Unit = {}
 
@@ -72,17 +76,16 @@ class CommentAdapter
                     updateClickListener,
                     modifyClickListener,
                     cancelClickListener,
-                    userId
+                    userId,
                 )
             }
             is ArticleViewHolder -> {
                 holder.bind(
                     header,
                     ratings,
-                    modifyArticleClickListener,
-                    deleteArticleClickListener,
                     likeArticleClickListener,
-                    dislikeArticleClickListener
+                    dislikeArticleClickListener,
+                    imageViewHandler
                 )
             }
         }
@@ -93,15 +96,15 @@ class CommentAdapter
     override fun getItemViewType(position: Int) =
         if (position == 0) ArticleViewType.ARTICLE else ArticleViewType.COMMENT
 
+
     class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var binding = ArticleHeaderBinding.bind(itemView)
         fun bind(
             article: Article,
             ratings: Ratings,
-            modifyArticleClickListener: (View) -> Unit,
-            deleteArticleClickListener: (View) -> Unit,
             likeArticleClickListener: (View) -> Unit,
-            dislikeArticleClickListener: (View) -> Unit
+            dislikeArticleClickListener: (View) -> Unit,
+            imageViewHandler: ImageViewHandler
         ) {
             binding.articleContentWv.html = article.content
             binding.articleTitleTv.text = article.title
@@ -121,9 +124,13 @@ class CommentAdapter
 
             binding.articleContentWv.setInputEnabled(false)
 
+            if (binding.articleInfoInsigniaLlo.size == 0) {
+                article.insignia.forEach {
+                    addInsigniaImage(it)
+                }
+            }
 
-            modifyArticleClickListener(binding.articleInfoModifyClo)
-            deleteArticleClickListener(binding.articleInfoDeleteClo)
+
             likeArticleClickListener(binding.articleLikesClo)
             dislikeArticleClickListener(binding.articleDislikesClo)
 
@@ -137,6 +144,25 @@ class CommentAdapter
             } else {
                 nothingSelected()
             }
+
+        }
+
+        // 휘장 이미지 셋팅하는 메소드
+        private fun addInsigniaImage(url: String) {
+            val iv = ImageView(itemView.context)
+            with(iv) {
+                loadFromUrl(url, R.drawable.ic_action_no_badge)
+                setMargins(iv, 0, 0, 5, 0)
+                background = ContextCompat.getDrawable(itemView.context, R.drawable.edges_rectangle)
+                setPadding(5, 5, 5, 5)
+                binding.articleInfoInsigniaLlo.addView(this)
+            }
+        }
+
+        private fun setMargins(view: View, left: Int, top: Int, right: Int, bottom: Int) {
+            var gl = GridLayout.LayoutParams()
+            gl.setMargins(left, top, right, bottom)
+            view.layoutParams = gl
         }
 
 

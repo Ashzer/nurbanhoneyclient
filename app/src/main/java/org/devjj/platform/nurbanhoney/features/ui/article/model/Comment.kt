@@ -7,5 +7,5 @@ data class Comment(
     val userId : Int,
     val badge : String,
     val nickname : String,
-    val insignia : String
+    val insignia : List<String>
 )

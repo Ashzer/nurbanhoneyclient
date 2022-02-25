@@ -14,6 +14,8 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.devjj.platform.nurbanhoney.BuildConfig
 import org.devjj.platform.nurbanhoney.R
+import org.devjj.platform.nurbanhoney.core.imageprocessing.ImageViewHandler
+import org.devjj.platform.nurbanhoney.core.imageprocessing.ImageViewHandlerImpl
 import org.devjj.platform.nurbanhoney.features.network.repositories.profile.ProfileRepository
 import org.devjj.platform.nurbanhoney.features.network.repositories.article.ArticleRepository
 import org.devjj.platform.nurbanhoney.features.network.repositories.board.BoardRepository
@@ -79,5 +81,9 @@ class ApplicationModule {
 
     @Provides
     @Singleton
-    fun providerProfileRepository(dataSource : ProfileRepository.Network) : ProfileRepository = dataSource
+    fun provideProfileRepository(dataSource : ProfileRepository.Network) : ProfileRepository = dataSource
+
+    @Provides
+    @Singleton
+    fun provideImageHandler(impl : ImageViewHandlerImpl) : ImageViewHandler = impl
 }

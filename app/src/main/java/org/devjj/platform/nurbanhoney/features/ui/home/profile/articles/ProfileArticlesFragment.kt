@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import org.devjj.platform.nurbanhoney.R
+import org.devjj.platform.nurbanhoney.core.extension.getLinearLayoutManager
 import org.devjj.platform.nurbanhoney.core.extension.observe
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
@@ -59,6 +61,20 @@ class ProfileArticlesFragment : BaseFragment() {
             navigator.showArticle(requireActivity(),board,id)
         }
 
+        var oldCount = 0
+        binding.profileArticlesRv.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.getLinearLayoutManager()
+                val position = layoutManager.findLastVisibleItemPosition()
+                val count = layoutManager.itemCount
+                val threshold = 10
+                if((count < position + threshold)&& oldCount != count){
+                    viewModel.getArticles()
+                    oldCount = count
+                }
+            }
+        })
     }
 
     private fun renderArticles(articles: List<ProfileArticle>?) {

@@ -2,10 +2,11 @@ package org.devjj.platform.nurbanhoney.features.ui.article
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.EditText
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -75,8 +76,12 @@ class ArticleFragment : BaseFragment() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.article_toolbar_menu, menu)
+    }
+
     override fun onResume() {
-        //viewModel.setArticleId(arguments?.get(PARAM_ARTICLE) as Int)
+        viewModel.setArticleId(arguments?.get(PARAM_ARTICLE) as Int)
         super.onResume()
     }
 
@@ -102,15 +107,16 @@ class ArticleFragment : BaseFragment() {
     }
 
     private fun responseComment(result: String?) {
-     //   viewModel.getComment(viewModel.updatingCommentId)
+        //   viewModel.getComment(viewModel.updatingCommentId)
     }
+
     var oldCount = 0
     private fun initComments(comments: List<Comment>?) {
         if (!comments.isNullOrEmpty()) {
             var adder = comments.filter { !commentAdapter.collection.contains(it) }
-            if(adder.isNotEmpty()){
+            if (adder.isNotEmpty()) {
                 commentAdapter.insertTail(comments)
-            }else{
+            } else {
                 viewModel.getComments()
                 Log.d("comment_check", "이게 왜?")
             }
@@ -118,15 +124,14 @@ class ArticleFragment : BaseFragment() {
         //Log.d("comment_check__", commentAdapter.collection.toString())
 
 
-
-        binding.articleCommentsRv.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+        binding.articleCommentsRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.getLinearLayoutManager()
                 val position = layoutManager.findLastVisibleItemPosition()
                 val count = recyclerView.adapter?.itemCount ?: 0
                 val threshold = 10
-                if((count < position+ threshold )&& oldCount != count ){
+                if ((count < position + threshold) && oldCount != count) {
                     viewModel.getComments()
                     oldCount = count
                 }
@@ -135,22 +140,29 @@ class ArticleFragment : BaseFragment() {
     }
 
     private fun renderLikes(ratings: Ratings?) {
-        if(ratings != null) {
+        if (ratings != null) {
             commentAdapter.updateRatings(ratings)
         }
     }
 
     private fun renderArticle(article: Article?) {
         if (article != null)
-            commentAdapter.setAdapterHeader(article, Ratings(article.likes,article.dislikes,article.myRating))
+            commentAdapter.setAdapterHeader(
+                article,
+                Ratings(article.likes, article.dislikes, article.myRating)
+            )
 
 
         viewModel.getComments()
         if (!viewModel.isAuthor()) {
+            (requireActivity() as ArticleActivity).hideActionMenu()
 //            binding.articleHeader.articleInfoModifyClo.invisible()
 //            binding.articleHeader.articleInfoDeleteClo.invisible()
+        } else {
+            (requireActivity() as ArticleActivity).showActionMenu()
         }
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -169,9 +181,11 @@ class ArticleFragment : BaseFragment() {
 
 
         //글 수정 버튼
-        commentAdapter.modifyArticleClickListener = articleModifyBtnListener()
+        (requireActivity() as ArticleActivity).modifyArticleClickListener =
+            articleModifyBtnListener()
         //글 삭제 버튼
-        commentAdapter.deleteArticleClickListener = articleDeleteBtnListener()
+        (requireActivity() as ArticleActivity).deleteArticleClickListener =
+            articleDeleteBtnListener()
         //좋아요 버튼
         commentAdapter.likeArticleClickListener = likePressedListener()
         //싫어요 버튼
@@ -192,10 +206,34 @@ class ArticleFragment : BaseFragment() {
         commentAdapter.deleteClickListener = commentDeleteBtnListener()
         //댓글 추가 로드
         //loadCommentsOnScrollViewListener(binding.articleContainerSv)
-
-
+        //댓글 줄수 제한
+        var commentMaxLines = resources.getInteger(R.integer.comment_max_lines)
+        setCommentsLimitLines(binding.articleTail.articleCommentEt, commentMaxLines)
+        binding.articleTail.articleCommentEt.hint = getString(
+            R.string.comment_max_lines_hint,
+            resources.getInteger(R.integer.comment_max_length),
+            commentMaxLines
+        )
 
     }
+
+    private fun setCommentsLimitLines(editText: EditText, maxLines: Int) =
+        editText.addTextChangedListener(object : TextWatcher {
+            var previousString = ""
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                previousString = p0.toString()
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                if (binding.articleTail.articleCommentEt.lineCount > maxLines) {
+                    binding.articleTail.articleCommentEt.setText(previousString)
+                    binding.articleTail.articleCommentEt.setSelection(binding.articleTail.articleCommentEt.length())
+                }
+            }
+        })
 
     private fun commentModifyAreaSetVisibleListener(): (View) -> Unit = {
         showKeyboard(requireActivity(), it)
@@ -222,26 +260,22 @@ class ArticleFragment : BaseFragment() {
         getConfirmation(requireContext(), "댓글을 삭제하시겠습니까?") { viewModel.deleteComment(id) }
     }
 
-    private fun articleDeleteBtnListener(): (View) -> Unit = {
-        it.setOnSingleClickListener {
-            getConfirmation(requireContext(), "글을 삭제하시겠습니까?") {
-                viewModel.deleteArticle()
-            }
+    private fun articleDeleteBtnListener(): () -> Unit = {
+        getConfirmation(requireContext(), "글을 삭제하시겠습니까?") {
+            viewModel.deleteArticle()
         }
     }
 
-    private fun articleModifyBtnListener(): (View) -> Unit = {
-        it.setOnSingleClickListener {
-            getConfirmation(requireContext(), "글을 수정하시겠습니까?") {
-                CoroutineScope(Dispatchers.IO).launch {
-                    navigator.showTextEditorToModifyWithLoginCheck(
-                        requireContext(),
-                        viewModel.board,
-                        viewModel.article.value!!
-                    )
-                }
-                //navigator.showTextEditorToModify(requireContext(),viewModel.article.value!!)
+    private fun articleModifyBtnListener(): () -> Unit = {
+        getConfirmation(requireContext(), "글을 수정하시겠습니까?") {
+            CoroutineScope(Dispatchers.IO).launch {
+                navigator.showTextEditorToModifyWithLoginCheck(
+                    requireContext(),
+                    viewModel.board,
+                    viewModel.article.value!!
+                )
             }
+            //navigator.showTextEditorToModify(requireContext(),viewModel.article.value!!)
         }
     }
 

@@ -1,6 +1,10 @@
 package org.devjj.platform.nurbanhoney.features.ui.article
 
+import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import androidx.core.content.ContextCompat
+import androidx.gridlayout.widget.GridLayout
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_comment.view.*
 import org.devjj.platform.nurbanhoney.R
@@ -8,9 +12,11 @@ import org.devjj.platform.nurbanhoney.core.extension.invisible
 import org.devjj.platform.nurbanhoney.core.extension.loadFromUrl
 import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
 import org.devjj.platform.nurbanhoney.core.extension.visible
+import org.devjj.platform.nurbanhoney.databinding.ItemCommentBinding
 import org.devjj.platform.nurbanhoney.features.ui.article.model.Comment
 
 class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    var binding = ItemCommentBinding.bind(itemView)
     fun bind(
         comment: Comment,
         deleteClickListener: (Int) -> Unit,
@@ -22,54 +28,87 @@ class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         if (userId != comment.userId
         ) {
-            itemView.itemCommentModifyBtnClo.invisible()
-            itemView.itemCommentDeleteBtnClo.invisible()
+            binding.itemCommentModifyBtnClo.invisible()
+            binding.itemCommentDeleteBtnClo.invisible()
+        } else {
+            binding.itemCommentModifyBtnClo.visible()
+            binding.itemCommentDeleteBtnClo.visible()
         }
 
-        itemView.itemCommentBadgeIv.loadFromUrl(comment.badge, R.drawable.ic_action_no_badge)
-        itemView.itemCommentNicknameTv.text = comment.nickname
-        itemView.itemCommentContentTv.text = comment.comment
+        binding.itemCommentBadgeIv.loadFromUrl(comment.badge, R.drawable.ic_action_no_badge)
+        binding.itemCommentNicknameTv.text = comment.nickname
+        binding.itemCommentContentTv.text = comment.comment
+
+        binding.itemCommentInsigniaLlo.removeAllViews()
+        comment.insignia.forEach {
+            addInsigniaImage(it)
+        }
+
 
         //댓글 수정 영역 보이기
         commentModifyAreaSetVisibleListener(
-            itemView.itemCommentModifyBtnClo,
+            binding.itemCommentModifyBtnClo,
             modifyClickListener
         )
         //댓글 수정 영역 숨기기(수정 취소)
         commentModifyAreaSetInvisibleListener(
-            itemView.itemCommentCancelBtnClo,
+            binding.itemCommentCancelBtnClo,
             cancelClickListener
         )
         //댓글 수정 버튼(수정 완료)
-        commentModifyBtnListener(itemView.itemCommentUpdateBtnClo, updateClickListener, comment)
+        commentModifyBtnListener(binding.itemCommentUpdateBtnClo, updateClickListener, comment)
         //댓글 삭제 버튼
-        commentDeleteBtnListener(itemView.itemCommentDeleteBtnClo, deleteClickListener, comment)
+        commentDeleteBtnListener(binding.itemCommentDeleteBtnClo, deleteClickListener, comment)
+
+        itemView.setOnSingleClickListener {
+            Log.d("comment_individual__", comment.toString())
+        }
+    }
+
+    // 휘장 이미지 셋팅하는 메소드
+    private fun addInsigniaImage(url: String) {
+        val iv = ImageView(itemView.context)
+        with(iv) {
+            loadFromUrl(url, R.drawable.ic_action_no_badge)
+            setMargins(iv, 0, 0, 5, 0)
+            background = ContextCompat.getDrawable(itemView.context, R.drawable.edges_rectangle)
+            setPadding(5, 5, 5, 5)
+            itemView.itemCommentInsigniaLlo.addView(this)
+        }
+    }
+
+    private fun setMargins(view: View, left: Int, top: Int, right: Int, bottom: Int) {
+        var gl = GridLayout.LayoutParams()
+        gl.setMargins(left, top, right, bottom)
+        view.layoutParams = gl
     }
 
     private fun commentModifyAreaSetVisibleListener(view: View, listener: (View) -> Unit) =
         view.setOnSingleClickListener {
-            itemView.itemCommentDeleteBtnClo.invisible()
-            itemView.itemCommentModifyBtnClo.invisible()
-            itemView.itemCommentUpdateBtnClo.visible()
-            itemView.itemCommentCancelBtnClo.visible()
-            itemView.itemCommentUpdateEtClo.visible()
-            itemView.itemCommentUpdateEt.setText(itemView.itemCommentContentTv.text)
-            itemView.itemCommentContentClo.invisible()
-            itemView.itemCommentUpdateEt.isFocusable = true
-            itemView.itemCommentUpdateEt.requestFocus()
-            listener(itemView.itemCommentUpdateEt)
+            with(binding) {
+                itemCommentDeleteBtnClo.invisible()
+                itemCommentModifyBtnClo.invisible()
+                itemCommentUpdateBtnClo.visible()
+                itemCommentCancelBtnClo.visible()
+                itemCommentUpdateEtClo.visible()
+                itemCommentUpdateEt.setText(itemCommentContentTv.text)
+                itemCommentContentClo.invisible()
+                itemCommentUpdateEt.requestFocus()
+                itemCommentUpdateEt.isFocusable = true
+            }
+            listener(binding.itemCommentUpdateEt)
         }
 
     private fun commentModifyAreaSetInvisibleListener(view: View, listener: (View) -> Unit) =
         view.setOnSingleClickListener {
-            itemView.itemCommentDeleteBtnClo.visible()
-            itemView.itemCommentModifyBtnClo.visible()
-            itemView.itemCommentUpdateBtnClo.invisible()
-            itemView.itemCommentCancelBtnClo.invisible()
-            itemView.itemCommentUpdateEtClo.invisible()
-            itemView.itemCommentContentClo.visible()
-            itemView.itemCommentContentTv.isFocusable = true
-            listener(itemView.itemCommentUpdateEt)
+            binding.itemCommentDeleteBtnClo.visible()
+            binding.itemCommentModifyBtnClo.visible()
+            binding.itemCommentUpdateBtnClo.invisible()
+            binding.itemCommentCancelBtnClo.invisible()
+            binding.itemCommentUpdateEtClo.invisible()
+            binding.itemCommentContentClo.visible()
+            binding.itemCommentContentTv.isFocusable = true
+            listener(binding.itemCommentUpdateEt)
         }
 
     private fun commentModifyBtnListener(
@@ -77,15 +116,15 @@ class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         listener: (View, String, Int) -> Unit,
         comment: Comment
     ) = view.setOnSingleClickListener {
-        itemView.itemCommentDeleteBtnClo.visible()
-        itemView.itemCommentModifyBtnClo.visible()
-        itemView.itemCommentUpdateBtnClo.invisible()
-        itemView.itemCommentCancelBtnClo.invisible()
-        itemView.itemCommentUpdateEtClo.invisible()
-        itemView.itemCommentContentClo.visible()
-        itemView.itemCommentContentTv.isFocusable = true
-        var newComment = itemView.itemCommentUpdateEt.text.toString()
-        listener(itemView.itemCommentUpdateEt, newComment, comment.id)
+        binding.itemCommentDeleteBtnClo.visible()
+        binding.itemCommentModifyBtnClo.visible()
+        binding.itemCommentUpdateBtnClo.invisible()
+        binding.itemCommentCancelBtnClo.invisible()
+        binding.itemCommentUpdateEtClo.invisible()
+        binding.itemCommentContentClo.visible()
+        binding.itemCommentContentTv.isFocusable = true
+        var newComment = binding.itemCommentUpdateEt.text.toString()
+        listener(binding.itemCommentUpdateEt, newComment, comment.id)
     }
 
     private fun commentDeleteBtnListener(

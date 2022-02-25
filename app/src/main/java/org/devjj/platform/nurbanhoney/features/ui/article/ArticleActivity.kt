@@ -3,21 +3,31 @@ package org.devjj.platform.nurbanhoney.features.ui.article
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import androidx.core.view.forEach
 import dagger.hilt.android.AndroidEntryPoint
+import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseEmptyActivity
 import org.devjj.platform.nurbanhoney.features.Board
 
 @AndroidEntryPoint
 class ArticleActivity : BaseEmptyActivity() {
+    private lateinit var actionMenu: Menu
+    var modifyArticleClickListener: () -> Unit = {}
+    var deleteArticleClickListener: () -> Unit = {}
 
-    companion object{
+    companion object {
         private const val INTENT_EXTRA_PARAM_ARTICLE = "INTENT_PARAM_ARTICLE"
         private const val INTENT_EXTRA_PARAM_BOARD = "INTENT_PARAM_BOARD"
+
         //fun callingIntent(context: Context) = Intent(context, ArticleActivity::class.java)
-        fun callingIntent(context: Context, board : Board, id: Int) =
-            Intent(context , ArticleActivity::class.java).apply{
+        fun callingIntent(context: Context, board: Board, id: Int) =
+            Intent(context, ArticleActivity::class.java).apply {
                 putExtra(INTENT_EXTRA_PARAM_BOARD, board)
-                putExtra(INTENT_EXTRA_PARAM_ARTICLE,id)
+                putExtra(INTENT_EXTRA_PARAM_ARTICLE, id)
             }
     }
 
@@ -34,4 +44,38 @@ class ArticleActivity : BaseEmptyActivity() {
 
         setToolbarTitle(board.name)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.article_toolbar_menu, menu)
+        if (menu != null)
+            actionMenu = menu
+        return true
+    }
+
+    fun hideActionMenu() {
+        actionMenu.forEach {
+            it.isVisible = false
+        }
+    }
+
+    fun showActionMenu() {
+        actionMenu.forEach {
+            it.isVisible = true
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId){
+            R.id.action_article_edit->{
+                modifyArticleClickListener()
+            }
+            R.id.action_article_delete->{
+                deleteArticleClickListener()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
 }

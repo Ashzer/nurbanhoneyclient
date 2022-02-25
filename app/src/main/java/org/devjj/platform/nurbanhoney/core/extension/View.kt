@@ -85,3 +85,4 @@ fun ImageView.setBackgroundColorId(color:Int){
 }
 
 fun RecyclerView.getLinearLayoutManager() = this.layoutManager as LinearLayoutManager
+

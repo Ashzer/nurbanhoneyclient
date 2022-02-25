@@ -24,7 +24,8 @@
             android:name=".features.ui.splash.SplashActivity"
             android:theme="@style/SplashTheme"
             android:windowSoftInputMode="stateAlwaysHidden"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -33,32 +34,38 @@
 
         <activity
             android:name=".features.ui.home.BoardActivity"
-            android:label="Board">
+            android:label="Board"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity android:name=".features.ui.textedit.TextEditorActivity"
             android:label="TextEditor"
             android:windowSoftInputMode="adjustResize"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity android:name=".features.ui.article.ArticleActivity"
-            android:label="Article">
+            android:label="Article"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity android:name=".features.ui.home.profile.articles.ProfileArticlesActivity"
-            android:label="ProfileArticles">
+            android:label="ProfileArticles"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity android:name=".features.ui.home.profile.comments.ProfileCommentsActivity"
-            android:label="ProfileComments">
+            android:label="ProfileComments"
+            android:screenOrientation="portrait">
         </activity>
 
         <activity
             android:name=".features.ui.login.LoginActivity"
             android:label="Login"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                  <category android:name="android.intent.category.DEFAULT" />
