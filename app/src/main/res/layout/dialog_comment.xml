@@ -1,106 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/round_edges"
     android:padding="15dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/dialogAddItemClo"
+        android:id="@+id/dialogCommentContentClo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/round_edges"
-        app:layout_constraintBottom_toTopOf="@id/dialogAddActionsClo"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@id/dialogCommentActionsClo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/dialogAddTodoTopClo"
+        <EditText
+            android:id="@+id/dialogAddTodoContentEt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            app:layout_constraintBottom_toTopOf="@id/dialogAddTodoBottomClo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <EditText
-                android:id="@+id/dialogAddTodoTitleEt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:hint="제목을 입력하세요"
-                android:inputType="text"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/dialogAddTodoBottomClo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:ems="10"
+            android:hint="@string/comment_max_lines_hint"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dialogAddTodoTopClo">
-
-            <EditText
-                android:id="@+id/dialogAddTodoContentEt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="내용을 입력하세요"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/dialogAddActionsClo"
+        android:id="@+id/dialogCommentActionsClo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialogAddItemClo">
+        app:layout_constraintTop_toBottomOf="@id/dialogCommentContentClo">
 
         <Button
-            android:id="@+id/dialogAddCancelBtn"
+            android:id="@+id/dialogCommentCancelBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/round_edges"
             android:text="@string/comment_cancel_str"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/dialogAddSaveBtn"
+            app:layout_constraintEnd_toStartOf="@id/dialogCommentSaveBtn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/dialogAddSaveBtn"
+            android:id="@+id/dialogCommentSaveBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="@string/comment_update_str"
             android:background="@drawable/round_edges"
+            android:text="@string/comment_update_str"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/dialogAddCancelBtn"
+            app:layout_constraintStart_toEndOf="@id/dialogCommentCancelBtn"
             app:layout_constraintTop_toTopOf="parent" />
 
 

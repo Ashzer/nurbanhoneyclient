@@ -18,6 +18,7 @@ import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentProfileBinding
 import javax.inject.Inject
+import kotlin.collections.forEach
 
 @AndroidEntryPoint
 class ProfileFragment : BaseFragment() {
@@ -93,32 +94,43 @@ class ProfileFragment : BaseFragment() {
 
     // 보여주는 휘장 셋팅하는 메소드
     private fun settingInsigniaShow(insigniaShow: List<String>?) {
-        Log.d("test", "insigniaShow : $insigniaShow")
-
-        insigniaShow?.forEach {
-            addInsigniaImage(it)
+        insigniaShow?.forEach { url ->
+            val imageView = createInsigniaFromUrl(url)
+            addInsigniaShowImage(imageView)
         }
-
     }
 
     // 소유한 휘장 셋팅하는 메소드
     private fun settingInsigniaOwn(insigniaOwn: List<String>?) {
-        Log.d("test", "insigniaOwn : $insigniaOwn")
+        insigniaOwn?.forEach { url ->
+            val imageView = createInsigniaFromUrl(url)
+            addInsigniaOwnImage(imageView)
+            //  setInsigniaOnClickListener(imageView)
+        }
+    }
 
-        insigniaOwn?.forEach {
-            //addInsigniaImage(binding.llInsigniaOwnContent, it)
-
-            val iv = addInsigniaImage(it)
-            iv.setOnClickListener {
-                if (iv.paddingRight == 5) {
-                    setMargins(iv, 15, 15, 15, 15)
-                    iv.setPadding(0)
-                } else {
-                    iv.setPadding(5)
-                    setMargins(iv, 10, 10, 10, 10)
-                }
+    private fun setInsigniaOnClickListener(imageView: ImageView) =
+        imageView.setOnSingleClickListener {
+            if (imageView.paddingRight == 5) {
+                insigniaDeselected(imageView)
+            } else {
+                insigniaSelected(imageView)
             }
         }
+
+    private fun insigniaSelected(imageView: ImageView) {
+        imageView.setPadding(5)
+        imageView.setMarginsGridlayout(10, 10, 10, 10)
+    }
+
+    private fun insigniaDeselected(imageView: ImageView) {
+        imageView.setPadding(0)
+        imageView.setMarginsGridlayout(15, 15, 15, 15)
+
+    }
+
+    private fun removeInsigniaOnClickListener(imageView: ImageView) {
+        imageView.setOnSingleClickListener { }
     }
 
     // 내가 쓴 글 수 셋팅하는 메소
@@ -134,22 +146,30 @@ class ProfileFragment : BaseFragment() {
     }
 
     // 휘장 이미지 셋팅하는 메소드
-    private fun addInsigniaImage(url: String) :ImageView{
-        val iv = ImageView(context)
-        iv.loadFromUrl(url, R.drawable.ic_action_no_badge)
-        setMargins(iv, 10, 10, 10, 10)
-        iv.background = ContextCompat.getDrawable(requireContext(), R.drawable.edges_rectangle)
-        iv.setPadding(5)
-        binding.insigniaOwnGlo.addView(iv)
-
-        return iv
+    private fun addInsigniaOwnImage(imageView: ImageView) {
+        binding.insigniaOwnGlo.addView(imageView)
     }
 
-    private fun setMargins(view: View, left: Int, top: Int, right: Int, bottom: Int) {
+    private fun addInsigniaShowImage(imageView: ImageView) {
+        binding.insigniaShowGlo.addView(imageView)
+    }
+
+    private fun createInsigniaFromUrl(url: String): ImageView {
+        val imageView = ImageView(requireContext())
+        with(imageView) {
+            loadFromUrl(url, R.drawable.ic_action_no_badge)
+            background = ContextCompat.getDrawable(requireContext(), R.drawable.edges_rectangle)
+            insigniaDeselected(this)
+        }
+        return imageView
+    }
+
+    private fun View.setMarginsGridlayout(left: Int, top: Int, right: Int, bottom: Int) {
         var gl = GridLayout.LayoutParams()
         gl.setMargins(left, top, right, bottom)
-        view.layoutParams = gl
+        this.layoutParams = gl
     }
+
 
     // 프로필 데이터를 받아서 갱신하는 메소드
     private fun renderProfile(profile: Profile?) {
@@ -170,6 +190,7 @@ class ProfileFragment : BaseFragment() {
         // 포인트 셋팅하는 메소드
         settingPoint(profile?.point)
         // 보여주는 휘장 셋팅하는 메소드
+        binding.insigniaShowGlo.removeAllViews()
         settingInsigniaShow(profile?.insigniaShow)
         // 소유한 휘장 셋팅하는 메소드
         binding.insigniaOwnGlo.removeAllViews()
@@ -219,6 +240,17 @@ class ProfileFragment : BaseFragment() {
 
         binding.etNickname.setText(binding.tvNickname.text)
         binding.etDescriptionContent.setText(binding.tvDescriptionContent.text)
+
+        binding.insigniaOwnGlo.children.forEach { insigniaIv ->
+            Log.d("listener_attached", "OwnGlo $insigniaIv")
+            setInsigniaOnClickListener(insigniaIv as ImageView)
+        }
+
+        viewModel.profile.value?.insigniaShow?.forEach { show ->
+            if(viewModel.insigniaOwn.value != null) {
+                insigniaSelected(binding.insigniaOwnGlo[viewModel.insigniaOwn.value?.indexOf(show)!!]as ImageView)
+            }
+        }
     }
 
     private fun cancelDescriptionModify(view: View) = view.setOnSingleClickListener {
@@ -231,6 +263,11 @@ class ProfileFragment : BaseFragment() {
         binding.etNickname.invisible()
         binding.etDescriptionContent.invisible()
 
+        binding.insigniaOwnGlo.children.forEach { insigniaIv ->
+            Log.d("listener_detached", "OwnGlo $insigniaIv")
+            removeInsigniaOnClickListener(insigniaIv as ImageView)
+        }
+
         removeKeyboard(requireActivity(), view)
     }
 
@@ -238,16 +275,20 @@ class ProfileFragment : BaseFragment() {
         binding.btnModifyComplete.invisible()
         binding.btnModifyCancel.invisible()
         binding.btnModify.visible()
-
         binding.tvNickname.visible()
         binding.tvDescriptionContent.visible()
         binding.etNickname.invisible()
         binding.etDescriptionContent.invisible()
 
-        var insigniaShow : MutableList<String> = mutableListOf()
-        binding.insigniaOwnGlo.forEachIndexed { i,_->
+        binding.insigniaOwnGlo.children.forEach { insigniaIv ->
+            Log.d("listener_detached", "OwnGlo $insigniaIv")
+            removeInsigniaOnClickListener(insigniaIv as ImageView)
+        }
+
+        var insigniaShow: MutableList<String> = mutableListOf()
+        binding.insigniaOwnGlo.forEachIndexed { i, _ ->
             Log.d("insignia_check__", i.toString())
-            if( (binding.insigniaOwnGlo[i] as ImageView).paddingRight == 5){
+            if ((binding.insigniaOwnGlo[i] as ImageView).paddingRight == 5) {
                 insigniaShow.add(viewModel.insigniaOwn.value?.get(i) ?: "")
             }
         }

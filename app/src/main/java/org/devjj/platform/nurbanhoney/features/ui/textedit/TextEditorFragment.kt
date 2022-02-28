@@ -27,8 +27,8 @@ import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.imageprocessing.BitmapRequestBody
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentTextEditorNurbanBinding
-import org.devjj.platform.nurbanhoney.features.ui.article.model.Article
 import org.devjj.platform.nurbanhoney.features.Board
+import org.devjj.platform.nurbanhoney.features.ui.article.model.Article
 import java.io.File
 import java.net.URL
 import java.util.*
@@ -116,9 +116,7 @@ open class TextEditorFragment : BaseFragment() {
             }
         }
 
-
-        nurbanToken = prefs.getString(viewModel.prefsNurbanTokenKey,"") ?: ""
-
+        nurbanToken = prefs.getString(viewModel.prefsNurbanTokenKey, "") ?: ""
 
         binding.textEditorNurbanHeader.textEditorTitleEt.requestFocus()
         val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -178,18 +176,18 @@ open class TextEditorFragment : BaseFragment() {
         )
     }
 
-    private fun uploadImage(uri : Uri){
+    private fun uploadImage(uri: Uri) {
 
         val imageFilePart = getMultipartBodyFromBitmap(uri)
         val uuidPart = MultipartBody.Part.createFormData("uuid", uuid.toString())
         viewModel.uploadImage("nurban", nurbanToken, uuidPart, imageFilePart)
     }
 
-    private fun getMultipartBodyFromBitmap(uri : Uri) : MultipartBody.Part{
+    private fun getMultipartBodyFromBitmap(uri: Uri): MultipartBody.Part {
         val file = File(uri.path)
         var options = BitmapFactory.Options()
         options.inSampleSize = 2
-        var src = BitmapFactory.decodeFile(file.absolutePath,options)
+        var src = BitmapFactory.decodeFile(file.absolutePath, options)
         return MultipartBody.Part.createFormData("image", file.name, BitmapRequestBody(src))
     }
 

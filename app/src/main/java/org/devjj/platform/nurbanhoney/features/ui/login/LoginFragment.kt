@@ -19,10 +19,7 @@ import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.exception.Failure.NetworkConnection
 import org.devjj.platform.nurbanhoney.core.exception.Failure.ServerError
-import org.devjj.platform.nurbanhoney.core.extension.close
-import org.devjj.platform.nurbanhoney.core.extension.failure
-import org.devjj.platform.nurbanhoney.core.extension.observe
-import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
+import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentLoginBinding

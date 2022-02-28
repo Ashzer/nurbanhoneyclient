@@ -22,6 +22,9 @@
     <string name="failure_server_error">Server Error</string>
     <string name="failure_else_error">Else Error</string>
 
+    <string name="snack_bar_msg_login_canceled">로그인이 취소 되었습니다</string>
+    <string name="snack_bar_msg_canceled">취소 되었습니다</string>
+
     <string name="article_title_str">제목 : </string>
     <string name="article_author_str">작성자 : </string>
     <string name="article_inquiries_str">조회수 : </string>

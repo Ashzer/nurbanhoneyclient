@@ -17,6 +17,5 @@ abstract class BaseNavigationActivity : BaseActivity(){
             replace(
                 R.id.navigationFragmentContainer,fragment()
             )
-            addToBackStack(null)
         }
 }

@@ -39,6 +39,7 @@ android {
 dependencies {
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.gridlayout:gridlayout:1.0.0")
+    implementation("androidx.navigation:navigation-runtime-ktx:2.3.5")
     //Compile time dependencies
     kapt(Libraries.lifecycleCompiler)
     kapt(Libraries.hiltCompiler)

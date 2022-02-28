@@ -40,7 +40,8 @@ abstract class BaseFragment : Fragment() {
                         Failure.TokenError(this.requireContext())
                     }
                     .setNegativeButton("취소") { _,_ ->
-                        Toast.makeText(this.requireContext(),"로그인이 취소 되었습니다", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this.requireContext(),"로그인이 취소 되었습니다", Toast.LENGTH_SHORT).show()
+                        notify(R.string.snack_bar_msg_login_canceled)
                     }
                     .show()
             }

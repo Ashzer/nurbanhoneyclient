@@ -85,11 +85,6 @@ class ArticleFragment : BaseFragment() {
         super.onResume()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        //requireActivity().finish()
-    }
-
     private fun setArticleId(id: Int?) {
         viewModel.getArticle()
         viewModel.getRatings()
@@ -214,6 +209,16 @@ class ArticleFragment : BaseFragment() {
             resources.getInteger(R.integer.comment_max_length),
             commentMaxLines
         )
+
+        binding.articleCommentFab.setOnSingleClickListener {
+            var commentDialog = CommentDialog()
+            commentDialog.show(requireActivity().supportFragmentManager, "comment_dialog")
+            commentDialog.uploadComment( commentUpdateBtnListener(){
+
+            })
+
+        }
+
 
     }
 
