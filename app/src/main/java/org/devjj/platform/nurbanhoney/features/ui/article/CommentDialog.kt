@@ -15,7 +15,7 @@ class CommentDialog : DialogFragment() {
     private var _binding: DialogCommentBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var commentUploadListener: CommentDialogUploadListener
+    private lateinit var commentUploadCallback: CommentDialogUploadCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +40,7 @@ class CommentDialog : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.dialogCommentSaveBtn.setOnClickListener {
-            commentUploadListener.uploadComment(binding.dialogAddTodoContentEt.text.toString())
+            commentUploadCallback.uploadComment( binding.dialogAddTodoContentEt.text.toString())
             dismiss()
         }
 
@@ -75,12 +75,12 @@ class CommentDialog : DialogFragment() {
             }
         })
 
-    interface CommentDialogUploadListener {
+    interface CommentDialogUploadCallback {
         fun uploadComment(comment: String)
     }
 
-    fun uploadComment(listener: CommentDialogUploadListener) {
-        commentUploadListener = listener
+    fun uploadComment(callback: CommentDialogUploadCallback) {
+        commentUploadCallback = callback
     }
 
 }

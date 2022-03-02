@@ -61,7 +61,7 @@ fun ImageView.loadFromDrawable(resourceId: Int) =
         .skipMemoryCache(true)
         .into(this)
 
-fun View.setOnSingleClickListener(debounceTime: Long = 500L, action: () -> Unit) {
+fun View.setOnSingleClickListener(debounceTime: Long = 200L, action: () -> Unit) {
     this.setOnClickListener(object : View.OnClickListener {
         private var lastClickTime: Long = 0
 

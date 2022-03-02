@@ -29,7 +29,7 @@ import org.devjj.platform.nurbanhoney.features.ui.article.model.Ratings
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ArticleFragment : BaseFragment() {
+class ArticleFragment : BaseFragment(){
     companion object {
         private const val PARAM_ARTICLE = "param_article"
         private const val PARAM_BOARD = "param_board"
@@ -213,12 +213,13 @@ class ArticleFragment : BaseFragment() {
         binding.articleCommentFab.setOnSingleClickListener {
             var commentDialog = CommentDialog()
             commentDialog.show(requireActivity().supportFragmentManager, "comment_dialog")
-            commentDialog.uploadComment( commentUpdateBtnListener(){
 
+            commentDialog.uploadComment(object  : CommentDialog.CommentDialogUploadCallback{
+                override fun uploadComment(comment: String) {
+                    viewModel.postComment(comment)
+                }
             })
-
         }
-
 
     }
 
@@ -327,4 +328,6 @@ class ArticleFragment : BaseFragment() {
             binding.articleTail.articleCommentEt.text.clear()
         }
     }
+
+
 }

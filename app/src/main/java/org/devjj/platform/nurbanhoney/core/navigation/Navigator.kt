@@ -80,7 +80,7 @@ private val prefs : SharedPreferences) {
 
         supportFragmentManager.beginTransaction()
             .replace(containerView.id, frag)
-            .addToBackStack(null)
+            .addToBackStack(frag::class.java.simpleName)
             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             .commit()
     }

@@ -19,11 +19,20 @@ abstract class BaseActivity : AppCompatActivity() {
             }
             0 -> {
                 super.onBackPressed()
-                Log.d("onBackPressed_check","performed super.onBackPressed. supportFragmentManager.backStackEntryCount = ${supportFragmentManager.backStackEntryCount}")
+                Log.d(
+                    "onBackPressed_check",
+                    "performed super.onBackPressed. supportFragmentManager.backStackEntryCount = ${supportFragmentManager.backStackEntryCount}"
+                )
             }
             else -> {
+                var count = supportFragmentManager.backStackEntryCount
                 supportFragmentManager.popBackStack()
-                Log.d("onBackPressed_check","performed supportFragmentManager.popBackStack(). supportFragmentManager.backStackEntryCount = ${supportFragmentManager.backStackEntryCount}")
+                if (supportFragmentManager.backStackEntryCount == count) supportFragmentManager.popBackStack()
+
+                Log.d(
+                    "onBackPressed_check",
+                    "performed supportFragmentManager.popBackStack(). supportFragmentManager.backStackEntryCount = ${supportFragmentManager.backStackEntryCount}"
+                )
             }
         }
     }

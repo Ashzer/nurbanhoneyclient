@@ -11,6 +11,7 @@ abstract class BaseNavigationActivity : BaseActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)
+
     }
     override fun addFragment(savedInstanceState: Bundle?) =
         savedInstanceState ?: supportFragmentManager.inTransaction {
@@ -18,4 +19,6 @@ abstract class BaseNavigationActivity : BaseActivity(){
                 R.id.navigationFragmentContainer,fragment()
             )
         }
+
+
 }

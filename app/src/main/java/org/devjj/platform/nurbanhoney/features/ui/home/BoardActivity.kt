@@ -3,8 +3,10 @@ package org.devjj.platform.nurbanhoney.features.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,12 +16,12 @@ import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.core.platform.BaseNavigationActivity
 import org.devjj.platform.nurbanhoney.databinding.ActivityNavigationBinding
+import org.devjj.platform.nurbanhoney.features.Board
+import org.devjj.platform.nurbanhoney.features.ui.home.boards.BoardFragment
 import org.devjj.platform.nurbanhoney.features.ui.home.boards.subboards.BoardNoticeFragment
 import org.devjj.platform.nurbanhoney.features.ui.home.boards.subboards.BoardPopularFragment
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileFragment
 import org.devjj.platform.nurbanhoney.features.ui.home.ranking.RankingFragment
-import org.devjj.platform.nurbanhoney.features.Board
-import org.devjj.platform.nurbanhoney.features.ui.home.boards.BoardFragment
 import javax.inject.Inject
 
 
@@ -40,9 +42,9 @@ class BoardActivity : BaseNavigationActivity() {
             Intent(context, BoardActivity::class.java)
     }
 
-    private fun renderBoards(boards : List<Board>?){
+    private fun renderBoards(boards: List<Board>?) {
         var menu = binding.navigationSideMenu.menu
-        var boardList = boards?.map{it.name} ?: listOf()
+        var boardList = boards?.map { it.name } ?: listOf()
         boardList.forEachIndexed { i, e ->
             menu.add(R.id.menu_group_boards, i, i, e)
         }
@@ -56,13 +58,17 @@ class BoardActivity : BaseNavigationActivity() {
         setContentView(view)
         addFragment(savedInstanceState)
 
-        with(viewModel){
+        with(viewModel) {
             observe(boards, ::renderBoards)
         }
 
         viewModel.getBoards()
 
+        binding.navigationNavigator.setOnNavigationItemReselectedListener {
+            Log.d("navi_check__", it.itemId.toString())
+        }
 
+        binding.navigationNavigator.selectedItemId
         binding.navigationNavigator.setOnNavigationItemSelectedListener {
 
             Log.d("navi_check__", it.itemId.toString())
@@ -83,17 +89,21 @@ class BoardActivity : BaseNavigationActivity() {
                 Log.d("navi_check__", it.groupId.toString())
                 Log.d("navi_check__", it.itemId.toString())
                 var bundle = Bundle()
-                bundle.putParcelable(R.string.BoardInfo.toString(),viewModel.boards.value?.get(it.itemId))
+                bundle.putParcelable(
+                    R.string.BoardInfo.toString(),
+                    viewModel.boards.value?.get(it.itemId)
+                )
                 var frag = BoardFragment()
-                frag.arguments=bundle
+                frag.arguments = bundle
                 navigate(frag)
             } else {
                 Log.d("navi_check__top", it.itemId.toString())
                 when (it.itemId) {
                     R.id.menu_notice_board -> {
                         var bundle = Bundle()
-                        bundle.putParcelable(R.string.BoardInfo.toString(),
-                            Board(-1,"공지사항","notice")
+                        bundle.putParcelable(
+                            R.string.BoardInfo.toString(),
+                            Board(-1, "공지사항", "notice")
                         )
                         var frag = BoardNoticeFragment()
                         frag.arguments = bundle
@@ -101,8 +111,9 @@ class BoardActivity : BaseNavigationActivity() {
                     }
                     R.id.menu_popular_board -> {
                         var bundle = Bundle()
-                        bundle.putParcelable(R.string.BoardInfo.toString(),
-                            Board(-1,"인기글","popular")
+                        bundle.putParcelable(
+                            R.string.BoardInfo.toString(),
+                            Board(-1, "인기글", "popular")
                         )
                         var frag = BoardPopularFragment()
                         frag.arguments = bundle
@@ -121,7 +132,27 @@ class BoardActivity : BaseNavigationActivity() {
         setSupportActionBar(binding.navigationToolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_menu)
+
+        supportFragmentManager.addOnBackStackChangedListener {
+            supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount -1)
+                .apply {
+                    Log.d("fragment_stack_check", this.name.toString())
+                    when (this.name.toString()) {
+                        BoardFragment::class.java.simpleName -> {
+                            binding.navigationNavigator.selectedItemId = R.id.menu_popular_board
+                        }
+                        RankingFragment::class.java.simpleName -> {
+                            binding.navigationNavigator.selectedItemId = R.id.menu_ranking
+                        }
+                        ProfileFragment::class.java.simpleName -> {
+                            binding.navigationNavigator.selectedItemId = R.id.menu_profile
+                        }
+                    }
+
+                }
+        }
     }
+
 
     override fun onBackPressed() {
         if (binding.navigationDrawer.isDrawerOpen(gravity)) {
@@ -148,7 +179,7 @@ class BoardActivity : BaseNavigationActivity() {
         return false
     }
 
-    fun setActionBarTitle(title: String){
+    fun setActionBarTitle(title: String) {
         supportActionBar?.title = title
     }
 
