@@ -13,9 +13,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.devjj.platform.nurbanhoney.core.extension.observe
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
-import org.devjj.platform.nurbanhoney.features.Board
+import org.devjj.platform.nurbanhoney.core.sharedpreference.Prefs
 import org.devjj.platform.nurbanhoney.features.network.VersionCheckService
 import javax.inject.Inject
 
@@ -33,9 +32,6 @@ class SplashActivity
 
     @Inject
     internal lateinit var updateManager: UpdateManager
-
-    @Inject
-    lateinit var prefs: SharedPreferences
 
 
     private val viewModel by viewModels<SplashViewModel>()
@@ -70,6 +66,7 @@ class SplashActivity
             }
         }
         Log.d("kakao_key_check__", Utility.getKeyHash(this))
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

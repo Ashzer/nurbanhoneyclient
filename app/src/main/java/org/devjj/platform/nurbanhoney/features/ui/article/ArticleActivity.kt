@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -40,9 +41,11 @@ class ArticleActivity : BaseEmptyActivity() {
         super.onCreate(savedInstanceState)
         addFragment(savedInstanceState)
 
-        var board = intent.getParcelableExtra(INTENT_EXTRA_PARAM_BOARD) as Board
+        var board = (intent.getParcelableExtra(INTENT_EXTRA_PARAM_BOARD) as Board?) ?: Board.empty
+        Log.d("bundle_check__", board.toString())
 
         setToolbarTitle(board.name)
+        
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

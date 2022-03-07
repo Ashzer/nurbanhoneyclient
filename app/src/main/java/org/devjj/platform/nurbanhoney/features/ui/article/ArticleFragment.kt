@@ -21,6 +21,7 @@ import org.devjj.platform.nurbanhoney.core.controller.showKeyboard
 import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
+import org.devjj.platform.nurbanhoney.core.sharedpreference.Prefs
 import org.devjj.platform.nurbanhoney.databinding.FragmentArticleBinding
 import org.devjj.platform.nurbanhoney.features.Board
 import org.devjj.platform.nurbanhoney.features.ui.article.model.Article
@@ -48,10 +49,7 @@ class ArticleFragment : BaseFragment(){
     lateinit var navigator: Navigator
 
     @Inject
-    lateinit var commentAdapter: CommentAdapter
-
-    @Inject
-    lateinit var prefs: SharedPreferences
+    lateinit var articleDetailAdapter: ArticleDetailAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -108,9 +106,9 @@ class ArticleFragment : BaseFragment(){
     var oldCount = 0
     private fun initComments(comments: List<Comment>?) {
         if (!comments.isNullOrEmpty()) {
-            var adder = comments.filter { !commentAdapter.collection.contains(it) }
+            var adder = comments.filter { !articleDetailAdapter.collection.contains(it) }
             if (adder.isNotEmpty()) {
-                commentAdapter.insertTail(comments)
+                articleDetailAdapter.insertTail(comments)
             } else {
                 viewModel.getComments()
                 Log.d("comment_check", "이게 왜?")
@@ -136,13 +134,13 @@ class ArticleFragment : BaseFragment(){
 
     private fun renderLikes(ratings: Ratings?) {
         if (ratings != null) {
-            commentAdapter.updateRatings(ratings)
+            articleDetailAdapter.updateRatings(ratings)
         }
     }
 
     private fun renderArticle(article: Article?) {
         if (article != null)
-            commentAdapter.setAdapterHeader(
+            articleDetailAdapter.setAdapterHeader(
                 article,
                 Ratings(article.likes, article.dislikes, article.myRating)
             )
@@ -162,17 +160,15 @@ class ArticleFragment : BaseFragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.prefsNurbanTokenKey = getString(R.string.prefs_nurban_token_key)
-        viewModel.prefsUserIdKey = getString(R.string.prefs_user_id)
+
 
         viewModel.setArticleId(arguments?.get(PARAM_ARTICLE) as Int)
         viewModel.board = (arguments?.get(PARAM_BOARD) as Board)
 
         binding.articleCommentsRv.layoutManager = LinearLayoutManager(requireContext())
-        binding.articleCommentsRv.adapter = commentAdapter
+        binding.articleCommentsRv.adapter = articleDetailAdapter
 
-        commentAdapter.userId =
-            prefs.getString(getString(R.string.prefs_user_id), "-1")?.toInt() ?: -1
+        articleDetailAdapter.userId = Prefs.userId
 
 
         //글 수정 버튼
@@ -182,9 +178,9 @@ class ArticleFragment : BaseFragment(){
         (requireActivity() as ArticleActivity).deleteArticleClickListener =
             articleDeleteBtnListener()
         //좋아요 버튼
-        commentAdapter.likeArticleClickListener = likePressedListener()
+        articleDetailAdapter.likeArticleClickListener = likePressedListener()
         //싫어요 버튼
-        commentAdapter.dislikeArticleClickListener = dislikePressedListener()
+        articleDetailAdapter.dislikeArticleClickListener = dislikePressedListener()
 
 
         //댓글 영역 보이기/숨김
@@ -192,13 +188,13 @@ class ArticleFragment : BaseFragment(){
         //댓글 등록 버튼
         commentUpdateBtnListener(binding.articleTail.articleCommentBtn)
         //댓글 수정 영역 보이기
-        commentAdapter.modifyClickListener = commentModifyAreaSetVisibleListener()
+        articleDetailAdapter.modifyClickListener = commentModifyAreaSetVisibleListener()
         //댓글 수정 영역 숨기기(수정 취소)
-        commentAdapter.cancelClickListener = commentModifyAreaSetInvisibleListener()
+        articleDetailAdapter.cancelClickListener = commentModifyAreaSetInvisibleListener()
         //댓글 수정 버튼(수정 완료)
-        commentAdapter.updateClickListener = commentModifyBtnListener()
+        articleDetailAdapter.updateClickListener = commentModifyBtnListener()
         //댓글 삭제 버튼
-        commentAdapter.deleteClickListener = commentDeleteBtnListener()
+        articleDetailAdapter.deleteClickListener = commentDeleteBtnListener()
         //댓글 추가 로드
         //loadCommentsOnScrollViewListener(binding.articleContainerSv)
         //댓글 줄수 제한

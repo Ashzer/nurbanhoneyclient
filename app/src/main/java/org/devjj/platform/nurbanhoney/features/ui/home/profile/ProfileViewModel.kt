@@ -7,13 +7,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
+import org.devjj.platform.nurbanhoney.core.sharedpreference.Prefs
 import org.devjj.platform.nurbanhoney.features.network.repositories.profile.usecases.EditProfileUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel
 @Inject constructor(
-    private val prefs: SharedPreferences,
     private val getProfile: GetProfileUseCase,
     private val editProfile: EditProfileUseCase
 ) : BaseViewModel() {
@@ -22,13 +22,6 @@ class ProfileViewModel
 
     private val _insigniaOwn : MutableLiveData<List<String>> = MutableLiveData()
     val insigniaOwn : LiveData<List<String>> = _insigniaOwn
-
-    private fun getToken(): String {
-        return prefs.getString(
-            prefsNurbanTokenKey,
-            ""
-        ).toString()
-    }
 
     /*****************Loading*****************/
     /*
@@ -48,7 +41,7 @@ class ProfileViewModel
     }
 */
     fun getProfile() = getProfile(
-        GetProfileUseCase.Params(getToken()), viewModelScope
+        GetProfileUseCase.Params(Prefs.token), viewModelScope
     ) {
         it.fold(
             ::handleFailure,
@@ -82,7 +75,7 @@ class ProfileViewModel
                 )
             }
 
-        editProfile(getToken(), nickname, description, insignia)
+        editProfile(Prefs.token, nickname, description, insignia)
     }
 
     private fun handleProfileUpdate(result: EditProfileResponse?) {

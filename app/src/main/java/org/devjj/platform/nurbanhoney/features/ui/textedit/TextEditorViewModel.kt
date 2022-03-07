@@ -1,6 +1,7 @@
 package org.devjj.platform.nurbanhoney.features.ui.textedit
 
 import android.util.Log
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -128,14 +129,18 @@ class TextEditorViewModel
     }
 
     fun searchThumbnail(content: String) =
-        "(http)[^>]*(?=\" alt)".toRegex().find(content)?.value.run {
+        Patterns.WEB_URL.toRegex().find(content)?.value.run {
             Log.d("string_check__", this.toString())
             this.toString()
         }
+//        "(http)[^>]*(?=\" alt)".toRegex().find(content)?.value.run {
+//            Log.d("string_check__", this.toString())
+//            this.toString()
+//        }
 
     private fun handleUploading(response: ArticleResponse) {
         //Toast.makeText(this , "글 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-        Log.d("text_check__", response.result)
+        Log.d("text_check__", response.result ?: "no response")
         _articleResponse.postValue(response.result)
     }
 

@@ -12,6 +12,7 @@ import org.devjj.platform.nurbanhoney.core.extension.invisible
 import org.devjj.platform.nurbanhoney.core.extension.loadFromUrl
 import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
 import org.devjj.platform.nurbanhoney.core.extension.visible
+import org.devjj.platform.nurbanhoney.core.sharedpreference.Prefs
 import org.devjj.platform.nurbanhoney.databinding.ItemCommentBinding
 import org.devjj.platform.nurbanhoney.features.ui.article.model.Comment
 
@@ -22,11 +23,10 @@ class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         deleteClickListener: (Int) -> Unit,
         updateClickListener: (View, String, Int) -> Unit,
         modifyClickListener: (View) -> Unit,
-        cancelClickListener: (View) -> Unit,
-        userId: Int
+        cancelClickListener: (View) -> Unit
     ) {
 
-        if (userId != comment.userId
+        if (Prefs.userId != comment.userId
         ) {
             binding.itemCommentModifyBtnClo.invisible()
             binding.itemCommentDeleteBtnClo.invisible()
@@ -71,8 +71,8 @@ class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         with(iv) {
             loadFromUrl(url, R.drawable.ic_action_no_badge)
             setMargins(iv, 0, 0, 5, 0)
-            background = ContextCompat.getDrawable(itemView.context, R.drawable.edges_rectangle)
-            setPadding(5, 5, 5, 5)
+            //background = ContextCompat.getDrawable(itemView.context, R.drawable.edges_rectangle)
+           // setPadding(5, 5, 5, 5)
             itemView.itemCommentInsigniaLlo.addView(this)
         }
     }

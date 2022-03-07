@@ -23,8 +23,6 @@ class LoginActivity : BaseEmptyActivity() {
         addFragment(savedInstanceState)
     }
 
-
-
     override fun onDestroy() {
         super.onDestroy()
         finish()

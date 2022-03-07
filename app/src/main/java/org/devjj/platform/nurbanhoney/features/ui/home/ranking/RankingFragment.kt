@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentRankingBinding
+import org.devjj.platform.nurbanhoney.features.ui.home.BoardActivity
 
 class RankingFragment : BaseFragment() {
     //override fun layoutId() = R.layout.fragment_ranking
@@ -26,5 +27,10 @@ class RankingFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as BoardActivity).setActionBarTitle("랭킹")
     }
 }

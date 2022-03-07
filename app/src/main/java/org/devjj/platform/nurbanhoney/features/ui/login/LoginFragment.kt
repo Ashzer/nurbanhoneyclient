@@ -59,9 +59,6 @@ class LoginFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.prefsNurbanTokenKey = getString(R.string.prefs_nurban_token_key)
-        viewModel.prefsUserIdKey = getString(R.string.prefs_user_id)
-
         //카카오 로그인
         kakaoLoginBtnListener(binding.loginKakaoClo)
         //네이버 로그인인

@@ -16,7 +16,6 @@ import javax.inject.Inject
 class BoardViewModel
 @Inject constructor(
     private val getArticles: GetArticlesUseCase,
-    private val prefs: SharedPreferences,
     private val getBoards: GetBoardsUseCase
 ) : BaseViewModel() {
     private val _articles: MutableLiveData<List<ArticleItem>> = MutableLiveData()
@@ -30,7 +29,7 @@ class BoardViewModel
     private val limit = 10
 
     //TODO("첫 실행화면을 인기게시판으로 바꾼후에는 lateinit var로 변경")
-    var board: Board = Board(0,"너반꿀","nurban")
+    var board: Board = Board(-1, "인기글", "popular")
 
 
 

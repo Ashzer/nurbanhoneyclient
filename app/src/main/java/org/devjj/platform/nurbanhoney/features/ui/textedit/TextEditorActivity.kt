@@ -55,7 +55,7 @@ class TextEditorActivity : BaseEmptyActivity() {
 
     override fun fragment(): BaseFragment {
         //Log.d("bundle_check__",intent.getStringExtra(INTENT_EXTRA_PARAM_BOARD).toString())
-        var board = intent.getParcelableExtra(INTENT_EXTRA_PARAM_BOARD) as Board
+        var board = (intent.getParcelableExtra(INTENT_EXTRA_PARAM_BOARD) as Board?) ?: Board.empty
         return if(board.address == "nurban")
             try{
                 TextEditorNurbanFragment.toModify(board, intent.getParcelableExtra(INTENT_EXTRA_PARAM_ARTICLE))

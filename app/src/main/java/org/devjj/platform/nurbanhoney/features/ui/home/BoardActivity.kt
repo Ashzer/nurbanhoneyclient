@@ -3,12 +3,12 @@ package org.devjj.platform.nurbanhoney.features.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
+import androidx.core.view.children
+import androidx.core.view.get
 import dagger.hilt.android.AndroidEntryPoint
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.observe
@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class BoardActivity : BaseNavigationActivity() {
-    override fun fragment() = BoardFragment()
+    override fun fragment() = BoardPopularFragment()
     private val gravity = GravityCompat.START
 
     @Inject
@@ -56,8 +56,8 @@ class BoardActivity : BaseNavigationActivity() {
 
         val view = binding.root
         setContentView(view)
-        addFragment(savedInstanceState)
-
+       // addFragment(savedInstanceState)
+        navigate(BoardPopularFragment())
         with(viewModel) {
             observe(boards, ::renderBoards)
         }
@@ -73,7 +73,16 @@ class BoardActivity : BaseNavigationActivity() {
 
             Log.d("navi_check__", it.itemId.toString())
             when (it.itemId) {
-                R.id.menu_popular_board -> navigate(BoardFragment())
+                R.id.menu_popular_board -> {
+                    var bundle = Bundle()
+                    bundle.putParcelable(
+                        R.string.BoardInfo.toString(),
+                        Board(-1, "인기글", "popular")
+                    )
+                    var frag = BoardPopularFragment()
+                    frag.arguments = bundle
+                    navigate(frag)
+                }
                 R.id.menu_ranking -> navigate(RankingFragment())
                 R.id.menu_profile -> navigate(ProfileFragment())
                 else -> navigate(RankingFragment())
@@ -118,7 +127,6 @@ class BoardActivity : BaseNavigationActivity() {
                         var frag = BoardPopularFragment()
                         frag.arguments = bundle
                         navigate(frag)
-
                     }
                     R.id.menu_ranking -> navigate(RankingFragment())
                     R.id.menu_profile -> navigate(ProfileFragment())
@@ -134,22 +142,37 @@ class BoardActivity : BaseNavigationActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_menu)
 
         supportFragmentManager.addOnBackStackChangedListener {
-            supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount -1)
-                .apply {
-                    Log.d("fragment_stack_check", this.name.toString())
-                    when (this.name.toString()) {
-                        BoardFragment::class.java.simpleName -> {
-                            binding.navigationNavigator.selectedItemId = R.id.menu_popular_board
-                        }
-                        RankingFragment::class.java.simpleName -> {
-                            binding.navigationNavigator.selectedItemId = R.id.menu_ranking
-                        }
-                        ProfileFragment::class.java.simpleName -> {
-                            binding.navigationNavigator.selectedItemId = R.id.menu_profile
+
+            Log.d(
+                "onBackPressed_check",
+                "listened backStackChanged stack size = ${supportFragmentManager.backStackEntryCount}"
+            )
+            for(i in 0 until supportFragmentManager.backStackEntryCount) {
+                Log.d(
+                    "onBackPressed_check",
+                    "listened backStackChanged $i = ${supportFragmentManager.getBackStackEntryAt(i).name}"
+                )
+            }
+            if (supportFragmentManager.backStackEntryCount > 0) {
+                supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1)
+                    .apply {
+                        Log.d("fragment_stack_check", this.name.toString())
+                        when (this.name.toString()) {
+                            BoardPopularFragment::class.java.simpleName -> {
+                                //binding.navigationNavigator.selectedItemId = R.id.menu_popular_board
+                                binding.navigationNavigator.menu[0].isChecked = true
+                            }
+                            RankingFragment::class.java.simpleName -> {
+                               // binding.navigationNavigator.selectedItemId = R.id.menu_ranking
+                                binding.navigationNavigator.menu[1].isChecked = true
+                            }
+                            ProfileFragment::class.java.simpleName -> {
+                                //binding.navigationNavigator.selectedItemId = R.id.menu_profile
+                                binding.navigationNavigator.menu[2].isChecked = true
+                            }
                         }
                     }
-
-                }
+            }
         }
     }
 
@@ -188,6 +211,8 @@ class BoardActivity : BaseNavigationActivity() {
             supportFragmentManager,
             fragment,
             binding.navigationFragmentContainer
-        )
+        ).let {
+            Log.d("navigate","navigated to ${fragment::class.java.simpleName}")
+        }
 
 }

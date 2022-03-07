@@ -17,6 +17,7 @@ import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentProfileBinding
+import org.devjj.platform.nurbanhoney.features.ui.home.BoardActivity
 import javax.inject.Inject
 import kotlin.collections.forEach
 
@@ -205,9 +206,7 @@ class ProfileFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.prefsNurbanTokenKey = getString(R.string.prefs_nurban_token_key)
-        viewModel.prefsUserIdKey = getString(R.string.prefs_user_id)
-
+        (activity as BoardActivity).setActionBarTitle("프로필")
         //작성한 글 보기
         showMyArticles(binding.llMyarticle)
         //작성 댓글 보기

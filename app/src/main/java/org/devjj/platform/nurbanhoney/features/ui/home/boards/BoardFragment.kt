@@ -13,10 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import org.devjj.platform.nurbanhoney.R
-import org.devjj.platform.nurbanhoney.core.extension.failure
-import org.devjj.platform.nurbanhoney.core.extension.getLinearLayoutManager
-import org.devjj.platform.nurbanhoney.core.extension.observe
-import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
+import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentBoardBinding
@@ -89,8 +86,7 @@ open class BoardFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.prefsNurbanTokenKey = getString(R.string.prefs_nurban_token_key)
-        viewModel.prefsUserIdKey = getString(R.string.prefs_user_id)
+        binding.boardWriteFab.visible()
 
         viewModel.getBoards()
 
@@ -132,5 +128,6 @@ open class BoardFragment : BaseFragment() {
 
     protected open fun boardArticleClickListener(): (Int, Board) -> Unit = { id, _ ->
         navigator.showArticle(requireActivity(), viewModel.board, id)
+        Log.d("bundle_check__", viewModel.board.toString())
     }
 }

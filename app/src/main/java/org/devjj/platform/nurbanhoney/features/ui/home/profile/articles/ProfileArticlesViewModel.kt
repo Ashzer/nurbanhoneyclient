@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
+import org.devjj.platform.nurbanhoney.core.sharedpreference.Prefs
 import org.devjj.platform.nurbanhoney.features.network.repositories.profile.usecases.GetProfileArticlesUseCase
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileArticle
 import javax.inject.Inject
@@ -14,7 +15,6 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileArticlesViewModel
 @Inject constructor(
-    private val prefs: SharedPreferences,
     val getArticles: GetProfileArticlesUseCase,
 ) : BaseViewModel() {
     private val _articles: MutableLiveData<List<ProfileArticle>> = MutableLiveData()
@@ -23,10 +23,6 @@ class ProfileArticlesViewModel
     var offset = 0
     var limit = 10
 
-    private fun getToken() = prefs.getString(
-        prefsNurbanTokenKey,
-        ""
-    ).toString()
 
     fun getArticles() {
         fun getArticles(token: String, offset: Int, limit: Int) =
@@ -36,8 +32,8 @@ class ProfileArticlesViewModel
                     ::handleArticles
                 )
             }
-        Log.d("token_check__", getToken())
-        getArticles(getToken(), offset, limit)
+        Log.d("token_check__", Prefs.token)
+        getArticles(Prefs.token, offset, limit)
         offset += limit
     }
 

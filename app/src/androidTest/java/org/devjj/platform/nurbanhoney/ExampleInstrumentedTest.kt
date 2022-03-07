@@ -1,5 +1,6 @@
 package org.devjj.platform.nurbanhoney
 
+import android.util.Patterns
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 
@@ -20,5 +21,10 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("org.devjj.platform.nurbanhoney", appContext.packageName)
+    }
+
+    @Test
+    fun test(){
+        println(Patterns.WEB_URL)
     }
 }

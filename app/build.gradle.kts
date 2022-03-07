@@ -13,8 +13,8 @@ plugins {
 }
 
 android {
-    compileSdkVersion(AndroidSdk.compile)
 
+    compileSdk = AndroidSdk.compile
     defaultConfig {
         minSdkVersion(AndroidSdk.min)
         targetSdkVersion(AndroidSdk.target)
@@ -40,6 +40,7 @@ dependencies {
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.gridlayout:gridlayout:1.0.0")
     implementation("androidx.navigation:navigation-runtime-ktx:2.3.5")
+    implementation("androidx.preference:preference-ktx:1.1.1")
     //Compile time dependencies
     kapt(Libraries.lifecycleCompiler)
     kapt(Libraries.hiltCompiler)
@@ -74,6 +75,7 @@ dependencies {
     implementation(Libraries.richEditor)
     implementation (Libraries.fragment_ktx)
     api(Libraries.image_cropper)
+
     // Unit/Android tests dependencies
     testImplementation(TestLibraries.junit4)
     testImplementation(TestLibraries.mockk)

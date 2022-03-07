@@ -27,8 +27,6 @@ import org.devjj.platform.nurbanhoney.core.exception.Failure
  */
 abstract class BaseViewModel : ViewModel() {
 
-    lateinit var prefsNurbanTokenKey : String
-    lateinit var prefsUserIdKey : String
 
     private val _failure: MutableLiveData<Failure> = MutableLiveData()
     val failure: LiveData<Failure> = _failure

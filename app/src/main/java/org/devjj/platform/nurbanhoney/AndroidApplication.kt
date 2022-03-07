@@ -11,13 +11,13 @@ import javax.inject.Inject
 @HiltAndroidApp
 class AndroidApplication : Application() {
 
-    @Inject
-    lateinit var prefs: SharedPreferences
 
     override fun onCreate() {
         super.onCreate()
-
-        Log.d("prefs_check__", prefs.all.toString())
         KakaoSdk.init(this, getString(R.string.kakao_app_key))
+        instance = this
+    }
+    companion object{
+        lateinit var instance : AndroidApplication
     }
 }

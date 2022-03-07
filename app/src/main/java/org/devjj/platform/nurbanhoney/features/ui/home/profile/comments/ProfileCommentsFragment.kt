@@ -49,8 +49,6 @@ class ProfileCommentsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.prefsNurbanTokenKey = getString(R.string.prefs_nurban_token_key)
-        viewModel.prefsUserIdKey = getString(R.string.prefs_user_id)
 
         binding.profileCommentsRv.layoutManager = LinearLayoutManager(requireContext())
         binding.profileCommentsRv.adapter = commentsAdapter

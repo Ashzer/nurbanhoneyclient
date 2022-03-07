@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
+import org.devjj.platform.nurbanhoney.core.sharedpreference.Prefs
 import org.devjj.platform.nurbanhoney.features.Board
 import org.devjj.platform.nurbanhoney.features.network.repositories.article.usecases.*
 import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.usecases.DeleteArticleUseCase
@@ -17,7 +18,6 @@ import javax.inject.Inject
 @HiltViewModel
 class ArticleViewModel
 @Inject constructor(
-    private val prefs: SharedPreferences,
     private val getArticle: GetArticleUseCase,
     private val postLike: LikeUseCase,
     private val unLike: UnLikeUseCase,
@@ -52,27 +52,15 @@ class ArticleViewModel
     private val limit = 5
     lateinit var board: Board
 
-    fun isAuthor() = article.value?.userId == getUserId()
+    fun isAuthor() = article.value?.userId == Prefs.userId
 
     fun setArticleId(id: Int) {
         _articleId.postValue(id)
     }
 
-    private fun getToken(): String {
-        return prefs.getString(
-            prefsNurbanTokenKey,
-            ""
-        ).toString()
-    }
-
-    private fun getUserId(): Int? {
-        return prefs.getString(prefsUserIdKey, "-1")?.toInt()
-    }
-
-
     /*****************Loading*****************/
     fun getArticle() = getArticle(
-        GetArticleUseCase.Params(board.address, getToken(), articleId.value ?: -1), viewModelScope
+        GetArticleUseCase.Params(board.address, Prefs.token, articleId.value ?: -1), viewModelScope
     ) {
         it.fold(
             ::handleFailure,
@@ -100,7 +88,7 @@ class ArticleViewModel
 
         deleteArticle(
             board.address,
-            getToken(),
+            Prefs.token,
             articleId.value ?: -1,
             article.value?.uuid.toString()
         )
@@ -122,7 +110,7 @@ class ArticleViewModel
 
         postLike(
             board.address,
-            getToken(),
+            Prefs.token,
             article.value?.id ?: -1
         )
     }
@@ -137,7 +125,7 @@ class ArticleViewModel
             }
         unLike(
             board.address,
-            getToken(),
+            Prefs.token,
             article.value?.id ?: -1
         )
     }
@@ -151,7 +139,7 @@ class ArticleViewModel
                 )
             }
 
-        postDislike(board.address, getToken(), article.value?.id ?: -1)
+        postDislike(board.address, Prefs.token, article.value?.id ?: -1)
     }
 
     fun unDislike() {
@@ -163,7 +151,7 @@ class ArticleViewModel
                 )
             }
 
-        unDislike(board.address, getToken(), article.value?.id ?: -1)
+        unDislike(board.address, Prefs.token, article.value?.id ?: -1)
     }
 
     private fun handleRating(response: RatingResponse) {
@@ -181,7 +169,7 @@ class ArticleViewModel
                     ::handleGetRatings
                 )
             }
-        getRatings(board.address, getToken(), articleId?.value ?: -1)
+        getRatings(board.address, Prefs.token, articleId?.value ?: -1)
     }
 
     private fun handleGetRatings(ratings: Ratings) {
@@ -199,7 +187,7 @@ class ArticleViewModel
                     ::handlePostComment
                 )
             }
-        postComment(board.address, getToken(), comment, article.value!!.id)
+        postComment(board.address, Prefs.token, comment, article.value!!.id)
     }
 
     private fun handlePostComment(response: CommentResponse) {
@@ -216,7 +204,7 @@ class ArticleViewModel
                     ::handleUpdateComment
                 )
             }
-        updateComment(board.address, getToken(), id, comment)
+        updateComment(board.address, Prefs.token, id, comment)
         updatingCommentId = id
     }
 
@@ -259,7 +247,7 @@ class ArticleViewModel
                     ::handleCommentDelete
                 )
             }
-        deleteComment(board.address, getToken(), id, article.value?.id ?: -1)
+        deleteComment(board.address, Prefs.token, id, article.value?.id ?: -1)
     }
 
     private fun handleCommentDelete(response: CommentResponse) {

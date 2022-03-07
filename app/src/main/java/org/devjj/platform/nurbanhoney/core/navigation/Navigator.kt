@@ -2,6 +2,7 @@ package org.devjj.platform.nurbanhoney.core.navigation
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentContainerView
@@ -9,6 +10,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
+import org.devjj.platform.nurbanhoney.core.sharedpreference.Prefs
 import org.devjj.platform.nurbanhoney.features.ui.article.model.Article
 import org.devjj.platform.nurbanhoney.features.ui.article.ArticleActivity
 import org.devjj.platform.nurbanhoney.features.ui.home.BoardActivity
@@ -23,14 +25,13 @@ import javax.inject.Singleton
 
 @Singleton
 class Navigator
-@Inject constructor(private val authenticator: Authenticator,
-private val prefs : SharedPreferences) {
+@Inject constructor(private val authenticator: Authenticator) {
 
     private fun showLogin(context: Context) =
         context.startActivity(LoginActivity.callingIntent(context))
 
     suspend fun showMain(context: Context) {
-        when (authenticator.userLoggedIn(prefs.getString(context.getString(R.string.prefs_nurban_token_key),"")?:"")) {
+        when (authenticator.userLoggedIn(Prefs.token)) {
             true -> showHome(context)
             false -> showLogin(context)
         }
@@ -48,8 +49,8 @@ private val prefs : SharedPreferences) {
     suspend fun showTextEditorWithLoginCheck(context: Context, board: Board) {
         fun showTextEditor(context: Context, board: Board) =
             context.startActivity(TextEditorActivity.callingIntent(context,board))
-
-        when (authenticator.userLoggedIn(prefs.getString(context.getString(R.string.prefs_nurban_token_key),"")?:"")) {
+        Log.d("navigation_check__", board.toString())
+        when (authenticator.userLoggedIn(Prefs.token)) {
             true -> showTextEditor(context,board)
             false -> showLogin(context)
         }
@@ -62,7 +63,7 @@ private val prefs : SharedPreferences) {
             context.startActivity(intent, activityOptions.toBundle())
         }
 
-        when (authenticator.userLoggedIn(prefs.getString(context.getString(R.string.prefs_nurban_token_key),"")?:"")) {
+        when (authenticator.userLoggedIn(Prefs.token)) {
             true -> showTextEditorToModify(context, board,article)
             false -> showLogin(context)
         }

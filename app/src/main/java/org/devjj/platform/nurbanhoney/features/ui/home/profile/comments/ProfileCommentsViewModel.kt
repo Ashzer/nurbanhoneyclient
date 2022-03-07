@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
+import org.devjj.platform.nurbanhoney.core.sharedpreference.Prefs
 import org.devjj.platform.nurbanhoney.features.network.repositories.board.usecases.GetBoardsUseCase
 import org.devjj.platform.nurbanhoney.features.network.repositories.profile.usecases.GetProfileCommentsUseCase
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileComment
@@ -15,7 +16,6 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileCommentsViewModel
 @Inject constructor(
-    private val prefs: SharedPreferences,
     val getComments: GetProfileCommentsUseCase,
     val getBoards: GetBoardsUseCase
 ) : BaseViewModel() {
@@ -23,12 +23,6 @@ class ProfileCommentsViewModel
     val comments: LiveData<List<ProfileComment>> = _comments
     private val _boards: MutableLiveData<List<Board>> = MutableLiveData()
     val boards: LiveData<List<Board>> = _boards
-
-
-    private fun getToken() = prefs.getString(
-        prefsNurbanTokenKey,
-        ""
-    ).toString()
 
     fun getComments() {
         fun getComments(token: String, offset: Int, limit: Int) =
@@ -39,7 +33,7 @@ class ProfileCommentsViewModel
                 )
             }
 
-        getComments(getToken(), 0, 5)
+        getComments(Prefs.token, 0, 5)
     }
 
     private fun handleComments(comments: List<ProfileComment>?) {

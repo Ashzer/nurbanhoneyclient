@@ -26,6 +26,7 @@ import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.imageprocessing.BitmapRequestBody
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
+import org.devjj.platform.nurbanhoney.core.sharedpreference.Prefs
 import org.devjj.platform.nurbanhoney.databinding.FragmentTextEditorNurbanBinding
 import org.devjj.platform.nurbanhoney.features.Board
 import org.devjj.platform.nurbanhoney.features.ui.article.model.Article
@@ -62,16 +63,16 @@ open class TextEditorFragment : BaseFragment() {
 
     val viewModel by viewModels<TextEditorViewModel>()
 
-    @Inject
-    lateinit var prefs: SharedPreferences
 
     private val cropActivityResultContracts = object : ActivityResultContract<Any?, Uri?>() {
         override fun createIntent(context: Context, input: Any?): Intent {
+            Log.d("image_upload_check__", input.toString())
             return CropImage.activity()
                 .getIntent(context)
         }
 
         override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
+            Log.d("image_upload_check__", resultCode.toString())
             return CropImage.getActivityResult(intent)?.uri
         }
     }
@@ -99,8 +100,7 @@ open class TextEditorFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.prefsNurbanTokenKey = getString(R.string.prefs_nurban_token_key)
-        viewModel.prefsUserIdKey = getString(R.string.prefs_user_id)
+
 
         if (this.arguments != null) {
             if (requireArguments().containsKey(PARAM_BOARD)) {
@@ -111,12 +111,15 @@ open class TextEditorFragment : BaseFragment() {
             if (requireArguments().containsKey(PARAM_ARTICLE)) {
                 isModify = true
                 (requireActivity() as TextEditorActivity).setActionBarTitle("${viewModel.board.name} - 글 수정")
+                Log.d("navigation_check__", "수정")
             } else {
+                isModify = false
                 (requireActivity() as TextEditorActivity).setActionBarTitle("${viewModel.board.name} - 글 작성")
+                Log.d("navigation_check__", "작성")
             }
         }
 
-        nurbanToken = prefs.getString(viewModel.prefsNurbanTokenKey, "") ?: ""
+        nurbanToken = Prefs.token
 
         binding.textEditorNurbanHeader.textEditorTitleEt.requestFocus()
         val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -166,6 +169,7 @@ open class TextEditorFragment : BaseFragment() {
 
         cropActivityResultLauncher = registerForActivityResult(cropActivityResultContracts) {
             it?.let { uri ->
+                Log.d("image_upload_check__", uri.toString())
                 uploadImage(uri)
             }
         }
@@ -177,9 +181,9 @@ open class TextEditorFragment : BaseFragment() {
     }
 
     private fun uploadImage(uri: Uri) {
-
         val imageFilePart = getMultipartBodyFromBitmap(uri)
         val uuidPart = MultipartBody.Part.createFormData("uuid", uuid.toString())
+        //TODO 이미지가 nurban 게시판에만 업로드 되는중
         viewModel.uploadImage("nurban", nurbanToken, uuidPart, imageFilePart)
     }
 
@@ -204,7 +208,7 @@ open class TextEditorFragment : BaseFragment() {
 //                )
                 var thumbnailUrl: String? = viewModel.searchThumbnail(mEditor.html.toString())
                 //if(thumbnailUrl == "") thumbnailUrl = null
-                Log.d("match_check__", thumbnailUrl)
+                Log.d("match_check__", thumbnailUrl?:"no thumbnail")
                 if (isModify) {
                     viewModel.modifyArticle(
                         viewModel.board.address,
@@ -238,16 +242,17 @@ open class TextEditorFragment : BaseFragment() {
     }
 
     private fun uploadHandler(result: String?) {
+        Log.d("text_editor_check__" , "uploadHandler")
         requireActivity().supportFragmentManager.popBackStack()
         requireActivity().finish()
     }
 
     override fun onDestroy() {
         var uploadResponse = viewModel.articleResponse.value ?: "no_result"
-
+        Log.d("text_editor_check__" , "destroyed")
         if (uploadResponse == "no_result" && !isModify) {
             viewModel.deleteImages(
-                "nurban", nurbanToken, uuid.toString()
+                viewModel.board.address, nurbanToken, uuid.toString()
             )
         }
         super.onDestroy()

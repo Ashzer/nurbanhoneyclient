@@ -37,7 +37,7 @@ class BoardArticleAdapter
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(articleItem: ArticleItem, clickListener: (Int, Board) -> Unit) {
 
-            Log.d("thumbnail_check__", "??? ${articleItem.thumbnail}")
+            //Log.d("thumbnail_check__", "??? ${articleItem.thumbnail}")
             if (articleItem.thumbnail != "null" && articleItem.thumbnail != null && articleItem.thumbnail != "") {
                 itemView.itemArticleThumbnailIv.loadFromUrl(
                     articleItem.thumbnail,
