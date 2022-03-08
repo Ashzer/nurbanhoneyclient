@@ -5,7 +5,7 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import org.devjj.platform.nurbanhoney.core.functional.Either.Right
-import org.devjj.platform.nurbanhoney.features.ui.home.profile.GetProfileUseCase
+import org.devjj.platform.nurbanhoney.features.network.repositories.profile.usecases.GetProfileUseCase
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.Profile
 import org.devjj.platform.nurbanhoney.features.network.repositories.profile.ProfileRepository
 import org.junit.Before

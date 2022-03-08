@@ -176,11 +176,4 @@ class LoginFragment : BaseFragment() {
 
         }
     }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        //requireActivity().finishAfterTransition()
-    }
 }
-

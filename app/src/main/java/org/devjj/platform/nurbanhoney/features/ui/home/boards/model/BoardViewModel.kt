@@ -1,37 +1,34 @@
 package org.devjj.platform.nurbanhoney.features.ui.home.boards.model
 
-import android.content.SharedPreferences
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
-import org.devjj.platform.nurbanhoney.features.network.repositories.article.usecases.GetArticlesUseCase
-import org.devjj.platform.nurbanhoney.features.network.repositories.board.usecases.GetBoardsUseCase
 import org.devjj.platform.nurbanhoney.features.Board
+import org.devjj.platform.nurbanhoney.features.network.repositories.article.usecases.GetArticlesUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class BoardViewModel
 @Inject constructor(
-    private val getArticles: GetArticlesUseCase,
-    private val getBoards: GetBoardsUseCase
+    private val getArticles: GetArticlesUseCase
 ) : BaseViewModel() {
     private val _articles: MutableLiveData<List<ArticleItem>> = MutableLiveData()
     val articles: LiveData<List<ArticleItem>> = _articles
     private val _newArticles: MutableLiveData<List<ArticleItem>> = MutableLiveData()
     val newArticles: LiveData<List<ArticleItem>> = _newArticles
-    private val _boards: MutableLiveData<List<Board>> = MutableLiveData()
-    val boards: LiveData<List<Board>> = _boards
 
     private var offset = 0
     private val limit = 10
 
-    //TODO("첫 실행화면을 인기게시판으로 바꾼후에는 lateinit var로 변경")
-    var board: Board = Board(-1, "인기글", "popular")
+    lateinit var board: Board
 
-
+    fun clear() {
+        _articles.postValue(listOf())
+        _newArticles.postValue(listOf())
+        offset = 0
+    }
 
     fun initArticles() {
         fun initArticles(board: String, flag: Int, offset: Int, limit: Int) =
@@ -51,8 +48,6 @@ class BoardViewModel
         _newArticles.postValue(articleItems)
     }
 
-
-
     fun getArticles() {
         fun getArticles(board: String, flag: Int, offset: Int, limit: Int) =
             getArticles(GetArticlesUseCase.Params(board, flag, offset, limit), viewModelScope) {
@@ -66,26 +61,14 @@ class BoardViewModel
     }
 
     private fun handArticles(newArticleItems: List<ArticleItem>) {
-        var newArticleList = _articles.value?.toMutableList() ?: mutableListOf()
-        newArticleList?.addAll(newArticleItems)
+        val newArticleList = _articles.value?.toMutableList() ?: mutableListOf()
+        val adder = getListNotContained(newArticleItems, _articles.value.orEmpty())
+        newArticleList.addAll(adder)
         _articles.postValue(newArticleList)
         _newArticles.postValue(newArticleItems)
     }
 
-
-    fun getBoards() =
-        getBoards(org.devjj.platform.nurbanhoney.core.interactor.UseCase.None(), viewModelScope) {
-            it.fold(
-                ::handleFailure,
-                ::handleBoards
-            )
-        }
-
-    private fun handleBoards(boards: List<Board>) {
-        _boards.postValue(boards)
-        boards.forEach {
-            Log.d("boards_check__", it.toString())
-        }
-    }
+    private fun getListNotContained(newList: List<ArticleItem>, oldList: List<ArticleItem>) =
+        newList.filterNot { oldList.contains(it) }.toList()
 
 }

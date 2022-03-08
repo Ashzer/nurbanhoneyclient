@@ -34,7 +34,7 @@
         </activity>
 
         <activity
-            android:name=".features.ui.home.BoardActivity"
+            android:name=".features.ui.home.HomeActivity"
             android:label="Board"
             android:screenOrientation="portrait">
         </activity>

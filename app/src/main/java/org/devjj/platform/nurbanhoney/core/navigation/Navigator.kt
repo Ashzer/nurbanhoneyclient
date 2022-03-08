@@ -1,19 +1,17 @@
 package org.devjj.platform.nurbanhoney.core.navigation
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import androidx.core.app.ActivityOptionsCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentContainerView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.core.sharedpreference.Prefs
 import org.devjj.platform.nurbanhoney.features.ui.article.model.Article
 import org.devjj.platform.nurbanhoney.features.ui.article.ArticleActivity
-import org.devjj.platform.nurbanhoney.features.ui.home.BoardActivity
+import org.devjj.platform.nurbanhoney.features.ui.home.HomeActivity
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.articles.ProfileArticlesActivity
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.comments.ProfileCommentsActivity
 import org.devjj.platform.nurbanhoney.features.ui.login.Authenticator
@@ -38,7 +36,7 @@ class Navigator
     }
 
     fun showHome(context: Context) =
-        context.startActivity(BoardActivity.callingIntent(context))
+        context.startActivity(HomeActivity.callingIntent(context))
 
     fun showProfileArticle(context: Context) =
         context.startActivity(ProfileArticlesActivity.callingIntent(context))

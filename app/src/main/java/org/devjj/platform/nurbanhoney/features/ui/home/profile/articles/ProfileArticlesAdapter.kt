@@ -9,6 +9,7 @@ import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.inflate
 import org.devjj.platform.nurbanhoney.core.extension.loadFromUrl
 import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
+import org.devjj.platform.nurbanhoney.core.utils.LocalDateTimeUtils
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileArticle
 import org.devjj.platform.nurbanhoney.features.Board
 import javax.inject.Inject
@@ -42,13 +43,7 @@ class ProfileArticlesAdapter
             itemView.itemProfileArticleTitleTv.text = article.title
             itemView.itemProfileArticleCommentsTv.text = "[${article.commentCount}]"
             itemView.itemProfileArticleBoardTv.text = article.board.name
-            itemView.itemProfileArticleDateTv.text =
-                "${article.createAt.split("T")[0]} ${
-                    article.createAt.split("T")[1].substring(
-                        0,
-                        8
-                    )
-                }"
+            itemView.itemProfileArticleDateTv.text = LocalDateTimeUtils.toString(article.createAt)
 
 
             itemView.setOnSingleClickListener {

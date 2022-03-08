@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.item_profile_comment.view.*
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.inflate
 import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
+import org.devjj.platform.nurbanhoney.core.utils.LocalDateTimeUtils
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileComment
 import org.devjj.platform.nurbanhoney.features.Board
 import javax.inject.Inject
@@ -31,15 +32,16 @@ class ProfileCommentsAdapter
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(comment: ProfileComment, clickListener: (Int, Board) -> Unit){
-            itemView.itemProfileCommentTv.text = comment.content
-            itemView.itemProfileBoardTv.text= comment.board.name
-            itemView.itemProfileTitleTv.text = comment.title
-            itemView.itemProfileDateTv.text=
-                "${comment.createAt.split("T")[0]} ${comment.createAt.split("T")[1].substring(0,8)}"
-
-            itemView.setOnSingleClickListener {
-                clickListener(comment.articleId,comment.board)
+            with(itemView){
+                itemProfileCommentTv.text = comment.content
+                itemProfileBoardTv.text= comment.board.name
+                itemProfileTitleTv.text = comment.title
+                itemProfileDateTv.text= LocalDateTimeUtils.toString(comment.createAt)
+                setOnSingleClickListener {
+                    clickListener(comment.articleId,comment.board)
+                }
             }
+
         }
     }
 }

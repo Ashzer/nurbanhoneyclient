@@ -100,8 +100,6 @@ open class TextEditorFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
         if (this.arguments != null) {
             if (requireArguments().containsKey(PARAM_BOARD)) {
                 viewModel.board = (arguments?.getParcelable(PARAM_BOARD) ?: Board.empty)
@@ -145,7 +143,6 @@ open class TextEditorFragment : BaseFragment() {
             uuid = UUID.randomUUID()
         }
 
-
         binding.textEditorNurbanBody.actionHeading1.setOnClickListener {
             mEditor.setEditorFontSize(
                 20
@@ -183,8 +180,7 @@ open class TextEditorFragment : BaseFragment() {
     private fun uploadImage(uri: Uri) {
         val imageFilePart = getMultipartBodyFromBitmap(uri)
         val uuidPart = MultipartBody.Part.createFormData("uuid", uuid.toString())
-        //TODO 이미지가 nurban 게시판에만 업로드 되는중
-        viewModel.uploadImage("nurban", nurbanToken, uuidPart, imageFilePart)
+        viewModel.uploadImage(viewModel.board.address, nurbanToken, uuidPart, imageFilePart)
     }
 
     private fun getMultipartBodyFromBitmap(uri: Uri): MultipartBody.Part {

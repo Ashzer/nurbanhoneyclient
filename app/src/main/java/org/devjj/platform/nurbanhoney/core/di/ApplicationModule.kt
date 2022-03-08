@@ -20,6 +20,9 @@ import org.devjj.platform.nurbanhoney.features.network.repositories.board.BoardR
 import org.devjj.platform.nurbanhoney.features.network.repositories.login.LoginManager
 import org.devjj.platform.nurbanhoney.features.network.repositories.profile.ProfileRepository
 import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.TextEditorRepository
+import org.devjj.platform.nurbanhoney.features.ui.home.boards.BoardPresenter
+import org.devjj.platform.nurbanhoney.features.ui.home.boards.BoardPresenterBinding
+import org.devjj.platform.nurbanhoney.features.ui.home.boards.BoardPresenterBindingImpl
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -80,4 +83,8 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideImageHandler(impl: ImageViewHandlerImpl): ImageViewHandler = impl
+
+    @Provides
+    @Singleton
+    fun provideBoardPresenterBinding(impl : BoardPresenterBindingImpl) : BoardPresenterBinding = impl
 }

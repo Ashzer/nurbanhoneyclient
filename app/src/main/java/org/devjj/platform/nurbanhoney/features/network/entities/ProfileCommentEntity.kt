@@ -2,6 +2,7 @@ package org.devjj.platform.nurbanhoney.features.network.entities
 
 import com.google.gson.annotations.SerializedName
 import org.devjj.platform.nurbanhoney.core.extension.empty
+import org.devjj.platform.nurbanhoney.core.utils.LocalDateTimeUtils
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileComment
 import org.devjj.platform.nurbanhoney.features.Board
 
@@ -21,5 +22,5 @@ data class ProfileCommentEntity(
         val empty = ProfileCommentEntity(-1, Board.empty, String.empty(), String.empty(), ArticleInfo(-1,String.empty()))
     }
 
-    fun toProfileComment() = ProfileComment(id, content, articleInfo.articleId, createAt, board, articleInfo.title)
+    fun toProfileComment() = ProfileComment(id, content, articleInfo.articleId, LocalDateTimeUtils.parse(createAt), board, articleInfo.title)
 }

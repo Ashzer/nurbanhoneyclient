@@ -17,7 +17,7 @@ import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentProfileBinding
-import org.devjj.platform.nurbanhoney.features.ui.home.BoardActivity
+import org.devjj.platform.nurbanhoney.features.ui.home.HomeActivity
 import javax.inject.Inject
 import kotlin.collections.forEach
 
@@ -26,11 +26,8 @@ class ProfileFragment : BaseFragment() {
 
     @Inject
     lateinit var navigator: Navigator
-
     @Inject
     lateinit var profileListener: ProfileListener
-
-    //override fun layoutId() = R.layout.fragment_profile
 
     private val viewModel by viewModels<ProfileViewModel>()
 
@@ -206,7 +203,7 @@ class ProfileFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as BoardActivity).setActionBarTitle("프로필")
+        (activity as HomeActivity).setActionBarTitle("프로필")
         //작성한 글 보기
         showMyArticles(binding.llMyarticle)
         //작성 댓글 보기

@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentRankingBinding
-import org.devjj.platform.nurbanhoney.features.ui.home.BoardActivity
+import org.devjj.platform.nurbanhoney.features.ui.home.HomeActivity
 
 class RankingFragment : BaseFragment() {
     //override fun layoutId() = R.layout.fragment_ranking
@@ -31,6 +30,6 @@ class RankingFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as BoardActivity).setActionBarTitle("랭킹")
+        (activity as HomeActivity).setActionBarTitle("랭킹")
     }
 }

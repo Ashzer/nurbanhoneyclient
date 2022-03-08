@@ -9,23 +9,23 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentBoardBinding
 import org.devjj.platform.nurbanhoney.features.Board
-import org.devjj.platform.nurbanhoney.features.ui.home.BoardActivity
+import org.devjj.platform.nurbanhoney.features.ui.home.HomeActivity
 import org.devjj.platform.nurbanhoney.features.ui.home.boards.model.ArticleItem
 import org.devjj.platform.nurbanhoney.features.ui.home.boards.model.BoardViewModel
 import javax.inject.Inject
 
 @AndroidEntryPoint
 open class BoardFragment : BaseFragment() {
-    //override fun layoutId() = R.layout.fragment_nurbanboard
+
+    @Inject
+    lateinit var presenter: BoardPresenterBinding
 
     @Inject
     lateinit var navigator: Navigator
@@ -40,45 +40,29 @@ open class BoardFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         with(viewModel) {
-            observe(newArticles, ::renderArticles)
+            observe(newArticles, ::newArticleResponse)
             failure(failure, ::failureHandler)
         }
-
+        val bundle = this.arguments
+        viewModel.board = bundle?.getParcelable(R.string.BoardInfo.toString()) ?: Board.empty
     }
 
     override fun onDestroyView() {
+        presenter.removePresenter()
         binding.boardListRv.adapter = null
         _binding = null
         super.onDestroyView()
     }
 
-    private fun renderArticles(articleItems: List<ArticleItem>?) {
-        //articleAdapter.collection = articleItems.orEmpty()
-        if (isIterable(articleItems)) {
-            var adder = articleItems!!.filter { !articleAdapter.collection.contains(it) }.toList()
-            if (adder.isNotEmpty()) {
-                articleAdapter.insertFront(adder)
-            } else {
-                viewModel.getArticles()
-                Log.d("recycler_scroll_check__", "이게 왜?")
-            }
-        }
+    private fun newArticleResponse(articleItems: List<ArticleItem>?) {
+        presenter.renderMoreArticles(articleItems)
     }
-
-    private fun isIterable(collection: Collection<Any>?) = !collection.isNullOrEmpty()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        var bundle = this.arguments
-        if (bundle != null) {
-            viewModel.board = bundle.getParcelable(R.string.BoardInfo.toString()) ?: Board.empty
-            Log.d("bundle_check__", viewModel.board.toString())
-        }
-
         _binding = FragmentBoardBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -86,45 +70,61 @@ open class BoardFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.boardWriteFab.visible()
-
-        viewModel.getBoards()
-
-        (requireActivity() as BoardActivity).setActionBarTitle(viewModel.board.name)
-        binding.boardWriteFab.setOnSingleClickListener {
-            //navigator.showTextEditor(requireContext())
-            CoroutineScope(Dispatchers.IO).async {
-                navigator.showTextEditorWithLoginCheck(requireContext(), viewModel.board)
-            }
-        }
-
+        (requireActivity() as HomeActivity).setActionBarTitle(viewModel.board.name)
 
         binding.boardListRv.layoutManager = LinearLayoutManager(requireContext())
         binding.boardListRv.adapter = articleAdapter
+        presenter.setup(binding, articleAdapter, viewModel)
+        presenter.initializeArticles()
 
-        viewModel.initArticles()
+        setNewArticleWritable()
+        setRecyclerViewLoadMoreListener()
+
+        articleAdapter.clickListener = boardArticleClickListener()
+
+    }
+
+    protected fun setNewArticleWritable() {
+        binding.boardWriteFab.visible()
+        binding.boardWriteFab.setOnSingleClickListener {
+            runBlocking {
+                navigator.showTextEditorWithLoginCheck(requireContext(), viewModel.board)
+            }
+        }
+    }
+
+    protected fun setNewArticleForbidden() {
+        binding.boardWriteFab.invisible()
+        binding.boardWriteFab.setOnSingleClickListener { }
+    }
+
+    private fun setRecyclerViewLoadMoreListener() {
         var oldCount = 0
         binding.boardListRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-
-                //(recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                 val layoutManager = recyclerView.getLinearLayoutManager()
                 val position = layoutManager.findLastVisibleItemPosition()
                 val count = (recyclerView.adapter?.itemCount ?: 0)
 
-                val threshold = 10
-                if ((count < position + threshold) && oldCount != count) {
-                    Log.d("scroll_check__", binding.boardListRv.canScrollVertically(1).toString())
-                    viewModel.getArticles()
+                if (crossedThresholdFirstTime(count, position, oldCount)) {
+                    presenter.requestMoreArticles()
                     oldCount = count
                 }
             }
         })
-        articleAdapter.clickListener = boardArticleClickListener()
-
     }
+
+    private fun crossedThresholdFirstTime(count: Int, position: Int, oldCount: Int) =
+        crossedThreshold(count, position) && isNewCondition(oldCount, count)
+
+    private fun crossedThreshold(count: Int, position: Int): Boolean {
+        val threshold = 10
+        return count < (position + threshold)
+    }
+
+    private fun isNewCondition(oldCount: Int, count: Int): Boolean = oldCount != count
 
     protected open fun boardArticleClickListener(): (Int, Board) -> Unit = { id, _ ->
         navigator.showArticle(requireActivity(), viewModel.board, id)

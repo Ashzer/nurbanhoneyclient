@@ -2,6 +2,7 @@ package org.devjj.platform.nurbanhoney.features.network.entities
 
 import com.google.gson.annotations.SerializedName
 import org.devjj.platform.nurbanhoney.core.extension.empty
+import org.devjj.platform.nurbanhoney.core.utils.LocalDateTimeUtils
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileArticle
 import org.devjj.platform.nurbanhoney.features.Board
 
@@ -30,6 +31,6 @@ data class ProfileArticleEntity(
         thumbnail,
         title,
         commentCount,
-        createAt
+        LocalDateTimeUtils.parse(createAt)
     )
 }

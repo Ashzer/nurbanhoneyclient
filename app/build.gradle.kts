@@ -41,6 +41,8 @@ dependencies {
     implementation("androidx.gridlayout:gridlayout:1.0.0")
     implementation("androidx.navigation:navigation-runtime-ktx:2.3.5")
     implementation("androidx.preference:preference-ktx:1.1.1")
+    implementation("com.jakewharton.threetenabp:threetenabp:1.3.0")
+
     //Compile time dependencies
     kapt(Libraries.lifecycleCompiler)
     kapt(Libraries.hiltCompiler)

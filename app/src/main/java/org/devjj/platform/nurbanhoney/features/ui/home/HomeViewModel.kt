@@ -12,7 +12,7 @@ import org.devjj.platform.nurbanhoney.features.Board
 import javax.inject.Inject
 
 @HiltViewModel
-class BoardAViewModel
+class HomeViewModel
 @Inject constructor(
     private val getBoards: GetBoardsUseCase
 ) : BaseViewModel() {
