@@ -3,6 +3,7 @@ package org.devjj.platform.nurbanhoney.features.network.repositories.rank
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
+import org.devjj.platform.nurbanhoney.features.network.request
 import org.devjj.platform.nurbanhoney.features.ui.home.ranking.Rank
 import org.devjj.platform.nurbanhoney.features.ui.home.ranking.RankSimple
 import javax.inject.Inject
@@ -18,7 +19,7 @@ interface RankRepository {
     ) : RankRepository {
         override fun getRanks(): Either<Failure, List<Rank>> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     rankService.getRanks(),
                     { it.map { RankEntity -> RankEntity.toRank() } },
                     listOf()
@@ -29,7 +30,7 @@ interface RankRepository {
 
         override fun getTopRanks(offset: Int, limit: Int): Either<Failure, List<RankSimple>> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     rankService.getRanksTopThree(offset, limit),
                     { it.map { RankEntity -> RankEntity.toRankSimple() } },
                     listOf()
@@ -37,5 +38,7 @@ interface RankRepository {
                 false -> Either.Left(Failure.NetworkConnection)
             }
         }
+
+
     }
 }

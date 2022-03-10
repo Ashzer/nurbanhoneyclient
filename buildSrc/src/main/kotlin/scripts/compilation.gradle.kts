@@ -21,6 +21,9 @@ android {
 
     testOptions {
         animationsDisabled = true
+        unitTests.all {
+            
+        }
     }
 
     kotlinOptions {

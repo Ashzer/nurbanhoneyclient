@@ -25,10 +25,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 )
             }
             else -> {
-                val count = supportFragmentManager.backStackEntryCount
                 supportFragmentManager.popBackStack()
-                //if (supportFragmentManager.backStackEntryCount == count) supportFragmentManager.popBackStack()
-
                 Log.d(
                     "onBackPressed_check",
                     "performed supportFragmentManager.popBackStack(). supportFragmentManager.backStackEntryCount = ${supportFragmentManager.backStackEntryCount}"

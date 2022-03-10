@@ -4,6 +4,7 @@ import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
 import org.devjj.platform.nurbanhoney.features.Board
+import org.devjj.platform.nurbanhoney.features.network.request
 import javax.inject.Inject
 
 interface BoardRepository {
@@ -13,12 +14,12 @@ interface BoardRepository {
     @Inject constructor(
         private val networkHandler: NetworkHandler,
         private val boardService: BoardService
-    ) :BoardRepository{
+    ) : BoardRepository {
         override fun getBoards(): Either<Failure, List<Board>> {
-            return when(networkHandler.isNetworkAvailable()){
-                true-> networkHandler.request(
+            return when (networkHandler.isNetworkAvailable()) {
+                true -> request(
                     boardService.getBoards(),
-                    {it.map{BoardEntity -> BoardEntity.toBoard()}},
+                    { it.map { BoardEntity -> BoardEntity.toBoard() } },
                     emptyList()
                 )
                 false -> Either.Left(Failure.NetworkConnection)

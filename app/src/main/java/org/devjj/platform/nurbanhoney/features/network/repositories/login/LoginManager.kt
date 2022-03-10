@@ -6,13 +6,14 @@ import org.devjj.platform.nurbanhoney.core.functional.Either.Left
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
 import org.devjj.platform.nurbanhoney.features.network.entities.LoginEntity
 import org.devjj.platform.nurbanhoney.features.network.entities.ValidationEntity
+import org.devjj.platform.nurbanhoney.features.network.request
 import org.devjj.platform.nurbanhoney.features.ui.login.NurbanToken
 import org.devjj.platform.nurbanhoney.features.ui.login.TokenStatus
 import javax.inject.Inject
 
 interface LoginManager {
-    fun getNurbanToken(type : String ,kakaoKey : String) : Either<Failure, NurbanToken>
-    fun isTokenValid(token : String) : Either<Failure, TokenStatus>
+    fun getNurbanToken(type: String, kakaoKey: String): Either<Failure, NurbanToken>
+    fun isTokenValid(token: String): Either<Failure, TokenStatus>
 
     class Network
     @Inject constructor(
@@ -20,10 +21,10 @@ interface LoginManager {
         private val loginService: LoginService
     ) : LoginManager {
 
-        override fun getNurbanToken(type: String, kakaoKey : String): Either<Failure, NurbanToken> {
-            return when( networkHandler.isNetworkAvailable()){
+        override fun getNurbanToken(type: String, kakaoKey: String): Either<Failure, NurbanToken> {
+            return when (networkHandler.isNetworkAvailable()) {
                 true ->
-                    networkHandler.request(
+                    request(
                         loginService.loginRequest(type, kakaoKey),
                         { it.toNurbanToken() },
                         LoginEntity.empty
@@ -33,9 +34,9 @@ interface LoginManager {
         }
 
         override fun isTokenValid(token: String): Either<Failure, TokenStatus> {
-            return when( networkHandler.isNetworkAvailable()){
+            return when (networkHandler.isNetworkAvailable()) {
                 true ->
-                    networkHandler.request(
+                    request(
                         loginService.validationCheck(token),
                         { it.toIsTokenValid() },
                         ValidationEntity.empty

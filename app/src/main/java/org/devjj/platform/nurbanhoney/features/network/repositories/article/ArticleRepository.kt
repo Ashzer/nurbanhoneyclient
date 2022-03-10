@@ -1,5 +1,7 @@
 package org.devjj.platform.nurbanhoney.features.network.repositories.article
 
+import android.util.Log
+import com.kakao.sdk.network.origin
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
@@ -7,8 +9,10 @@ import org.devjj.platform.nurbanhoney.features.network.entities.CommentEntity
 import org.devjj.platform.nurbanhoney.features.network.entities.RatingsEntity
 import org.devjj.platform.nurbanhoney.features.network.entities.SimpleResponseEntity
 import org.devjj.platform.nurbanhoney.features.network.entities.ArticleEntity
+import org.devjj.platform.nurbanhoney.features.network.request
 import org.devjj.platform.nurbanhoney.features.ui.article.model.*
 import org.devjj.platform.nurbanhoney.features.ui.home.boards.model.ArticleItem
+import retrofit2.Call
 import javax.inject.Inject
 
 interface ArticleRepository {
@@ -47,6 +51,7 @@ interface ArticleRepository {
     ): Either<Failure, CommentResponse>
 
     fun getComment(board: String, commentId: Int): Either<Failure, Comment>
+
     fun getArticles(
         board: String,
         flag: Int,
@@ -67,12 +72,9 @@ interface ArticleRepository {
             limit: Int
         ): Either<Failure, List<ArticleItem>> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     articleService.getArticles(board, flag, offset, limit),
                     {
-//                        it.forEach { item->
-//                            Log.d("badge_check__","??? ${item.user?.profile?:"empty"}")
-//                        }
                         it.map { ArticlesRequestEntity ->
                             ArticlesRequestEntity.toNurbanHoneyArticle()
                         }
@@ -85,7 +87,7 @@ interface ArticleRepository {
 
         override fun getArticle(board: String, token: String, id: Int): Either<Failure, Article> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     articleService.getArticle(board, token, id),
                     { it.toArticle() },
                     ArticleEntity.empty
@@ -100,7 +102,7 @@ interface ArticleRepository {
             id: Int
         ): Either<Failure, RatingResponse> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     articleService.postLike(board, token, id),
                     { it.toRatingResponse() },
                     SimpleResponseEntity.empty
@@ -115,7 +117,7 @@ interface ArticleRepository {
             id: Int
         ): Either<Failure, RatingResponse> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     articleService.cancelLike(board, token, id),
                     { it.toRatingResponse() },
                     SimpleResponseEntity.empty
@@ -130,7 +132,7 @@ interface ArticleRepository {
             id: Int
         ): Either<Failure, RatingResponse> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     articleService.postDislike(board, token, id),
                     { it.toRatingResponse() },
                     SimpleResponseEntity.empty
@@ -145,7 +147,7 @@ interface ArticleRepository {
             id: Int
         ): Either<Failure, RatingResponse> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     articleService.cancelDislike(board, token, id),
                     { it.toRatingResponse() },
                     SimpleResponseEntity.empty
@@ -160,7 +162,7 @@ interface ArticleRepository {
             articleId: Int
         ): Either<Failure, Ratings> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     articleService.getRatings(board, token, articleId),
                     { it.toRatings() },
                     RatingsEntity.empty
@@ -176,7 +178,7 @@ interface ArticleRepository {
             id: Int
         ): Either<Failure, CommentResponse> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     articleService.postComment(board, token, comment, id),
                     { it.toCommentResponse() },
                     SimpleResponseEntity.empty
@@ -192,7 +194,7 @@ interface ArticleRepository {
             limit: Int
         ): Either<Failure, List<Comment>> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     articleService.getComments(board, articleId, offset, limit),
                     { it.map { CommentEntity -> CommentEntity.toComment() } },
                     listOf(CommentEntity.empty)
@@ -203,7 +205,7 @@ interface ArticleRepository {
 
         override fun getComment(board: String, commentId: Int): Either<Failure, Comment> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     articleService.getComment(board, commentId),
                     { it.toComment() },
                     CommentEntity.empty
@@ -219,7 +221,7 @@ interface ArticleRepository {
             articleId: Int
         ): Either<Failure, CommentResponse> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     articleService.deleteComment(board, token, id, articleId),
                     { it.toCommentResponse() },
                     SimpleResponseEntity.empty
@@ -235,7 +237,7 @@ interface ArticleRepository {
             content: String
         ): Either<Failure, CommentResponse> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     articleService.updateComment(board, token, id, content),
                     { it.toCommentResponse() },
                     SimpleResponseEntity.empty

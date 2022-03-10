@@ -5,6 +5,7 @@ import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
 import org.devjj.platform.nurbanhoney.features.network.entities.ProfileEntity
 import org.devjj.platform.nurbanhoney.features.network.entities.SimpleResponseEntity
+import org.devjj.platform.nurbanhoney.features.network.request
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.*
 import javax.inject.Inject
 
@@ -28,7 +29,7 @@ interface ProfileRepository {
     ) : ProfileRepository {
         override fun getProfile(token: String): Either<Failure, Profile> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     profileService.getProfile(token),
                     { it.toProfile() },
                     ProfileEntity.empty
@@ -43,7 +44,7 @@ interface ProfileRepository {
             limit: Int
         ): Either<Failure, List<ProfileArticle>> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     profileService.getMyArticles(token, offset, limit),
                     { it.map { ProfileArticleEntity -> ProfileArticleEntity.toProfileArticle() } },
                     listOf()
@@ -58,7 +59,7 @@ interface ProfileRepository {
             limit: Int
         ): Either<Failure, List<ProfileComment>> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     profileService.getMyComments(token, offset, limit),
                     { it.map { ProfileCommentEntity -> ProfileCommentEntity.toProfileComment() } },
                     listOf()
@@ -69,7 +70,7 @@ interface ProfileRepository {
 
         override fun signOut(token: String, id: Int): Either<Failure, SignOutResponse> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     profileService.signOut(token, id),
                     { it.toSignOutResponse() },
                     SimpleResponseEntity.empty
@@ -85,7 +86,7 @@ interface ProfileRepository {
             insignia: List<String>
         ): Either<Failure, EditProfileResponse> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     profileService.editProfile(token, nickname, description, insignia),
                     { it.toEditProfileResponse() },
                     SimpleResponseEntity.empty

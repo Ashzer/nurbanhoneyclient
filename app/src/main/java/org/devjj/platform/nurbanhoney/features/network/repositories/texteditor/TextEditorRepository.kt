@@ -1,5 +1,7 @@
 package org.devjj.platform.nurbanhoney.features.network.repositories.texteditor
 
+import android.util.Log
+import com.kakao.sdk.network.origin
 import okhttp3.MultipartBody
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.exception.Failure.NetworkConnection
@@ -11,6 +13,8 @@ import org.devjj.platform.nurbanhoney.features.ui.textedit.ArticleResponse
 import org.devjj.platform.nurbanhoney.features.ui.textedit.ImageResponse
 import org.devjj.platform.nurbanhoney.features.ui.textedit.ImageUploadResult
 import org.devjj.platform.nurbanhoney.features.network.entities.UploadImageEntity
+import org.devjj.platform.nurbanhoney.features.network.request
+import retrofit2.Call
 import javax.inject.Inject
 
 interface TextEditorRepository {
@@ -83,7 +87,7 @@ interface TextEditorRepository {
             content: String,
         ): Either<Failure, ArticleResponse> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     boardService.uploadNurbanRequest(
                         board,
                         token,
@@ -109,7 +113,7 @@ interface TextEditorRepository {
             content: String
         ): Either<Failure, ArticleResponse> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     boardService.uploadRequest(
                         board,
                         token,
@@ -135,7 +139,7 @@ interface TextEditorRepository {
             content: String
         ): Either<Failure, ArticleResponse> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     boardService.modifyNurbanRequest(
                         board,
                         token,
@@ -161,7 +165,7 @@ interface TextEditorRepository {
             content: String
         ): Either<Failure, ArticleResponse> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     boardService.modifyRequest(
                         board,
                         token,
@@ -184,7 +188,7 @@ interface TextEditorRepository {
             uuid: String
         ): Either<Failure, ArticleResponse> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     boardService.deleteArticle(board, token, articleId, uuid),
                     { it.toArticleResponse() },
                     SimpleResponseEntity.empty
@@ -200,7 +204,7 @@ interface TextEditorRepository {
             image: MultipartBody.Part
         ): Either<Failure, ImageUploadResult> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     boardService.uploadImage(board, token, uuid, image),
                     { it.toImageUploadResult() },
                     UploadImageEntity.empty
@@ -216,7 +220,7 @@ interface TextEditorRepository {
             uuid: String
         ): Either<Failure, ImageResponse> {
             return when (networkHandler.isNetworkAvailable()) {
-                true -> networkHandler.request(
+                true -> request(
                     boardService.deleteImage(board, token, uuid),
                     { it.toImageResponse() },
                     SimpleResponseEntity.empty
