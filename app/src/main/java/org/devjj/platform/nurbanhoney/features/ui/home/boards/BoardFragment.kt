@@ -25,7 +25,7 @@ import javax.inject.Inject
 open class BoardFragment : BaseFragment() {
 
     @Inject
-    lateinit var presenter: BoardPresenterBinding
+    lateinit var presenter: BoardBindingPresenter
 
     @Inject
     lateinit var navigator: Navigator
@@ -48,14 +48,13 @@ open class BoardFragment : BaseFragment() {
     }
 
     override fun onDestroyView() {
-        presenter.removePresenter()
         binding.boardListRv.adapter = null
         _binding = null
         super.onDestroyView()
     }
 
     private fun newArticleResponse(articleItems: List<ArticleItem>?) {
-        presenter.renderMoreArticles(articleItems)
+        presenter.renderMoreArticles(articleAdapter,viewModel,articleItems)
     }
 
     override fun onCreateView(
@@ -74,8 +73,10 @@ open class BoardFragment : BaseFragment() {
 
         binding.boardListRv.layoutManager = LinearLayoutManager(requireContext())
         binding.boardListRv.adapter = articleAdapter
+
+        while(!this::articleAdapter.isInitialized){}
         presenter.setup(binding, articleAdapter, viewModel)
-        presenter.initializeArticles()
+        presenter.initializeArticles(articleAdapter,viewModel)
 
         setNewArticleWritable()
         setRecyclerViewLoadMoreListener()
@@ -109,7 +110,7 @@ open class BoardFragment : BaseFragment() {
                 val count = (recyclerView.adapter?.itemCount ?: 0)
 
                 if (crossedThresholdFirstTime(count, position, oldCount)) {
-                    presenter.requestMoreArticles()
+                    presenter.requestMoreArticles(viewModel)
                     oldCount = count
                 }
             }

@@ -13,16 +13,13 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.devjj.platform.nurbanhoney.BuildConfig
 import org.devjj.platform.nurbanhoney.R
-import org.devjj.platform.nurbanhoney.core.imageprocessing.ImageViewHandler
-import org.devjj.platform.nurbanhoney.core.imageprocessing.ImageViewHandlerImpl
 import org.devjj.platform.nurbanhoney.features.network.repositories.article.ArticleRepository
 import org.devjj.platform.nurbanhoney.features.network.repositories.board.BoardRepository
 import org.devjj.platform.nurbanhoney.features.network.repositories.login.LoginManager
 import org.devjj.platform.nurbanhoney.features.network.repositories.profile.ProfileRepository
 import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.TextEditorRepository
-import org.devjj.platform.nurbanhoney.features.ui.home.boards.BoardPresenter
-import org.devjj.platform.nurbanhoney.features.ui.home.boards.BoardPresenterBinding
-import org.devjj.platform.nurbanhoney.features.ui.home.boards.BoardPresenterBindingImpl
+import org.devjj.platform.nurbanhoney.features.ui.home.boards.BoardBindingPresenter
+import org.devjj.platform.nurbanhoney.features.ui.home.boards.BoardBindingPresenterImpl
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -80,11 +77,8 @@ class ApplicationModule {
     fun provideProfileRepository(dataSource: ProfileRepository.Network): ProfileRepository =
         dataSource
 
-    @Provides
-    @Singleton
-    fun provideImageHandler(impl: ImageViewHandlerImpl): ImageViewHandler = impl
 
     @Provides
     @Singleton
-    fun provideBoardPresenterBinding(impl : BoardPresenterBindingImpl) : BoardPresenterBinding = impl
+    fun provideBoardPresenterBinding(impl: BoardBindingPresenterImpl): BoardBindingPresenter = impl
 }

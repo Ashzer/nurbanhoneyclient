@@ -26,13 +26,13 @@ class GetProfileTest : UnitTest() {
     @Test
     fun `should get profile from repository`() {
         runBlocking {
-            profileRepository.run { (GetProfileUseCase.Params(token)) }
+            getProfile.run(GetProfileUseCase.Params(token))
         }
 
         verify(exactly = 1){ profileRepository.getProfile(token) }
     }
 
     companion object{
-        var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJLLTE5MzY3NzY2NTEiLCJpYXQiOjE2NDIwMjczMzMsImV4cCI6MTY0MjAyNzYzM30.qA8v1-kfzpe9Us9svhy_KqrAgfYywidM96k-cd0OZbM"
+        var token = "1"
     }
 }

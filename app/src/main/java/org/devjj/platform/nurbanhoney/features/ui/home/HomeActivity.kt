@@ -3,7 +3,6 @@ package org.devjj.platform.nurbanhoney.features.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
@@ -71,14 +70,11 @@ class HomeActivity : BaseNavigationActivity() {
         synchronizeNavigationCheckedWhenFragmentChanged()
     }
 
-    private fun setDrawerMenuSelectedListener(){
+    private fun setDrawerMenuSelectedListener() {
         binding.navigationSideMenu.setNavigationItemSelectedListener {
             if (it.groupId == R.id.menu_group_boards) {
-                val bundle = Bundle()
-                bundle.putParcelable(
-                    R.string.BoardInfo.toString(),
-                    viewModel.boards.value?.get(it.itemId)
-                )
+
+                val bundle =createBoardBundle(viewModel.boards.value?.get(it.itemId)?: Board.empty)
                 val frag = BoardFragment()
                 frag.arguments = bundle
                 navigate(frag)
@@ -95,7 +91,7 @@ class HomeActivity : BaseNavigationActivity() {
         }
     }
 
-    private fun setNavigationMenuSelectedListener(){
+    private fun setNavigationMenuSelectedListener() {
         binding.navigationNavigator.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.menu_popular_board -> launchPopularFragment()
@@ -107,7 +103,7 @@ class HomeActivity : BaseNavigationActivity() {
         }
     }
 
-    private fun synchronizeNavigationCheckedWhenFragmentChanged(){
+    private fun synchronizeNavigationCheckedWhenFragmentChanged() {
         supportFragmentManager.addOnBackStackChangedListener {
             if (supportFragmentManager.backStackEntryCount > 0) {
                 supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1)
@@ -132,30 +128,30 @@ class HomeActivity : BaseNavigationActivity() {
     }
 
     private fun launchPopularFragment() {
-        val bundle = createPopularBundle()
+        val bundle = createBoardBundle(-1, "인기글", "popular")
         val frag = BoardPopularFragment()
         frag.arguments = bundle
         navigate(frag)
     }
 
-    private fun createPopularBundle() = Bundle().apply {
-        this.putParcelable(
-            R.string.BoardInfo.toString(),
-            Board(-1, "인기글", "popular")
-        )
-    }
-
     private fun launchNoticeFragment() {
-        val bundle = createNoticeBundle()
+        val bundle = createBoardBundle(-1, "공지사항", "notice")
         val frag = BoardNoticeFragment()
         frag.arguments = bundle
         navigate(frag)
     }
 
-    private fun createNoticeBundle() = Bundle().apply {
+    private fun createBoardBundle(id : Int, name: String, address: String) = Bundle().apply {
         this.putParcelable(
             R.string.BoardInfo.toString(),
-            Board(-1, "공지사항", "notice")
+            Board(id, name, address)
+        )
+    }
+
+    private fun createBoardBundle(board:Board) = Bundle().apply {
+        this.putParcelable(
+            R.string.BoardInfo.toString(),
+            board
         )
     }
 

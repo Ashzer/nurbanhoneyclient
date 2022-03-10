@@ -19,7 +19,10 @@ import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.exception.Failure.NetworkConnection
 import org.devjj.platform.nurbanhoney.core.exception.Failure.ServerError
-import org.devjj.platform.nurbanhoney.core.extension.*
+import org.devjj.platform.nurbanhoney.core.extension.close
+import org.devjj.platform.nurbanhoney.core.extension.failure
+import org.devjj.platform.nurbanhoney.core.extension.observe
+import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
 import org.devjj.platform.nurbanhoney.databinding.FragmentLoginBinding
@@ -27,7 +30,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment() {
-     @Inject
+    @Inject
     lateinit var navigator: Navigator
 
     private val viewModel by viewModels<LoginViewModel>()
@@ -35,7 +38,7 @@ class LoginFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     lateinit var mOAuthLoginModule: OAuthLogin
-    private val RC_SIGN_IN = 9001
+  //  private val RC_SIGN_IN = 9001
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +58,11 @@ class LoginFragment : BaseFragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,7 +72,7 @@ class LoginFragment : BaseFragment() {
         //네이버 로그인인
         naverLoginBtnListener(binding.loginNaverBtn)
         //구글 로그인
-        googleLoginBtnListener(binding.loginGoogleClo)
+ //       googleLoginBtnListener(binding.loginGoogleClo)
 
     }
 
@@ -150,30 +158,30 @@ class LoginFragment : BaseFragment() {
         }
     }
 
-    private fun googleLoginBtnListener(view: View) = view.setOnSingleClickListener {
-
-        var signInIntent = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestEmail()
-            .build().let {
-                GoogleSignIn.getClient(requireActivity(), it)
-            }.signInIntent
-
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_SIGN_IN) {
-            try {
-                var task = GoogleSignIn.getSignedInAccountFromIntent(data)
-                    .getResult(ApiException::class.java)
-
-                Log.d("google_check__", task.toString())
-            } catch (e: ApiException) {
-                Log.d("google_check__", "signInResult:failed code=" + e.statusCode)
-            }
-
-        }
-    }
+//    private fun googleLoginBtnListener(view: View) = view.setOnSingleClickListener {
+//
+//        var signInIntent = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//            .requestEmail()
+//            .build().let {
+//                GoogleSignIn.getClient(requireActivity(), it)
+//            }.signInIntent
+//
+//        startActivityForResult(signInIntent, RC_SIGN_IN)
+//    }
+//
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        if (requestCode == RC_SIGN_IN) {
+//            try {
+//                var task = GoogleSignIn.getSignedInAccountFromIntent(data)
+//                    .getResult(ApiException::class.java)
+//
+//                Log.d("google_check__", task.toString())
+//            } catch (e: ApiException) {
+//                Log.d("google_check__", "signInResult:failed code=" + e.statusCode)
+//            }
+//
+//        }
+//    }
 }
