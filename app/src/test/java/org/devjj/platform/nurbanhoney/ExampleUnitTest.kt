@@ -1,10 +1,9 @@
 package org.devjj.platform.nurbanhoney
 
 import android.util.Patterns
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
-import org.junit.Assert.*
-import java.util.regex.Pattern
 
 /**
  * Example local unit test, which will execute on the development machine (host).

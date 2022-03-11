@@ -7,7 +7,7 @@ data class ProfileComment(
     val id: Int,
     val content: String,
     val articleId: Int,
-    val createAt: LocalDateTime,
+    val createAt: LocalDateTime?,
     var board: Board,
     val title: String
 )

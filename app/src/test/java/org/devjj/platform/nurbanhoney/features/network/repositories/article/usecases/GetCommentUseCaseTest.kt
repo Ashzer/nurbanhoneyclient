@@ -1,23 +1,23 @@
 package org.devjj.platform.nurbanhoney.features.network.repositories.article.usecases
 
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
+import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import org.devjj.platform.nurbanhoney.UnitTest
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.features.network.repositories.article.ArticleRepository
 import org.devjj.platform.nurbanhoney.features.ui.article.model.Comment
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class GetCommentUseCaseTest : UnitTest() {
     private lateinit var getComment: GetCommentUseCase
 
-    @MockK
-    private lateinit var repository: ArticleRepository
+   var repository = mockk<ArticleRepository>()
 
-    @Before
+    @BeforeEach
     fun setUp() {
         getComment = GetCommentUseCase(repository)
         every { repository.getComment(board, commentId) } returns Either.Right(Comment.empty)

@@ -110,10 +110,10 @@ object TestLibraries {
         const val mockk = "1.10.0"
         const val robolectric = "4.4"
         const val kluent = "1.14"
-        const val testRunner = "1.1.0"
-        const val espressoCore = "3.2.0"
+        const val testRunner = "1.4.0"
+        const val espressoCore = "3.4.0"
         const val espressoIntents = "3.1.0"
-        const val testExtensions = "1.1.1"
+        const val testExtensions = "1.1.3"
         const val testRules = "1.1.0"
         const val hiltTesting = BuildPlugins.Versions.hilt
     }

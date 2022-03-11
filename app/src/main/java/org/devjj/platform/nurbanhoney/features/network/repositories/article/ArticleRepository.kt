@@ -4,6 +4,7 @@ import android.util.Log
 import com.kakao.sdk.network.origin
 import org.devjj.platform.nurbanhoney.core.exception.Failure
 import org.devjj.platform.nurbanhoney.core.functional.Either
+import org.devjj.platform.nurbanhoney.core.functional.Either.Left
 import org.devjj.platform.nurbanhoney.core.platform.NetworkHandler
 import org.devjj.platform.nurbanhoney.features.network.entities.CommentEntity
 import org.devjj.platform.nurbanhoney.features.network.entities.RatingsEntity
@@ -47,7 +48,7 @@ interface ArticleRepository {
         board: String,
         token: String,
         id: Int,
-        content: String
+        comment: String
     ): Either<Failure, CommentResponse>
 
     fun getComment(board: String, commentId: Int): Either<Failure, Comment>
@@ -81,7 +82,7 @@ interface ArticleRepository {
                     },
                     emptyList()
                 )
-                false -> Either.Left(Failure.NetworkConnection)
+                false -> Left(Failure.NetworkConnection)
             }
         }
 
@@ -92,7 +93,7 @@ interface ArticleRepository {
                     { it.toArticle() },
                     ArticleEntity.empty
                 )
-                false -> Either.Left(Failure.NetworkConnection)
+                false -> Left(Failure.NetworkConnection)
             }
         }
 
@@ -107,7 +108,7 @@ interface ArticleRepository {
                     { it.toRatingResponse() },
                     SimpleResponseEntity.empty
                 )
-                false -> Either.Left(Failure.NetworkConnection)
+                false -> Left(Failure.NetworkConnection)
             }
         }
 
@@ -122,7 +123,7 @@ interface ArticleRepository {
                     { it.toRatingResponse() },
                     SimpleResponseEntity.empty
                 )
-                false -> Either.Left(Failure.NetworkConnection)
+                false -> Left(Failure.NetworkConnection)
             }
         }
 
@@ -137,7 +138,7 @@ interface ArticleRepository {
                     { it.toRatingResponse() },
                     SimpleResponseEntity.empty
                 )
-                false -> Either.Left(Failure.NetworkConnection)
+                false -> Left(Failure.NetworkConnection)
             }
         }
 
@@ -152,7 +153,7 @@ interface ArticleRepository {
                     { it.toRatingResponse() },
                     SimpleResponseEntity.empty
                 )
-                false -> Either.Left(Failure.NetworkConnection)
+                false -> Left(Failure.NetworkConnection)
             }
         }
 
@@ -167,7 +168,7 @@ interface ArticleRepository {
                     { it.toRatings() },
                     RatingsEntity.empty
                 )
-                false -> Either.Left(Failure.NetworkConnection)
+                false -> Left(Failure.NetworkConnection)
             }
         }
 
@@ -183,7 +184,7 @@ interface ArticleRepository {
                     { it.toCommentResponse() },
                     SimpleResponseEntity.empty
                 )
-                false -> Either.Left(Failure.NetworkConnection)
+                false -> Left(Failure.NetworkConnection)
             }
         }
 
@@ -197,9 +198,9 @@ interface ArticleRepository {
                 true -> request(
                     articleService.getComments(board, articleId, offset, limit),
                     { it.map { CommentEntity -> CommentEntity.toComment() } },
-                    listOf(CommentEntity.empty)
+                    emptyList()
                 )
-                false -> Either.Left(Failure.NetworkConnection)
+                false -> Left(Failure.NetworkConnection)
             }
         }
 
@@ -210,7 +211,7 @@ interface ArticleRepository {
                     { it.toComment() },
                     CommentEntity.empty
                 )
-                false -> Either.Left(Failure.NetworkConnection)
+                false -> Left(Failure.NetworkConnection)
             }
         }
 
@@ -226,7 +227,7 @@ interface ArticleRepository {
                     { it.toCommentResponse() },
                     SimpleResponseEntity.empty
                 )
-                false -> Either.Left(Failure.NetworkConnection)
+                false -> Left(Failure.NetworkConnection)
             }
         }
 
@@ -234,15 +235,15 @@ interface ArticleRepository {
             board: String,
             token: String,
             id: Int,
-            content: String
+            comment: String
         ): Either<Failure, CommentResponse> {
             return when (networkHandler.isNetworkAvailable()) {
                 true -> request(
-                    articleService.updateComment(board, token, id, content),
+                    articleService.updateComment(board, token, id, comment),
                     { it.toCommentResponse() },
                     SimpleResponseEntity.empty
                 )
-                false -> Either.Left(Failure.NetworkConnection)
+                false -> Left(Failure.NetworkConnection)
             }
         }
     }

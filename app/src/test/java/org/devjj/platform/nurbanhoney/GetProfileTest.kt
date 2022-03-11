@@ -1,23 +1,22 @@
 package org.devjj.platform.nurbanhoney
 
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import org.devjj.platform.nurbanhoney.core.functional.Either.Right
 import org.devjj.platform.nurbanhoney.features.network.repositories.profile.usecases.GetProfileUseCase
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.Profile
 import org.devjj.platform.nurbanhoney.features.network.repositories.profile.ProfileRepository
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class GetProfileTest : UnitTest() {
     private lateinit var getProfile: GetProfileUseCase
 
-    @MockK
-    private lateinit var profileRepository: ProfileRepository
+    var profileRepository = mockk<ProfileRepository>()
 
-    @Before
+    @BeforeEach
     fun setUp() {
         getProfile = GetProfileUseCase(profileRepository)
         every { profileRepository.getProfile(token) } returns Right(Profile.empty)

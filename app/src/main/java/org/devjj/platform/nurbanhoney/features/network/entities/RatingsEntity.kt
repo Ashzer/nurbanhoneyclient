@@ -8,9 +8,9 @@ data class RatingsEntity(
     @SerializedName("dislikeCount") val dislikes: Int,
     @SerializedName("myRating") val myRating: String?
 ) {
-    fun toRatings() = Ratings(likes, dislikes, myRating?:"")
+    fun toRatings() = Ratings(likes, dislikes, myRating ?: "")
 
     companion object {
-        val empty = RatingsEntity(-1, -1, "")
+        val empty = RatingsEntity(0, 0, "")
     }
 }

@@ -12,16 +12,16 @@ data class ProfileArticleEntity(
     @SerializedName("thumbnail") val thumbnail: String,
     @SerializedName("title") val title: String,
     @SerializedName("commentCount") val commentCount: Int,
-    @SerializedName("createdAt") val createAt: String
+    @SerializedName("createdAt") val createAt: String?
 ) {
     companion object {
         val empty = ProfileArticleEntity(
-            -1,
+            0,
             Board.empty,
             String.empty(),
             String.empty(),
-            -1,
-            String.empty()
+            0,
+            null
         )
     }
 
@@ -31,6 +31,6 @@ data class ProfileArticleEntity(
         thumbnail,
         title,
         commentCount,
-        LocalDateTimeUtils.parse(createAt)
+        if(createAt.isNullOrEmpty()) null else LocalDateTimeUtils.parse(createAt)
     )
 }

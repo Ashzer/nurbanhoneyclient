@@ -12,6 +12,6 @@ data class Comment(
     val insignia: List<String>
 ) {
     companion object {
-        val empty = Comment(1, String.empty(), 1, 1, String.empty(), String.empty(), listOf())
+        val empty = Comment(0,String.empty(), 0, 0, String.empty(), String.empty(), listOf())
     }
 }

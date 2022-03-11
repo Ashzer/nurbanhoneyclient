@@ -10,8 +10,8 @@ import org.devjj.platform.nurbanhoney.core.extension.inflate
 import org.devjj.platform.nurbanhoney.core.extension.loadFromUrl
 import org.devjj.platform.nurbanhoney.core.extension.setOnSingleClickListener
 import org.devjj.platform.nurbanhoney.core.utils.LocalDateTimeUtils
-import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileArticle
 import org.devjj.platform.nurbanhoney.features.Board
+import org.devjj.platform.nurbanhoney.features.ui.home.profile.ProfileArticle
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -33,7 +33,7 @@ class ProfileArticlesAdapter
     override fun getItemCount() = collection.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(article: ProfileArticle, clickListener: (Int, Board) -> Unit ) {
+        fun bind(article: ProfileArticle, clickListener: (Int, Board) -> Unit) {
             Log.d("profile_article_check__", article.toString())
             itemView.itemProfileArticleThumbnailIv.loadFromUrl(
                 article.thumbnail,
@@ -47,7 +47,7 @@ class ProfileArticlesAdapter
 
 
             itemView.setOnSingleClickListener {
-                clickListener(article.id,article.board)
+                clickListener(article.id, article.board)
             }
 
         }

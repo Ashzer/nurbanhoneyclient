@@ -32,7 +32,7 @@ data class Article(
             String.empty(),
             String.empty(),
             String.empty(),
-            -1,
+            0,
             String.empty(),
             0,
             0,

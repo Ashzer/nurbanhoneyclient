@@ -6,11 +6,23 @@ plugins {
     id(BuildPlugins.kotlinAndroidExtensions)
     id(BuildPlugins.androidHilt)
 
+    //test
+    id("de.mannodermaus.android-junit5")
+
     // Internal Script plugins
     id(ScriptPlugins.variants)
     id(ScriptPlugins.quality)
     id(ScriptPlugins.compilation)
+
+    //coverage
+    id("jacoco")
 }
+
+jacoco{
+    toolVersion = "0.8.5"
+}
+
+
 
 android {
 
@@ -23,6 +35,8 @@ android {
         versionCode = AndroidClient.versionCode
         versionName = AndroidClient.versionName
         testInstrumentationRunner = AndroidClient.testRunner
+
+        testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
     }
 
     sourceSets {
@@ -91,6 +105,16 @@ dependencies {
     androidTestImplementation(TestLibraries.testRules)
     androidTestImplementation(TestLibraries.espressoIntents)
     androidTestImplementation(TestLibraries.hiltTesting)
+    androidTestImplementation ("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    androidTestImplementation ("org.junit.jupiter:junit-jupiter:5.8.1")
+    androidTestImplementation ("org.junit.jupiter:junit-jupiter-params:5.8.1")
+
+    // Junit5
+    testImplementation ("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testImplementation ("org.junit.jupiter:junit-jupiter-params:5.8.1")
+    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    androidTestImplementation ("de.mannodermaus.junit5:android-test-core:1.3.0")
+    androidTestRuntimeOnly ("de.mannodermaus.junit5:android-test-runner:1.3.0")
 
     // Development dependencies
     debugImplementation(DevLibraries.leakCanary)

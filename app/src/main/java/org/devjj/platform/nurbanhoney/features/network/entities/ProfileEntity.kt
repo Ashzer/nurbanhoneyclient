@@ -1,6 +1,7 @@
 package org.devjj.platform.nurbanhoney.features.network.entities
 
 import com.google.gson.annotations.SerializedName
+import org.devjj.platform.nurbanhoney.core.extension.empty
 import org.devjj.platform.nurbanhoney.features.ui.home.profile.Profile
 
 data class ProfileEntity(
@@ -32,7 +33,7 @@ data class ProfileEntity(
         )
 
     companion object {
-        val empty = ProfileEntity(-1, "", "", "", "",
-            0, listOf(), listOf(), 0, 0, "")
+        val empty = ProfileEntity(0, String.empty(), String.empty(), String.empty(), String.empty(),
+            0, listOf(), listOf(), 0, 0, String.empty())
     }
 }

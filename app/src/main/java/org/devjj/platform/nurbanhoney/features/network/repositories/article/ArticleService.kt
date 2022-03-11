@@ -45,8 +45,8 @@ class ArticleService
     override fun deleteComment(board: String, token: String, id: Int, articleId: Int) =
         articleApi.deleteComment(board, token, id, articleId)
 
-    override fun updateComment(board: String, token: String, id: Int, content: String) =
-        articleApi.updateComment(board, token, id, content)
+    override fun updateComment(board: String, token: String, id: Int, comment: String) =
+        articleApi.updateComment(board, token, id, comment)
 
     override fun getComment(board: String, commentId: Int): Call<CommentEntity> =
         articleApi.getComment(board, commentId)

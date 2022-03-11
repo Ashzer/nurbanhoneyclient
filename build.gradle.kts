@@ -12,6 +12,7 @@ buildscript {
         classpath (BuildPlugins.androidGradlePlugin)
         classpath (BuildPlugins.kotlinGradlePlugin)
         classpath (BuildPlugins.hiltGradlePlugin)
+        classpath ("de.mannodermaus.gradle.plugins:android-junit5:1.8.0.0")
     }
 }
 
@@ -23,3 +24,4 @@ allprojects {
 
     }
 }
+

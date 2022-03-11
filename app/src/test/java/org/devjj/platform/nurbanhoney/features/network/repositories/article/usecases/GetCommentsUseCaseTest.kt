@@ -1,21 +1,20 @@
 package org.devjj.platform.nurbanhoney.features.network.repositories.article.usecases
 
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import org.devjj.platform.nurbanhoney.UnitTest
 import org.devjj.platform.nurbanhoney.core.functional.Either
 import org.devjj.platform.nurbanhoney.features.network.repositories.article.ArticleRepository
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class GetCommentsUseCaseTest : UnitTest() {
     private lateinit var getComments: GetCommentsUseCase
-    @MockK
-    private lateinit var repository: ArticleRepository
+   var repository = mockk<ArticleRepository>()
 
-    @Before
+    @BeforeEach
     fun setUp() {
         getComments = GetCommentsUseCase(repository)
         every { repository.getComments(board, articleId, offset, limit) } returns Either.Right(
