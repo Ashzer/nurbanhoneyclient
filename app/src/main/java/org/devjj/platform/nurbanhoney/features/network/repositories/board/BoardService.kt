@@ -18,7 +18,7 @@ class BoardService
         title: String,
         uuid: String,
         lossCut: Long,
-        thumbnail: String,
+        thumbnail: String?,
         content: String
     ) = boardApi.uploadNurbanRequest(board, token, title, uuid, lossCut, thumbnail, content)
 
@@ -35,7 +35,7 @@ class BoardService
         board: String,
         token: String,
         articleId: Int,
-        thumbnail: String,
+        thumbnail: String?,
         title: String,
         lossCut: Long,
         content: String

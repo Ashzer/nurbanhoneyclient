@@ -62,7 +62,7 @@ class TextEditorViewModel
         title: String,
         uuid: String,
         lossCut: Long,
-        thumbnail: String,
+        thumbnail: String?,
         content: String
     ) =
         uploadNurbanArticle(
@@ -97,7 +97,7 @@ class TextEditorViewModel
         board: String,
         token: String,
         articleId: Int,
-        thumbnail: String,
+        thumbnail: String?,
         title: String,
         lossCut: Long,
         content: String
@@ -131,7 +131,7 @@ class TextEditorViewModel
     fun searchThumbnail(content: String) =
         Patterns.WEB_URL.toRegex().find(content)?.value.run {
             Log.d("string_check__", this.toString())
-            this.toString()
+            this
         }
 //        "(http)[^>]*(?=\" alt)".toRegex().find(content)?.value.run {
 //            Log.d("string_check__", this.toString())

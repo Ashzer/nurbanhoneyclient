@@ -1,8 +1,8 @@
 package org.devjj.platform.nurbanhoney.features.network.repositories.board
 
 import okhttp3.MultipartBody
-import org.devjj.platform.nurbanhoney.features.network.entities.SimpleResponseEntity
 import org.devjj.platform.nurbanhoney.features.network.entities.BoardEntity
+import org.devjj.platform.nurbanhoney.features.network.entities.SimpleResponseEntity
 import org.devjj.platform.nurbanhoney.features.network.entities.UploadImageEntity
 import retrofit2.Call
 import retrofit2.http.*
@@ -10,13 +10,13 @@ import retrofit2.http.*
 internal interface BoardApi {
 
     companion object {
-        private const val BASE_BOARD ="/board"
-        private const val ARTICLE ="/article"
+        private const val BASE_BOARD = "/board"
+        private const val ARTICLE = "/article"
         private const val UPLOAD_IMG = "/upload/image"
     }
 
     @GET("$BASE_BOARD")
-    fun getBoards() : Call<List<BoardEntity>>
+    fun getBoards(): Call<List<BoardEntity>>
 
 
     @FormUrlEncoded
@@ -27,7 +27,7 @@ internal interface BoardApi {
         @Field("title") title: String,
         @Field("uuid") uuid: String,
         @Field("lossCut") lossCut: Long,
-        @Field("thumbnail") thumbnail: String,
+        @Field("thumbnail") thumbnail: String?,
         @Field("content") content: String
     ): Call<SimpleResponseEntity>
 
@@ -48,7 +48,7 @@ internal interface BoardApi {
         @Path("board") board: String,
         @Header("token") token: String,
         @Field("id") articleId: Int,
-        @Field("thumbnail") thumbnail: String,
+        @Field("thumbnail") thumbnail: String?,
         @Field("title") title: String,
         @Field("lossCut") lossCut: Long,
         @Field("content") content: String

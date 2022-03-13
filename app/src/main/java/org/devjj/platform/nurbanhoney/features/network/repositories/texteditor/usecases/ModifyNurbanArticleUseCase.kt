@@ -23,7 +23,7 @@ class ModifyNurbanArticleUseCase
         val board: String,
         val token: String,
         val articleId: Int,
-        val thumbnail: String,
+        val thumbnail: String?,
         val title: String,
         val lossCut: Long,
         val content: String

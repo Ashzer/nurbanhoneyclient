@@ -36,7 +36,7 @@ class TextEditorNurbanFragment : TextEditorFragment() {
             R.id.writing_done -> {
 
                 val thumbnailUrl = viewModel.searchThumbnail(mEditor.html.toString())
-                Log.d("match_check__", thumbnailUrl)
+//                Log.d("match_check__", thumbnailUrl)
                 if (isModify) {
                     viewModel.modifyArticle(
                         "nurban",

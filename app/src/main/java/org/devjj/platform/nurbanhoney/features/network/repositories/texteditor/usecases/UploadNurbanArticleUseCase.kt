@@ -26,7 +26,7 @@ class UploadNurbanArticleUseCase
         val title: String,
         val uuid: String,
         val lossCut: Long,
-        val thumbnail: String,
+        val thumbnail: String?,
         val content: String,
     )
 } //token,title, uuid , lossCut , thumbnail  ,content
