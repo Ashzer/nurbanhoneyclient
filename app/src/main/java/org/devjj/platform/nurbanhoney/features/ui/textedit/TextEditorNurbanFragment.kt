@@ -34,8 +34,7 @@ class TextEditorNurbanFragment : TextEditorFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.writing_done -> {
-
-                val thumbnailUrl = viewModel.searchThumbnail(mEditor.html.toString())
+                val thumbnailUrl = viewModel.getThumbnail(mEditor.html.toString())
 //                Log.d("match_check__", thumbnailUrl)
                 if (isModify) {
                     viewModel.modifyArticle(
@@ -61,6 +60,6 @@ class TextEditorNurbanFragment : TextEditorFragment() {
             }
             else -> return super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
+        return true
     }
 }

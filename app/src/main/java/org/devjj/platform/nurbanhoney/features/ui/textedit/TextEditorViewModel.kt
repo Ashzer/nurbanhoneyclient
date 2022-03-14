@@ -128,15 +128,10 @@ class TextEditorViewModel
         )
     }
 
-    fun searchThumbnail(content: String) =
-        Patterns.WEB_URL.toRegex().find(content)?.value.run {
-            Log.d("string_check__", this.toString())
-            this
-        }
-//        "(http)[^>]*(?=\" alt)".toRegex().find(content)?.value.run {
-//            Log.d("string_check__", this.toString())
-//            this.toString()
-//        }
+    fun getThumbnail(content: String) = Patterns.WEB_URL.toRegex().find(content)?.value.run{
+        Log.d("string_check__", this.toString())
+        this
+    }
 
     private fun handleUploading(response: ArticleResponse) {
         //Toast.makeText(this , "글 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()

@@ -36,6 +36,8 @@
     <string name="comment_update_str">완료</string>
     <string name="comment_cancel_str">취소</string>
 
+    <string name="text_editor_uploaded"></string>
+
     <!-- profile -->
     <string name="profile_edit_str">편집하기</string>
     <string name="profile_nickname_str">닉네임</string>

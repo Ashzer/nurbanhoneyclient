@@ -3,7 +3,6 @@ package org.devjj.platform.nurbanhoney.features.ui.textedit
 import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
@@ -33,7 +32,6 @@ import org.devjj.platform.nurbanhoney.features.ui.article.model.Article
 import java.io.File
 import java.net.URL
 import java.util.*
-import javax.inject.Inject
 
 @AndroidEntryPoint
 open class TextEditorFragment : BaseFragment() {
@@ -66,13 +64,11 @@ open class TextEditorFragment : BaseFragment() {
 
     private val cropActivityResultContracts = object : ActivityResultContract<Any?, Uri?>() {
         override fun createIntent(context: Context, input: Any?): Intent {
-            Log.d("image_upload_check__", input.toString())
             return CropImage.activity()
                 .getIntent(context)
         }
 
         override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
-            Log.d("image_upload_check__", resultCode.toString())
             return CropImage.getActivityResult(intent)?.uri
         }
     }
@@ -131,9 +127,7 @@ open class TextEditorFragment : BaseFragment() {
 
         if (isModify) {
             Log.d("modify_check__", "modify")
-
             article = arguments?.get(PARAM_ARTICLE) as Article
-
             mEditor.html = article.content
             binding.textEditorNurbanHeader.textEditorTitleEt.setText(article.title)
             uuid = UUID.fromString(article.uuid)
@@ -185,67 +179,58 @@ open class TextEditorFragment : BaseFragment() {
 
     private fun getMultipartBodyFromBitmap(uri: Uri): MultipartBody.Part {
         val file = File(uri.path)
-        var options = BitmapFactory.Options()
-        options.inSampleSize = 2
-        var src = BitmapFactory.decodeFile(file.absolutePath, options)
+        val options = BitmapFactory.Options().apply { inSampleSize = 2 }
+        val src = BitmapFactory.decodeFile(file.absolutePath, options)
         return MultipartBody.Part.createFormData("image", file.name, BitmapRequestBody(src))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.writing_done -> {
-
-//                Log.d(
-//                    "editor_check__",
-//                    "${
-//                        prefs.getString(R.string.prefs_nurban_token_key.toString(), "").toString()
-//                    }  ,  ${binding.titleEt.text} , ${mEditor.html} , $uuid ," +
-//                            " ${viewModel.searchThumbnail(mEditor.html.toString())}"
-//                )
-                var thumbnailUrl: String? = viewModel.searchThumbnail(mEditor.html.toString())
-                //if(thumbnailUrl == "") thumbnailUrl = null
-                Log.d("match_check__", thumbnailUrl?:"no thumbnail")
+                val thumbnail = viewModel.getThumbnail(mEditor.html.toString())
                 if (isModify) {
-                    viewModel.modifyArticle(
-                        viewModel.board.address,
-                        nurbanToken,
-                        article.id,
-                        thumbnailUrl,
-                        binding.textEditorNurbanHeader.textEditorTitleEt.text.toString(),
-                        mEditor.html.toString()
-                    )
+                    updateArticle(thumbnail)
                 } else {
-                    viewModel.uploadArticle(
-                        viewModel.board.address,
-                        nurbanToken,
-                        binding.textEditorNurbanHeader.textEditorTitleEt.text.toString(),
-                        uuid.toString(),
-                        thumbnailUrl,
-                        mEditor.html.toString()
-                    )
+                    uploadArticle(thumbnail)
                 }
             }
             else -> return super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
+        return true
     }
 
-    private fun renderImage(imageURLs: List<URL>?) {
-        mEditor.insertImage(
-            imageURLs?.last().toString(),
-            "image", 320
-        )
-    }
+    private fun updateArticle(thumbnail: String?) = viewModel.modifyArticle(
+        viewModel.board.address,
+        nurbanToken,
+        article.id,
+        thumbnail,
+        binding.textEditorNurbanHeader.textEditorTitleEt.text.toString(),
+        mEditor.html.toString()
+    )
+
+    private fun uploadArticle(thumbnail: String?) = viewModel.uploadArticle(
+        viewModel.board.address,
+        nurbanToken,
+        binding.textEditorNurbanHeader.textEditorTitleEt.text.toString(),
+        uuid.toString(),
+        thumbnail,
+        mEditor.html.toString()
+    )
+
+    private fun renderImage(imageURLs: List<URL>?) =
+        mEditor.insertImage(imageURLs?.last().toString(), "image", 320)
+
 
     private fun uploadHandler(result: String?) {
-        Log.d("text_editor_check__" , "uploadHandler")
+        Log.d("upload_response", result)
+        //  notify(R.string.comment_modify_str)
         requireActivity().supportFragmentManager.popBackStack()
         requireActivity().finish()
     }
 
     override fun onDestroy() {
         var uploadResponse = viewModel.articleResponse.value ?: "no_result"
-        Log.d("text_editor_check__" , "destroyed")
+        Log.d("text_editor_check__", "destroyed")
         if (uploadResponse == "no_result" && !isModify) {
             viewModel.deleteImages(
                 viewModel.board.address, nurbanToken, uuid.toString()

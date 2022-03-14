@@ -14,10 +14,7 @@ import org.devjj.platform.nurbanhoney.core.exception.Failure
 
 @AndroidEntryPoint
 abstract class BaseFragment : Fragment() {
-   // abstract fun layoutId(): Int
 
-//    open fun onBackPressed() {
-//    }
     internal fun notify(@StringRes message: Int) =
         Snackbar.make(this.requireView().rootView, message, Snackbar.LENGTH_SHORT).show()
 
@@ -33,7 +30,6 @@ abstract class BaseFragment : Fragment() {
                 Log.d("Fragment_failure", R.string.failure_server_error.toString())
             }
             is Failure.TokenError -> {
-
                 AlertDialog.Builder(this.requireContext())
                     .setMessage("로그인이 필요한 서비스입니다.")
                     .setPositiveButton("확인") { _, _ ->

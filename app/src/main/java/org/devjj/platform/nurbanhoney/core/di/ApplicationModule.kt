@@ -18,8 +18,6 @@ import org.devjj.platform.nurbanhoney.features.network.repositories.board.BoardR
 import org.devjj.platform.nurbanhoney.features.network.repositories.login.LoginManager
 import org.devjj.platform.nurbanhoney.features.network.repositories.profile.ProfileRepository
 import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.TextEditorRepository
-import org.devjj.platform.nurbanhoney.features.ui.home.boards.BoardBindingPresenter
-import org.devjj.platform.nurbanhoney.features.ui.home.boards.BoardBindingPresenterImpl
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -77,8 +75,4 @@ class ApplicationModule {
     fun provideProfileRepository(dataSource: ProfileRepository.Network): ProfileRepository =
         dataSource
 
-
-    @Provides
-    @Singleton
-    fun provideBoardPresenterBinding(impl: BoardBindingPresenterImpl): BoardBindingPresenter = impl
 }

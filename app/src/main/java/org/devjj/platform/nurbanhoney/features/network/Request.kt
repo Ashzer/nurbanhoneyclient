@@ -11,12 +11,9 @@ fun <T, R> request(
 ): Either<Failure, R> {
     return try {
         val response = call.execute()
-        //Log.d("error_check__", "before")
         when (response.isSuccessful) {
             true -> Either.Right(transform((response.body() ?: default)))
             false -> {
-//                        Log.d("error_check__kind_", "${response.code()}")
-//                        Log.d("error_check__kind_", "${response.raw().message}")
                 if (response.code() == 401) {
                     Either.Left(Failure.TokenError)
                 }else {
@@ -26,14 +23,6 @@ fun <T, R> request(
             }
         }
     } catch (exception: Throwable) {
-        exception.stackTrace.forEach {
-//                    Log.d("error_msg_check__", "${it}")
-        }
-//                Log.d("error_msg_check__", "${exception.localizedMessage}")
-//                Log.d("error_msg_check__", "${exception.suppressed}")
-//                Log.d("error_msg_check__", "${exception.cause}")
-//                Log.d("error_msg_check__", "${exception.message}")
-//                Log.d("error_msg_check__", "${exception.origin}")
         Either.Left(Failure.ServerError)
     }
 }

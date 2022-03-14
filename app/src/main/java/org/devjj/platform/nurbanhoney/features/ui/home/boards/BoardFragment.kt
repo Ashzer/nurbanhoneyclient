@@ -24,8 +24,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 open class BoardFragment : BaseFragment() {
 
-    @Inject
-    lateinit var presenter: BoardBindingPresenter
 
     @Inject
     lateinit var navigator: Navigator
@@ -54,7 +52,25 @@ open class BoardFragment : BaseFragment() {
     }
 
     private fun newArticleResponse(articleItems: List<ArticleItem>?) {
-        presenter.renderMoreArticles(articleAdapter,viewModel,articleItems)
+        if (articleItems.isIterable()) {
+            val adder = getListAdapterNotContains(articleItems!!, articleAdapter.collection)
+            addNewItemsToAdapterOrRequestMoreArticles(articleAdapter, viewModel, adder)
+        }
+    }
+
+    private fun getListAdapterNotContains(add: List<ArticleItem>, dest: List<ArticleItem>) =
+        add.filterNot { dest.contains(it) }.toList()
+
+    private fun addNewItemsToAdapterOrRequestMoreArticles(
+        adapter: BoardArticleAdapter,
+        viewModel: BoardViewModel,
+        adder: List<ArticleItem>
+    ) {
+        if (adder.isIterable()) {
+            adapter.addAll(adder)
+        } else {
+            viewModel.getArticles()
+        }
     }
 
     override fun onCreateView(
@@ -74,9 +90,7 @@ open class BoardFragment : BaseFragment() {
         binding.boardListRv.layoutManager = LinearLayoutManager(requireContext())
         binding.boardListRv.adapter = articleAdapter
 
-        while(!this::articleAdapter.isInitialized){}
-        presenter.setup(binding, articleAdapter, viewModel)
-        presenter.initializeArticles(articleAdapter,viewModel)
+        viewModel.initArticles()
 
         setNewArticleWritable()
         setRecyclerViewLoadMoreListener()
@@ -85,7 +99,7 @@ open class BoardFragment : BaseFragment() {
 
     }
 
-    protected fun setNewArticleWritable() {
+    private fun setNewArticleWritable() {
         binding.boardWriteFab.visible()
         binding.boardWriteFab.setOnSingleClickListener {
             runBlocking {
@@ -110,7 +124,7 @@ open class BoardFragment : BaseFragment() {
                 val count = (recyclerView.adapter?.itemCount ?: 0)
 
                 if (crossedThresholdFirstTime(count, position, oldCount)) {
-                    presenter.requestMoreArticles(viewModel)
+                    viewModel.getArticles()
                     oldCount = count
                 }
             }
