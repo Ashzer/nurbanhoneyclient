@@ -11,7 +11,7 @@ data class ArticlesRequestEntity(
     @SerializedName("count") val count : Int?,
     @SerializedName("commentCount") val commentCount: Int,
     @SerializedName("board") val board : Board?,
-    @SerializedName("User") val user: User?
+    @SerializedName("user") val user: User?
 ) {
     data class User(
         @SerializedName("userId") val userId: Int,

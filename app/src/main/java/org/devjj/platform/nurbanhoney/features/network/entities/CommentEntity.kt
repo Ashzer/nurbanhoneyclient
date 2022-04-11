@@ -8,7 +8,7 @@ class CommentEntity(
     @SerializedName("id") val id: Int,
     @SerializedName("content") val comment: String,
     @SerializedName("articleId") val articleId: Int,
-    @SerializedName("User") val user: User
+    @SerializedName("user") val user: User
 ) {
     data class User(
         @SerializedName("userId") val userId: Int,

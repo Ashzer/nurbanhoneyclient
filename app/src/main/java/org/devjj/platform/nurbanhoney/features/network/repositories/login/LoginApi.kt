@@ -17,7 +17,6 @@ internal interface LoginApi {
         @Field("loginType") type : String,
         @Field("key") key : String) : Call<LoginEntity>
 
-    @FormUrlEncoded
-    @POST(VALIDATION)
-    fun validationCheck(@Field("token") token : String) : Call<ValidationEntity>
+    @GET(VALIDATION)
+    fun validationCheck(@Header("token") token : String) : Call<ValidationEntity>
 }

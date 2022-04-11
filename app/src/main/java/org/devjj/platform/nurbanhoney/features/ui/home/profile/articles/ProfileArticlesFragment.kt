@@ -67,7 +67,7 @@ class ProfileArticlesFragment : BaseFragment() {
                 val position = layoutManager.findLastVisibleItemPosition()
                 val count = layoutManager.itemCount
                 val threshold = 10
-                if((count < position + threshold)&& oldCount != count){
+                if((count < position + threshold)&& oldCount != count &&oldCount !=0){
                     viewModel.getArticles()
                     oldCount = count
                 }

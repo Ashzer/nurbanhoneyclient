@@ -10,7 +10,7 @@ data class RankEntity(
     @SerializedName("id") val id: Int,
     @SerializedName("totalLossCut") val totalLossCut: BigInteger?,
     @SerializedName("totalLikeCount") val totalLikes: Int?,
-    @SerializedName("User") val user: User
+    @SerializedName("user") val user: User
 ) {
     data class User(
         @SerializedName("userId") val userId: Int,
