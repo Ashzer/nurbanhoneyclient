@@ -6,12 +6,14 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#FFE5E5E5</color>
+    <color name="back_ground_light">#FFE5E5E5</color>
     <color name="item_back_ground_light">#FF999999</color>
-    <color name="item_back_ground_dark">#FF666666</color>
+    <color name="item_back_ground_dark">#FFC7C7C7</color>
+    <color name="hamburger_color">#FF000000</color>
 
-    <color name="colorPrimary">#FF33B5E5</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimary">#FFF6B748</color>
+    <color name="colorPrimaryDark">#FF636363</color>
     <color name="colorAccent">#FF33B5E5</color>
 
     <color name="colorWhite">#FFFFFFFF</color>

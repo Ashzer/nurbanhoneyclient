@@ -18,6 +18,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:screenOrientation">portrait</item>
         <item name="android:configChanges">orientation|screenSize</item>
+        <item name="android:windowBackground">@color/back_ground_light</item>
     </style>
     <!--
     <style name="Theme.NurbanHoney.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

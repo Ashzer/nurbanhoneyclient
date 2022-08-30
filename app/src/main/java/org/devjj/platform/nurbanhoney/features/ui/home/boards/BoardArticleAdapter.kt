@@ -45,18 +45,14 @@ class BoardArticleAdapter
                     R.drawable.ic_action_no_thumbnail
                 )
             } else {
-                itemView.itemArticleThumbnailIv.loadFromDrawable(
-                    R.drawable.ic_action_no_thumbnail
-                )
+                itemView.itemArticleThumbnailHolderClo.invisible()
+//                itemView.itemArticleThumbnailIv.loadFromDrawable(
+//                    R.drawable.ic_action_no_thumbnail
+//                )
             }
-
             with(itemView){
                 itemArticleTitleTv.text = articleItem.title
                 itemArticleRepliesTv.text = " [${articleItem.replies}]"
-                itemArticleBadgeIv.loadFromUrl(
-                    articleItem.badge,
-                    R.drawable.ic_action_no_badge
-                )
                 itemArticleUserNameTv.text = articleItem.author
                 itemArticleBoardTv.visible()
                 itemArticleBoardTv.text = articleItem.board.name

@@ -40,7 +40,7 @@ class ApplicationModule {
         val okHttpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
         if (BuildConfig.DEBUG) {
             val loggingInterceptor =
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
+                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS)
             okHttpClientBuilder.addInterceptor(loggingInterceptor)
         }
         return okHttpClientBuilder.build()

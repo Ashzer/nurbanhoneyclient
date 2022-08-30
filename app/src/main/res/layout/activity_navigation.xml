@@ -23,7 +23,7 @@
                 android:id="@+id/navigationToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
+                android:background="@color/back_ground_light"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="?attr/actionBarTheme"
                 app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +61,7 @@
             android:id="@+id/navigationSideMenu"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
+            android:layout_gravity="end"
             android:fitsSystemWindows="true"
             app:menu="@menu/item_drawer_menu" />
     </androidx.drawerlayout.widget.DrawerLayout>

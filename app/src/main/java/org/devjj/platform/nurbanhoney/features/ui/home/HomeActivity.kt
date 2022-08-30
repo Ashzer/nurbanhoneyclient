@@ -3,6 +3,7 @@ package org.devjj.platform.nurbanhoney.features.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
@@ -26,7 +27,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeActivity : BaseNavigationActivity() {
     override fun fragment() = BoardPopularFragment()
-    private val gravity = GravityCompat.START
+    private val gravity = GravityCompat.END
 
     @Inject
     lateinit var navigator: Navigator
@@ -58,12 +59,9 @@ class HomeActivity : BaseNavigationActivity() {
         with(viewModel) {
             observe(boards, ::renderBoards)
         }
-
         viewModel.getBoards()
 
         setSupportActionBar(binding.navigationToolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_action_menu)
 
         setDrawerMenuSelectedListener()
         setNavigationMenuSelectedListener()
@@ -86,7 +84,7 @@ class HomeActivity : BaseNavigationActivity() {
                     R.id.menu_profile -> navigate(ProfileFragment())
                 }
             }
-            binding.navigationDrawer.closeDrawer(GravityCompat.START)
+            binding.navigationDrawer.closeDrawer(GravityCompat.END)
             false
         }
     }
@@ -163,9 +161,14 @@ class HomeActivity : BaseNavigationActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_drawer_menu,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> {
+            R.id.toolbarNavigationBtn->{
                 val layoutDrawer = binding.navigationDrawer
                 if (layoutDrawer.isDrawerOpen(gravity)) {
                     layoutDrawer.closeDrawer(gravity)

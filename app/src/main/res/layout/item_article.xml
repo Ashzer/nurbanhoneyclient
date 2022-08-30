@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    >
+    android:layout_height="90dp"
+    android:paddingHorizontal="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/itemArticleThumbnailHolderClo"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
         android:layout_marginEnd="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/itemArticleInfoClo"
@@ -41,6 +41,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="4dp"
             app:layout_constraintBottom_toTopOf="@id/itemArticleUserClo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,19 +54,12 @@
                 android:layout_marginEnd="5dp"
                 android:text="TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/itemArticleRepliesTv"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/itemArticleRepliesTv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/itemArticleTitleTv"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -76,38 +70,48 @@
             android:layout_marginBottom="10dp"
             android:foregroundGravity="left"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/itemArticleBoardClo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/itemArticleTitleClo"
-            app:layout_constraintEnd_toStartOf="@id/itemArticleBoardClo">
+            app:layout_constraintTop_toBottomOf="@id/itemArticleTitleClo">
 
-            <ImageView
-                android:id="@+id/itemArticleBadgeIv"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/itemArticleUserNameTv"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/itemArticleUserNameTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nickname"
+                android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/itemArticleMedalsLlo"
-                app:layout_constraintStart_toEndOf="@+id/itemArticleBadgeIv"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toStartOf="@id/itemArticleDateTv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
-            <LinearLayout
-                android:id="@+id/itemArticleMedalsLlo"
+            <TextView
+                android:id="@+id/itemArticleDateTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/itemArticleRepliesTv"
+                app:layout_constraintStart_toEndOf="@id/itemArticleUserNameTv"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/itemArticleRepliesTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:text="liked"
+                android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/itemArticleUserNameTv"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@id/itemArticleDateTv"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

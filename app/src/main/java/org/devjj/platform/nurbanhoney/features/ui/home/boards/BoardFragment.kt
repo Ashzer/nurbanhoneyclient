@@ -14,6 +14,7 @@ import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.extension.*
 import org.devjj.platform.nurbanhoney.core.navigation.Navigator
 import org.devjj.platform.nurbanhoney.core.platform.BaseFragment
+import org.devjj.platform.nurbanhoney.core.utils.CustomDivider
 import org.devjj.platform.nurbanhoney.databinding.FragmentBoardBinding
 import org.devjj.platform.nurbanhoney.features.Board
 import org.devjj.platform.nurbanhoney.features.ui.home.HomeActivity
@@ -89,6 +90,14 @@ open class BoardFragment : BaseFragment() {
 
         binding.boardListRv.layoutManager = LinearLayoutManager(requireContext())
         binding.boardListRv.adapter = articleAdapter
+        context?.let {
+            binding.boardListRv.addItemDecoration(
+                CustomDivider(
+                    it,
+                    R.drawable.line_divider
+                )
+            )
+        }
 
         viewModel.initArticles()
 
