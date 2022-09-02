@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.devjj.platform.nurbanhoney.core.platform.BaseViewModel
+import org.devjj.platform.nurbanhoney.core.platform.LazyLoadHelper
 import org.devjj.platform.nurbanhoney.features.Board
 import org.devjj.platform.nurbanhoney.features.network.repositories.article.usecases.GetArticlesUseCase
 import javax.inject.Inject
@@ -12,7 +13,8 @@ import javax.inject.Inject
 @HiltViewModel
 class BoardViewModel
 @Inject constructor(
-    private val getArticles: GetArticlesUseCase
+    private val getArticles: GetArticlesUseCase,
+    private val lazyLoadHelper: LazyLoadHelper<ArticleItem>
 ) : BaseViewModel() {
     private val _articles: MutableLiveData<List<ArticleItem>> = MutableLiveData()
     val articles: LiveData<List<ArticleItem>> = _articles

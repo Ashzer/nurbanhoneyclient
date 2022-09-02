@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,11 +14,14 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.devjj.platform.nurbanhoney.BuildConfig
 import org.devjj.platform.nurbanhoney.R
+import org.devjj.platform.nurbanhoney.core.platform.LazyLoadHelper
+import org.devjj.platform.nurbanhoney.core.platform.LazyLoadHelperImpl
 import org.devjj.platform.nurbanhoney.features.network.repositories.article.ArticleRepository
 import org.devjj.platform.nurbanhoney.features.network.repositories.board.BoardRepository
 import org.devjj.platform.nurbanhoney.features.network.repositories.login.LoginManager
 import org.devjj.platform.nurbanhoney.features.network.repositories.profile.ProfileRepository
 import org.devjj.platform.nurbanhoney.features.network.repositories.texteditor.TextEditorRepository
+import org.devjj.platform.nurbanhoney.features.ui.home.boards.model.ArticleItem
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -40,7 +44,7 @@ class ApplicationModule {
         val okHttpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
         if (BuildConfig.DEBUG) {
             val loggingInterceptor =
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS)
+                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             okHttpClientBuilder.addInterceptor(loggingInterceptor)
         }
         return okHttpClientBuilder.build()
@@ -55,6 +59,9 @@ class ApplicationModule {
     @Provides
     @Singleton
     fun provideLoginManager(dataSource: LoginManager.Network): LoginManager = dataSource
+
+    @Provides
+    fun provideLazyLoadHelper(impl : LazyLoadHelperImpl<ArticleItem>) : LazyLoadHelper<ArticleItem> = impl
 
     @Provides
     @Singleton

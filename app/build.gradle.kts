@@ -71,7 +71,7 @@ dependencies {
     implementation(Libraries.legacySupport)
     implementation(Libraries.ktxCore)
     implementation(Libraries.constraintLayout)
-    implementation(Libraries.viewModel)
+    //implementation(Libraries.viewModel)
     implementation(Libraries.liveData)
     implementation(Libraries.lifecycleExtensions)
     implementation(Libraries.cardView)
@@ -84,7 +84,7 @@ dependencies {
     implementation(Libraries.okHttpLoggingInterceptor)
     implementation(Libraries.playCore)
     implementation(Libraries.kakaoLogin)
-    implementation(Libraries.naverLogin)
+    //implementation(Libraries.naverLogin)
     implementation(Libraries.googleLogin)
     //implementation(files(Libraries.naverAndroidSDK))
 

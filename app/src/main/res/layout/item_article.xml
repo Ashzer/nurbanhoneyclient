@@ -79,6 +79,7 @@
                 android:id="@+id/itemArticleUserNameTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
                 android:text="Nickname"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -91,16 +92,17 @@
                 android:id="@+id/itemArticleDateTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
                 android:text="Date"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/itemArticleRepliesTv"
+                app:layout_constraintEnd_toStartOf="@id/itemArticleLikedTv"
                 app:layout_constraintStart_toEndOf="@id/itemArticleUserNameTv"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/itemArticleRepliesTv"
+                android:id="@+id/itemArticleLikedTv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="liked"

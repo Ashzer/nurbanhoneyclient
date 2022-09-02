@@ -4,8 +4,8 @@ object Kotlin {
 }
 
 object AndroidSdk {
-    const val min = 25
-    const val compile = 29
+    const val min = 27
+    const val compile = 31
     const val target = compile
 }
 
@@ -19,8 +19,8 @@ object AndroidClient {
 object BuildPlugins {
     object Versions {
         const val buildToolsVersion = "4.1.0"
-        const val gradleVersion = "6.8"
-        const val hilt = "2.35.1"
+        const val gradleVersion = "7.2"
+        const val hilt = "2.43.2"
     }
 
     const val androidGradlePlugin = "com.android.tools.build:gradle:${Versions.buildToolsVersion}"
@@ -50,7 +50,7 @@ object Libraries {
         const val recyclerView = "1.1.0"
         const val cardView = "1.0.0"
         const val material = "1.3.0"
-        const val lifecycle = "2.2.0"
+        const val lifecycle = "2.5.0"
         const val lifecycleExtensions = "2.1.0"
         const val annotations = "1.1.0"
         const val ktx = "1.3.2"
@@ -59,8 +59,8 @@ object Libraries {
         const val okHttpLoggingInterceptor = "4.9.0"
         const val playCore = "1.10.2"
         const val kakaoLogin = "2.8.1"
-        const val naverLogin = "4.2.6"
-        const val naverAndroidSDK = "4.2.6"
+        const val naverLogin = "5.1.1"
+        const val naverAndroidSDK = "5.1.1"
         const val googleLogin = "20.0.1"
         const val richEditor = "2.0.0"
         const val fragment_ktx = "1.2.5"
@@ -96,7 +96,7 @@ object Libraries {
         "com.squareup.okhttp3:logging-interceptor:${Versions.okHttpLoggingInterceptor}"
     const val playCore = "com.google.android.play:core:${Versions.playCore}"
     const val kakaoLogin = "com.kakao.sdk:v2-user:${Versions.kakaoLogin}"
-    const val naverLogin = "com.naver.nid:naveridlogin-android-sdk:${Versions.naverLogin}"
+    const val naverLogin = "com.navercorp.nid:oauth:${Versions.naverLogin}"
     const val naverAndroidSDK = "libs/naveridlogin_android_sdk_${Versions.naverAndroidSDK}.aar"
     const val googleLogin = "com.google.android.gms:play-services-auth:${Versions.googleLogin}"
     const val richEditor = "jp.wasabeef:richeditor-android:${Versions.richEditor}"
