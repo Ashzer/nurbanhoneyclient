@@ -11,7 +11,9 @@ data class ArticlesRequestEntity(
     @SerializedName("count") val count : Int?,
     @SerializedName("commentCount") val commentCount: Int,
     @SerializedName("board") val board : Board?,
-    @SerializedName("user") val user: User?
+    @SerializedName("user") val user: User?,
+    @SerializedName("createdAt") val createdAt :String,
+    @SerializedName("likeCount") val likeCount : Int
 ) {
     data class User(
         @SerializedName("userId") val userId: Int,
@@ -29,6 +31,8 @@ data class ArticlesRequestEntity(
         board ?: Board.empty,
         user?.profile ?: "",
         user?.nickname ?: "Empty Nickname",
+        likeCount,
+        createdAt
         //user?.insignia ?: "No insignia"
     )
 }

@@ -72,7 +72,8 @@ class HomeActivity : BaseNavigationActivity() {
         binding.navigationSideMenu.setNavigationItemSelectedListener {
             if (it.groupId == R.id.menu_group_boards) {
 
-                val bundle =createBoardBundle(viewModel.boards.value?.get(it.itemId)?: Board.empty)
+                val bundle =
+                    createBoardBundle(viewModel.boards.value?.get(it.itemId) ?: Board.empty)
                 val frag = BoardFragment()
                 frag.arguments = bundle
                 navigate(frag)
@@ -139,14 +140,14 @@ class HomeActivity : BaseNavigationActivity() {
         navigate(frag)
     }
 
-    private fun createBoardBundle(id : Int, name: String, address: String) = Bundle().apply {
+    private fun createBoardBundle(id: Int, name: String, address: String) = Bundle().apply {
         this.putParcelable(
             R.string.BoardInfo.toString(),
             Board(id, name, address)
         )
     }
 
-    private fun createBoardBundle(board:Board) = Bundle().apply {
+    private fun createBoardBundle(board: Board) = Bundle().apply {
         this.putParcelable(
             R.string.BoardInfo.toString(),
             board
@@ -161,14 +162,14 @@ class HomeActivity : BaseNavigationActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.toolbar_drawer_menu,menu)
-        return super.onCreateOptionsMenu(menu)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.toolbar_drawer_menu, menu)
+//        return super.onCreateOptionsMenu(menu)
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.toolbarNavigationBtn->{
+            R.id.toolbarNavigationBtn -> {
                 val layoutDrawer = binding.navigationDrawer
                 if (layoutDrawer.isDrawerOpen(gravity)) {
                     layoutDrawer.closeDrawer(gravity)
@@ -183,7 +184,7 @@ class HomeActivity : BaseNavigationActivity() {
     }
 
     fun setActionBarTitle(title: String) {
-        supportActionBar?.title = title
+        supportActionBar?.title = ""
     }
 
     private fun navigate(fragment: BaseFragment) =

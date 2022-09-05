@@ -1,6 +1,5 @@
 package org.devjj.platform.nurbanhoney.features.ui.home.boards
 
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -52,10 +51,12 @@ class BoardArticleAdapter
             }
             with(itemView){
                 itemArticleTitleTv.text = articleItem.title
-                itemArticleRepliesTv.text = " [${articleItem.replies}]"
+                itemArticleLikedTv.text = " [${articleItem.replies}]"
                 itemArticleUserNameTv.text = articleItem.author
                 itemArticleBoardTv.visible()
                 itemArticleBoardTv.text = articleItem.board.name
+                itemArticleDateTv.text = articleItem.createdAt.substring(0,11)
+                itemArticleLikedTv.text = "추천 : ${articleItem.likeCount}"
                 setOnSingleClickListener {
                     clickListener(articleItem.id, articleItem.board)
                 }
