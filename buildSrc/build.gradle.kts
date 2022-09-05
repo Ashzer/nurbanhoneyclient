@@ -20,6 +20,3 @@ dependencies {
     implementation(Dependencies.kotlinGradlePlugin)
     implementation(Dependencies.detektGradlePlugin)
 }
-
-
-

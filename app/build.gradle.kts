@@ -18,7 +18,7 @@ plugins {
     id("jacoco")
 }
 
-jacoco{
+jacoco {
     toolVersion = "0.8.5"
 }
 
@@ -36,7 +36,10 @@ android {
         versionName = AndroidClient.versionName
         testInstrumentationRunner = AndroidClient.testRunner
 
-        testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
+        testInstrumentationRunnerArgument(
+            "runnerBuilder",
+            "de.mannodermaus.junit5.AndroidJUnit5Builder"
+        )
     }
 
     sourceSets {
@@ -48,6 +51,12 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xallow-result-return-type")
+    }
+
 }
 
 dependencies {
@@ -89,7 +98,7 @@ dependencies {
     //implementation(files(Libraries.naverAndroidSDK))
 
     implementation(Libraries.richEditor)
-    implementation (Libraries.fragment_ktx)
+    implementation(Libraries.fragment_ktx)
     api(Libraries.image_cropper)
 
     // Unit/Android tests dependencies
@@ -105,16 +114,16 @@ dependencies {
     androidTestImplementation(TestLibraries.testRules)
     androidTestImplementation(TestLibraries.espressoIntents)
     androidTestImplementation(TestLibraries.hiltTesting)
-    androidTestImplementation ("org.junit.jupiter:junit-jupiter-api:5.8.1")
-    androidTestImplementation ("org.junit.jupiter:junit-jupiter:5.8.1")
-    androidTestImplementation ("org.junit.jupiter:junit-jupiter-params:5.8.1")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter-params:5.8.1")
 
     // Junit5
-    testImplementation ("org.junit.jupiter:junit-jupiter-api:5.8.1")
-    testImplementation ("org.junit.jupiter:junit-jupiter-params:5.8.1")
-    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine:5.8.1")
-    androidTestImplementation ("de.mannodermaus.junit5:android-test-core:1.3.0")
-    androidTestRuntimeOnly ("de.mannodermaus.junit5:android-test-runner:1.3.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.3.0")
+    androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.3.0")
 
     // Development dependencies
     debugImplementation(DevLibraries.leakCanary)
