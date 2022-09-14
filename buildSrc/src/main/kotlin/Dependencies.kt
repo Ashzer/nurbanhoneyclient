@@ -1,11 +1,11 @@
 object Kotlin {
-    const val standardLibrary = "1.5.0"
+    const val standardLibrary = "1.5.31"
     const val coroutines = "1.3.9"
 }
 
 object AndroidSdk {
     const val min = 25
-    const val compile = 29
+    const val compile = 32
     const val target = compile
 }
 
@@ -18,9 +18,9 @@ object AndroidClient {
 
 object BuildPlugins {
     object Versions {
-        const val buildToolsVersion = "4.1.0"
-        const val gradleVersion = "7.2"
-        const val hilt = "2.35.1"
+        const val buildToolsVersion = "7.2.2"
+        const val gradleVersion = "8.0"
+        const val hilt = "2.38.1"
     }
 
     const val androidGradlePlugin = "com.android.tools.build:gradle:${Versions.buildToolsVersion}"
@@ -42,7 +42,7 @@ object ScriptPlugins {
 }
 
 object Libraries {
-    private object Versions {
+    object Versions {
         const val hilt = BuildPlugins.Versions.hilt
         const val appCompat = "1.2.0"
         const val androidX = "1.0.0"
@@ -53,7 +53,7 @@ object Libraries {
         const val lifecycle = "2.2.0"
         const val lifecycleExtensions = "2.1.0"
         const val annotations = "1.1.0"
-        const val ktx = "1.3.2"
+        const val ktx = "1.5.0"
         const val glide = "4.11.0"
         const val retrofit = "2.9.0"
         const val okHttpLoggingInterceptor = "4.9.0"
@@ -65,6 +65,7 @@ object Libraries {
         const val richEditor = "2.0.0"
         const val fragment_ktx = "1.2.5"
         const val image_cropper = "2.8.0"
+        const val compose = "1.2.1"
     }
 
     const val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Kotlin.standardLibrary}"
@@ -102,6 +103,16 @@ object Libraries {
     const val richEditor = "jp.wasabeef:richeditor-android:${Versions.richEditor}"
     const val fragment_ktx = "androidx.fragment:fragment-ktx:${Versions.fragment_ktx}"
     const val image_cropper = "com.theartofdev.edmodo:android-image-cropper:${Versions.image_cropper}"
+
+    const val composeUI = "androidx.compose.ui:ui:${Versions.compose}"
+    const val composeUITooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
+    const val composeUIToolingPreview ="androidx.compose.ui:ui-tooling-preview:${Versions.compose}"
+    const val composeFoundation = "androidx.compose.foundation:foundation:${Versions.compose}"
+    const val composeMaterial = "androidx.compose.material:material:${Versions.compose}"
+    const val composeIconsCore = "androidx.compose.material:material-icons-core:${Versions.compose}"
+    const val composeIconsExtended = "androidx.compose.material:material-icons-extended:${Versions.compose}"
+    const val composeLivedata = "androidx.compose.runtime:runtime-livedata:${Versions.compose}"
+    const val composeRxjava = "androidx.compose.runtime:runtime-rxjava2:${Versions.compose}"
 }
 
 object TestLibraries {
@@ -116,6 +127,7 @@ object TestLibraries {
         const val testExtensions = "1.1.3"
         const val testRules = "1.1.0"
         const val hiltTesting = BuildPlugins.Versions.hilt
+        const val composeTest = Libraries.Versions.compose
     }
 
     const val junit4 = "junit:junit:${Versions.junit4}"
@@ -129,11 +141,12 @@ object TestLibraries {
         "androidx.test.espresso:espresso-intents:${Versions.espressoIntents}"
     const val testExtJunit = "androidx.test.ext:junit:${Versions.testExtensions}"
     const val hiltTesting = "com.google.dagger:hilt-android-testing:${Versions.hiltTesting}"
+    const val composeUITest = "androidx.compose.ui:ui-test-junit4:${Versions.composeTest}"
 }
 
 object DevLibraries {
     private object Versions {
-        const val leakCanary = "2.5"
+        const val leakCanary = "2.9.1"
     }
 
     const val leakCanary = "com.squareup.leakcanary:leakcanary-android:${Versions.leakCanary}"

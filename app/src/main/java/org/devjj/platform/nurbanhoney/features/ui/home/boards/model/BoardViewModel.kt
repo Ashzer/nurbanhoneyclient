@@ -14,7 +14,7 @@ import javax.inject.Inject
 class BoardViewModel
 @Inject constructor(
     private val getArticles: GetArticlesUseCase,
-    private val lazyLoadHelper: LazyLoadHelper<ArticleItem>
+    //private val lazyLoadHelper: LazyLoadHelper<ArticleItem>
 ) : BaseViewModel() {
     private val _articles: MutableLiveData<List<ArticleItem>> = MutableLiveData()
     val articles: LiveData<List<ArticleItem>> = _articles

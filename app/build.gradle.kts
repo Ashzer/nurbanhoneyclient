@@ -50,6 +50,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        compose = true
     }
 
 
@@ -93,13 +94,43 @@ dependencies {
     implementation(Libraries.okHttpLoggingInterceptor)
     implementation(Libraries.playCore)
     implementation(Libraries.kakaoLogin)
-    //implementation(Libraries.naverLogin)
+ //   implementation(Libraries.naverLogin)
     implementation(Libraries.googleLogin)
     //implementation(files(Libraries.naverAndroidSDK))
+    // Dagger Core
+    implementation("com.google.dagger:dagger:${BuildPlugins.Versions.hilt}")
+    kapt("com.google.dagger:dagger-compiler:${BuildPlugins.Versions.hilt}")
+
+    // Dagger Android
+    api( "com.google.dagger:dagger-android:${BuildPlugins.Versions.hilt}")
+    api( "com.google.dagger:dagger-android-support:${BuildPlugins.Versions.hilt}")
+    kapt ("com.google.dagger:dagger-android-processor:${BuildPlugins.Versions.hilt}")
+
 
     implementation(Libraries.richEditor)
     implementation(Libraries.fragment_ktx)
     api(Libraries.image_cropper)
+
+    implementation(Libraries.composeUI)
+    // Tooling support (Previews, etc.)
+    implementation(Libraries.composeUITooling)
+    implementation(Libraries.composeUIToolingPreview)
+    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
+    implementation(Libraries.composeFoundation)
+    // Material Design
+    implementation(Libraries.composeMaterial)
+    // Material design icons
+    implementation(Libraries.composeIconsCore)
+    implementation(Libraries.composeIconsExtended)
+    // Integration with observables
+    implementation(Libraries.composeLivedata)
+    implementation(Libraries.composeRxjava)
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+    // UI Tests
+    androidTestImplementation(TestLibraries.composeUITest)
 
     // Unit/Android tests dependencies
     testImplementation(TestLibraries.junit4)
@@ -127,6 +158,8 @@ dependencies {
 
     // Development dependencies
     debugImplementation(DevLibraries.leakCanary)
+
+    debugImplementation("androidx.lifecycle:lifecycle-viewmodel-savedstate:2.5.1")
 }
 
 

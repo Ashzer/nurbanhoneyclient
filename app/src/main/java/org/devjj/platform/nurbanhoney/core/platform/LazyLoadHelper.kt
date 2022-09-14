@@ -13,7 +13,9 @@ interface LazyLoadHelper<T> {
 }
 
 class LazyLoadHelperImpl<T>
-@Inject constructor(private val capacity: Int) : LazyLoadHelper<T> {
+    : LazyLoadHelper<T> {
+    private val capacity: Int = 5
+//@Inject constructor(private val capacity: Int) : LazyLoadHelper<T> {
 
     override var loadedList: MutableMap<Int, T> = HashMap()
     override var nextList: Map<Int, T> = HashMap()

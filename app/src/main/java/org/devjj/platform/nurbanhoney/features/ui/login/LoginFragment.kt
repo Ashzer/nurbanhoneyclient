@@ -12,8 +12,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.kakao.sdk.user.UserApiClient
-import com.nhn.android.naverlogin.OAuthLogin
-import com.nhn.android.naverlogin.OAuthLoginHandler
+//import com.nhn.android.naverlogin.OAuthLogin
+//import com.nhn.android.naverlogin.OAuthLoginHandler
 import dagger.hilt.android.AndroidEntryPoint
 import org.devjj.platform.nurbanhoney.R
 import org.devjj.platform.nurbanhoney.core.exception.Failure
@@ -37,7 +37,7 @@ class LoginFragment : BaseFragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var mOAuthLoginModule: OAuthLogin
+    //lateinit var mOAuthLoginModule: OAuthLogin
   //  private val RC_SIGN_IN = 9001
 
     override fun onCreateView(
@@ -70,7 +70,7 @@ class LoginFragment : BaseFragment() {
         //카카오 로그인
         kakaoLoginBtnListener(binding.loginKakaoClo)
         //네이버 로그인인
-        naverLoginBtnListener(binding.loginNaverBtn)
+        //naverLoginBtnListener(binding.loginNaverBtn)
         //구글 로그인
  //       googleLoginBtnListener(binding.loginGoogleClo)
 
@@ -119,44 +119,44 @@ class LoginFragment : BaseFragment() {
             }
         }
     }
+//
+//    private fun naverLoginBtnListener(view: View) = view.setOnSingleClickListener {
+//
+//        mOAuthLoginModule = OAuthLogin.getInstance()
+//        mOAuthLoginModule.init(
+//            requireContext(),
+//            getString(R.string.naver_client_id),
+//            getString(R.string.naver_client_secret),
+//            getString(R.string.naver_client_name)
+//        )
+//
+//        mOAuthLoginModule.startOauthLoginActivity(requireActivity(), mOAuthLoginHandler)
+//    }
 
-    private fun naverLoginBtnListener(view: View) = view.setOnSingleClickListener {
-
-        mOAuthLoginModule = OAuthLogin.getInstance()
-        mOAuthLoginModule.init(
-            requireContext(),
-            getString(R.string.naver_client_id),
-            getString(R.string.naver_client_secret),
-            getString(R.string.naver_client_name)
-        )
-
-        mOAuthLoginModule.startOauthLoginActivity(requireActivity(), mOAuthLoginHandler)
-    }
-
-    private val mOAuthLoginHandler = object : OAuthLoginHandler() {
-        override fun run(success: Boolean) {
-            if (success) {
-                val accessToken: String = mOAuthLoginModule.getAccessToken(requireContext())
-                val refreshToken: String = mOAuthLoginModule.getRefreshToken(requireContext())
-                val expiresAt: Long = mOAuthLoginModule.getExpiresAt(requireContext())
-                val tokenType: String = mOAuthLoginModule.getTokenType(requireContext())
-                Log.i("LoginData", "accessToken : " + accessToken);
-                Log.i("LoginData", "refreshToken : " + refreshToken);
-                Log.i("LoginData", "expiresAt : " + expiresAt);
-                Log.i("LoginData", "tokenType : " + tokenType);
-
-                viewModel.getNurbanToken("naver", accessToken)
-            } else {
-                val errorCode: String = mOAuthLoginModule.getLastErrorCode(requireContext()).code
-                val errorDesc = mOAuthLoginModule.getLastErrorDesc(requireContext())
-
-                Toast.makeText(
-                    requireContext(), "errorCode:" + errorCode
-                            + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-    }
+//    private val mOAuthLoginHandler = object : OAuthLoginHandler() {
+//        override fun run(success: Boolean) {
+//            if (success) {
+//                val accessToken: String = mOAuthLoginModule.getAccessToken(requireContext())
+//                val refreshToken: String = mOAuthLoginModule.getRefreshToken(requireContext())
+//                val expiresAt: Long = mOAuthLoginModule.getExpiresAt(requireContext())
+//                val tokenType: String = mOAuthLoginModule.getTokenType(requireContext())
+//                Log.i("LoginData", "accessToken : " + accessToken);
+//                Log.i("LoginData", "refreshToken : " + refreshToken);
+//                Log.i("LoginData", "expiresAt : " + expiresAt);
+//                Log.i("LoginData", "tokenType : " + tokenType);
+//
+//                viewModel.getNurbanToken("naver", accessToken)
+//            } else {
+//                val errorCode: String = mOAuthLoginModule.getLastErrorCode(requireContext()).code
+//                val errorDesc = mOAuthLoginModule.getLastErrorDesc(requireContext())
+//
+//                Toast.makeText(
+//                    requireContext(), "errorCode:" + errorCode
+//                            + ", errorDesc:" + errorDesc, Toast.LENGTH_SHORT
+//                ).show()
+//            }
+//        }
+//    }
 
 //    private fun googleLoginBtnListener(view: View) = view.setOnSingleClickListener {
 //

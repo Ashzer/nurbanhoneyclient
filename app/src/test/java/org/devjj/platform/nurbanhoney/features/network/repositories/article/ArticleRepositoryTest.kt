@@ -79,7 +79,9 @@ class ArticleRepositoryTest : UnitTest() {
                 ArticlesRequestEntity(
                     1, String.empty(), String.empty(), 0, 0,
                     Board.empty,
-                    ArticlesRequestEntity.User(1, String.empty(), String.empty())
+                    ArticlesRequestEntity.User(1, String.empty(), String.empty()),
+                    String.empty(),
+                    0
                 )
             )
             every { getArticlesResponse.isSuccessful } returns true
@@ -97,6 +99,8 @@ class ArticleRepositoryTest : UnitTest() {
                         0,
                         Board.empty,
                         String.empty(),
+                        String.empty(),
+                        0,
                         String.empty()
                     )
                 )
