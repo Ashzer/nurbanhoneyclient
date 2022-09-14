@@ -19,22 +19,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import org.devjj.platform.nurbanhoney.R
 
-@Preview
-@Composable
-fun DrawMain() {
-    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-    MaterialTheme {
-        Scaffold(
-            topBar = { MainToolBar(drawerState) },
-            content = { paddingValues ->
-                MainDrawer(drawerState)
-                paddingValues.calculateTopPadding()
-            },
-            backgroundColor = Color.Blue
-        )
-    }
 
-}
 
 @Composable
 fun MainToolBar(drawerState: DrawerState) {
@@ -74,24 +59,4 @@ fun MainToolBar(drawerState: DrawerState) {
             )
         }
     )
-}
-
-@Composable
-fun MainDrawer(drawerState: DrawerState) {
-
-    ModalDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            Column() {
-                Button(onClick = {}) {
-                    Text("Button1")
-                }
-                Button(onClick = {}) {
-                    Text("Button2")
-                }
-            }
-        }) {
-        Button(onClick = { },
-            content = { Text(text = "ddddd") })
-    }
 }
