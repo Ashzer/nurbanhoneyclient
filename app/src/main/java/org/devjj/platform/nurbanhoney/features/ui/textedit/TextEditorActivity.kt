@@ -58,13 +58,13 @@ class TextEditorActivity : BaseEmptyActivity() {
         var board = (intent.getParcelableExtra(INTENT_EXTRA_PARAM_BOARD) as Board?) ?: Board.empty
         return if(board.address == "nurban")
             try{
-                TextEditorNurbanFragment.toModify(board, intent.getParcelableExtra(INTENT_EXTRA_PARAM_ARTICLE))
+                TextEditorNurbanFragment.toModify(board, intent.getParcelableExtra(INTENT_EXTRA_PARAM_ARTICLE) ?: Article.empty)
             }catch(e : Exception){
                 TextEditorNurbanFragment.toWrite(board)
             }
         else
             try{
-                TextEditorFragment.toModify(board,intent.getParcelableExtra(INTENT_EXTRA_PARAM_ARTICLE))
+                TextEditorFragment.toModify(board,intent.getParcelableExtra(INTENT_EXTRA_PARAM_ARTICLE) ?: Article.empty)
             }catch(e : Exception){
                 TextEditorFragment.toWrite(board)
             }

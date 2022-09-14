@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.devjj.platform.nurbanhoney">
+    package="org.devjj.platform.nurbanhoney"
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -37,28 +38,33 @@
         <activity
             android:name=".features.ui.home.HomeActivity"
             android:label="Board"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:exported="true">
         </activity>
 
         <activity android:name=".features.ui.textedit.TextEditorActivity"
             android:label="TextEditor"
             android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:exported="true">
         </activity>
 
         <activity android:name=".features.ui.article.ArticleActivity"
             android:label="Article"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:exported="true">
         </activity>
 
         <activity android:name=".features.ui.home.profile.articles.ProfileArticlesActivity"
             android:label="ProfileArticles"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:exported="true">
         </activity>
 
         <activity android:name=".features.ui.home.profile.comments.ProfileCommentsActivity"
             android:label="ProfileComments"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:exported="true">
         </activity>
 
         <activity
@@ -77,6 +83,12 @@
                     android:scheme="@string/kakao_app_oauth_key" />
             </intent-filter>
         </activity>
+
+        <activity-alias
+            android:name="leakcanary.internal.activity.LeakLauncherActivity"
+            android:exported="true"
+            android:targetActivity="leakcanary.internal.activity.LeakActivity"
+            tools:node="merge" />
 
 
     </application>

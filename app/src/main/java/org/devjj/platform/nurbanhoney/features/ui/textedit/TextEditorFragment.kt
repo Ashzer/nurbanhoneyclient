@@ -222,7 +222,7 @@ open class TextEditorFragment : BaseFragment() {
 
 
     private fun uploadHandler(result: String?) {
-        Log.d("upload_response", result)
+        Log.d("upload_response", result ?: "null")
         //  notify(R.string.comment_modify_str)
         requireActivity().supportFragmentManager.popBackStack()
         requireActivity().finish()

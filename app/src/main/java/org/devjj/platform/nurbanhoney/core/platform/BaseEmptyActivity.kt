@@ -9,7 +9,7 @@ import org.devjj.platform.nurbanhoney.databinding.ActivityEmptyBinding
 @AndroidEntryPoint
 abstract class BaseEmptyActivity : BaseActivity() {
 
-    private lateinit var binding : ActivityEmptyBinding
+    private lateinit var binding: ActivityEmptyBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +19,7 @@ abstract class BaseEmptyActivity : BaseActivity() {
         setSupportActionBar(binding.emptyToolbar)
     }
 
-    protected fun setToolbarTitle(text : String){
+    protected fun setToolbarTitle(text: String) {
         supportActionBar?.title = text
     }
 
@@ -29,5 +29,4 @@ abstract class BaseEmptyActivity : BaseActivity() {
                 R.id.emptyFragmentContainer, fragment()
             )
         }
-
 }

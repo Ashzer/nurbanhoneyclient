@@ -60,8 +60,8 @@ class ApplicationModule {
     @Singleton
     fun provideLoginManager(dataSource: LoginManager.Network): LoginManager = dataSource
 
-    @Provides
-    fun provideLazyLoadHelper(impl : LazyLoadHelperImpl<ArticleItem>) : LazyLoadHelper<ArticleItem> = impl
+//    @Provides
+//    fun provideLazyLoadHelper(impl : LazyLoadHelperImpl<ArticleItem>) : LazyLoadHelper<ArticleItem> = impl
 
     @Provides
     @Singleton
