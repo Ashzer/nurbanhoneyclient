@@ -17,6 +17,7 @@ import org.devjj.platform.nurbanhoney.features.ui.home.profile.comments.ProfileC
 import org.devjj.platform.nurbanhoney.features.ui.login.Authenticator
 import org.devjj.platform.nurbanhoney.features.ui.login.LoginActivity
 import org.devjj.platform.nurbanhoney.features.Board
+import org.devjj.platform.nurbanhoney.features.ui.home.HomeComposeActivity
 import org.devjj.platform.nurbanhoney.features.ui.textedit.TextEditorActivity
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -36,7 +37,7 @@ class Navigator
     }
 
     fun showHome(context: Context) =
-        context.startActivity(HomeActivity.callingIntent(context))
+        context.startActivity(HomeComposeActivity.callingIntent(context))
 
     fun showProfileArticle(context: Context) =
         context.startActivity(ProfileArticlesActivity.callingIntent(context))

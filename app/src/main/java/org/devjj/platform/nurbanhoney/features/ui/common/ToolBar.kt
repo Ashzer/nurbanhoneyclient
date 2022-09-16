@@ -1,29 +1,21 @@
 package org.devjj.platform.nurbanhoney.features.ui.common
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.*
+import androidx.compose.material.DrawerState
+import androidx.compose.material.IconButton
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.devjj.platform.nurbanhoney.R
 
 
-
 @Composable
-fun MainToolBar(drawerState: DrawerState) {
-    val scope = rememberCoroutineScope()
+fun MainToolBar(drawerState: DrawerState, scope: CoroutineScope) {
     TopAppBar(
         title = {
             Image(
