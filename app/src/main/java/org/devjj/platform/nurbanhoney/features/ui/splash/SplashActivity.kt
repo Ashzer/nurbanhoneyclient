@@ -45,6 +45,7 @@ class SplashActivity
             finish()
         }, SPLASH_DISPLAY_TIME)
 
+        /*
         CoroutineScope(Dispatchers.IO).launch {
             //Log.d("version_check__", versionCheckService.appVersion("nurbanhoney").execute().body().toString())
 
@@ -66,7 +67,7 @@ class SplashActivity
             }
         }
         Log.d("kakao_key_check__", Utility.getKeyHash(this))
-
+        */
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

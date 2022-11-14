@@ -1,11 +1,11 @@
 object Kotlin {
-    const val standardLibrary = "1.5.31"
+    const val standardLibrary = "1.7.10"
     const val coroutines = "1.3.9"
 }
 
 object AndroidSdk {
     const val min = 25
-    const val compile = 32
+    const val compile = 33
     const val target = compile
 }
 
@@ -18,9 +18,9 @@ object AndroidClient {
 
 object BuildPlugins {
     object Versions {
-        const val buildToolsVersion = "7.2.2"
-        const val gradleVersion = "8.0"
-        const val hilt = "2.38.1"
+        const val buildToolsVersion = "7.3.1"
+        const val gradleVersion = "7.2"
+        const val hilt = "2.44.1"
     }
 
     const val androidGradlePlugin = "com.android.tools.build:gradle:${Versions.buildToolsVersion}"
@@ -65,7 +65,7 @@ object Libraries {
         const val richEditor = "2.0.0"
         const val fragment_ktx = "1.2.5"
         const val image_cropper = "2.8.0"
-        const val compose = "1.2.1"
+        const val compose = "1.3.0"
     }
 
     const val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${Kotlin.standardLibrary}"
